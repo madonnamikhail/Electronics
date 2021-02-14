@@ -9,25 +9,40 @@
       </div>
       <!-- /.card-header -->
       <!-- form start -->
-      <form method="post" action="{{ asset('admin/store') }}" enctype="multipart/form-data">
+      @if(Session()->has('Success'))
+        <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+        @php
+          Session()->forget('Success');
+        @endphp
+      @endif
+      @if(Session()->has('Error'))
+            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+            @php
+            Session()->forget('Error');
+            @endphp
+    @endif
+      <form method="post" action="{{ asset('admin/update/'.$category->id) }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
           <div class="form-group">
             <label for="exampleInputEmail1">Category English Name</label>
-            <input type="text" name="name_en"  value="{{ old('name_en') }}"class="form-control" id="exampleInputEmail1" placeholder="Enter category english name">
+            <input type="text" name="name_en" value="{{$category->name_en  }}" class="form-control" id="exampleInputEmail1" placeholder="Enter category english name">
           </div>
           @error('name_en')
                 <span class="text-danger">{{ $message }}</span>
               @enderror
           <div class="form-group">
             <label for="exampleInputEmail1">Category Arabic  Name</label>
-            <input type="text" name="name_ar" value="{{ old('name_ar') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter category Arabic name">
+            <input type="text" name="name_ar" value="{{$category->name_ar }}" class="form-control" id="exampleInputEmail1" placeholder="Enter category Arabic name">
           </div>
           @error('name_ar')
                 <span class="text-danger">{{ $message }}</span>
               @enderror
           <div class="form-group">
             <label for="exampleInputFile">Category photo</label>
+            <div class="form-group" >
+                <img src="{{ asset('images/photo/'.$category->photo) }}">
+            </div>
             <div class="input-group">
               <div class="custom-file">
                 <input type="file" name="photo" class="custom-file-input" id="exampleInputFile">
@@ -45,7 +60,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">update data</button>
         </div>
       </form>
     </div>

@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css') }}">
 @endsection
 @section('content')
-
+<a href="{{ asset('admin/product/create') }}" class="btn btn-success">Add</a>
     <div class="col-12">
         <div class="col-12">
             @if(Session()->has('Success'))
@@ -29,36 +29,43 @@
 
             <tr>
               <th>ID</th>
-              <th>NAME_EN</th>
-              <th>NAME_AR</th>
-              <th>IMAGE</th>
+              <th>NAME</th>
+              <th>price</th>
+              <th>code</th>
+              <th>details</th>
+              <th>Brand_id</th>
+              <th>subcategory_id</th>
               <th>ACTION</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($categorys as $category)
+                @foreach ($products as $products)
                 <tr>
-                    <td>{{ $category->id }}</td>
-                    <td>{{ $category->name_en }}</td>
-                    <td>{{ $category->name_ar }}</td>
-                    <td>
+                    <td>{{ $products->id }}</td>
+                    <td>{{ $products->name }}</td>
+                    <td>{{ $products->price }}</td>
+                    <td>{{ $products->code }}</td>
+                    <td>{{ $products->details }}</td>
+                    <td>{{ $products->brand_id }}</td>
+                    <td>{{ $products->subCategory_id }}</td>
+                    {{-- <td>
                         <img src="{{ asset('images/photo/'.$category->photo) }}" style="width:30%;">
-                    </td>
+                    </td> --}}
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ asset('admin/edit/'.$category->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ asset('admin/product/edit/'.$products->id) }}" class="btn btn-success">Edit</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
 
-                                <form method="post" action="{{asset('admin/delete')}}">
+                                <form method="post" action="{{asset('admin/product/delete')}}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $category->id }}">
-                                    <input type="hidden" name="photo" value="{{ $category->photo }}">
+                                    <input type="hidden" name="id" value="{{ $products->id }}">
+                                    <input type="hidden" name="photo" value="{{ $products->photo }}">
                                     <button class="btn btn-danger form-group  ">Delete</button>
                                 </form>
                             <br>
-                            <a href="{{asset('admin/subcat/show/'.$category->id)}}" class="btn btn-warning">show SUB-cATEGORY</a>
+
 
 
                         </div>

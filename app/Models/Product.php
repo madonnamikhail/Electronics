@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Product extends Model
 {
     //
-    // protected $table=categorys;
     protected $fillable = [
-        'name_en','name_ar','photo', 'subCategory_num', 'created_at','updated_at'
+        'name','price','code', 'details','brand_id','subCategory_id','created_at','updated_at'
     ];
 
     /**
@@ -21,7 +20,8 @@ class Category extends Model
         'created_at','updated_at'
     ];
 
+
     public function subcategory(){
-        return $this->hasMany('App\Models\Subcategory','Category_id');
+        return $this->belongsTo('App\Models\Subcategory','subCategory_id');
     }
 }
