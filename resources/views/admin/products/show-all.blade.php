@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','all Categories')
+@section('title','all Products')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -50,12 +50,12 @@
                 @foreach ($products as $products)
                 <tr>
                     <td>
-                        @php
+                        {{-- @php
 
                             echo $j;
                             $j++;
-                        @endphp
-                        {{-- {{ $products->id }} --}}
+                        @endphp --}}
+                        {{ $products->id }}
                     </td>
                     <td>{{ $products->name_en }}</td>
                     <td>{{ $products->name_ar }}</td>
@@ -67,18 +67,18 @@
                         <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
                     </td>
                     <td>
-                         @php
+                         {{-- @php
                              echo $brand[$i]->name_en;
-                         @endphp
-                        {{-- {{ $products->brand_id }} --}}
+                         @endphp --}}
+                        {{ $products->brand_id }}
 
                     </td>
                     <td>
-                        @php
+                        {{-- @php
                              echo $subcategory[$i]->name_en;
                              $i++;
-                         @endphp
-                        {{-- {{ $products->subCategory_id }} --}}
+                         @endphp --}}
+                        {{ $products->subCategory_id }}
                     </td>
                     {{-- <td>
                         @php
@@ -86,7 +86,7 @@
                              $i++;
                          @endphp
                         {{-- {{ $products->subCategory_id }} --}}
-                    </td> --}}
+                    {{-- </td> --}}
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                             <a href="{{ asset('admin/product/edit/'.$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>

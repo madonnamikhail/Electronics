@@ -45,6 +45,7 @@
                                 <div class="main-menu">
                                     <nav>
                                         <ul>
+
                                             <li class="top-hover"><a href="index.html">home</a>
                                                 <ul class="submenu">
                                                     <li><a href="index.html">home version 1</a></li>
@@ -137,18 +138,63 @@
                                                 </ul>
                                             </li>
                                             <li><a href="contact.html">contact</a></li>
+
+                                                @guest
+                                                    <li class="top-hover">
+                                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                            Account
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                            <ul class="submenu">
+                                                                <li class="top-hover">
+                                                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                                                </li>
+                                                                @if (Route::has('register'))
+                                                                    <li class="top-hover">
+                                                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                                    </li>
+                                                                @endif
+                                                            </ul>
+                                                      </div>
+                                                </li>
+                                            @else
+                                                <li class="top-hover">
+                                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                        {{ Auth::user()->name }}
+                                                    </a>
+
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                        <ul class="submenu">
+                                                            <li class="top-hover">
+                                                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                                                onclick="event.preventDefault();
+                                                                              document.getElementById('logout-form').submit();">
+                                                                 {{ __('Logout') }}
+                                                             </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a class="dropdown-item">profile</a>
+                                                            </li>
+                                                        </ul>
+                                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                                @endguest
+
+
                                         </ul>
                                     </nav>
                                 </div>
 								<div class="header-currency">
-									<span class="digit">USD <i class="ti-angle-down"></i></span>
+									<span class="digit">Language <i class="ti-angle-down"></i></span>
 									<div class="dollar-submenu">
 										<ul>
-											<li><a href="#">$ USD</a></li>
-											<li><a href="#">€ EUR</a></li>
-											<li><a href="#">£ GBP</a></li>
-											<li><a href="#">₹ INR</a></li>
-											<li><a href="#">¥ JPY</a></li>
+											<li><a href="#">English</a></li>
+											<li><a href="#">Arabic</a></li>
+
 										</ul>
 									</div>
 								</div>

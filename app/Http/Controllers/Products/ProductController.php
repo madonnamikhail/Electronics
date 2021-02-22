@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Offer;
 use App\Models\Product;
 use App\Models\Subcategory;
@@ -20,15 +21,15 @@ class ProductController extends Controller
 
     public function showall(){
         $products=Product::get();
-        $i=0;
-        foreach($products as $product){
-            $subcategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id);
-            $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
-            // $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
-            $i++;
-        }
+        // $i=0;
+        // foreach($products as $product){
+        //     $subcategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id);
+        //     $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
+        //     // $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
+        //     $i++;
+        // }
 
-        return view('admin.products.show-all' , compact('products','subcategory','brand'));
+        return view('admin.products.show-all' , compact('products'));
         // return $products;
     }
 
@@ -54,9 +55,11 @@ class ProductController extends Controller
     public function create(){
         $brand=Brand::get();
         $subcategory=Subcategory::get();
+        // return $subcategory;
+        $category=Category::get();
         $supplier=Supplier::get();
         // return $subcategory;
-        return view('admin.products.create',compact('brand','subcategory','supplier'));
+        return view('admin.products.create',compact('brand','subcategory','supplier','category'));
     }
 
     public function store(Request $request){

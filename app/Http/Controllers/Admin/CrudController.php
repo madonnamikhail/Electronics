@@ -91,8 +91,11 @@ class CrudController extends Controller
             // foreach($sub as $sub)
             // {
             //     $category[$i]=Category::select('name_en')->find($sub->category_id);
+            //     // echo $category[$i];
             //     $i++;
             // }
+            // return $category;
+            // return "ok";
 
             // return $sub;
             //one-to-many relation
@@ -109,6 +112,7 @@ class CrudController extends Controller
         }
         public function substore(Request $request)
         {
+
             $rules=[
                 "name_en"=>'required|string|max:100',
                 "name_ar"=>'required|string|max:100',
@@ -124,7 +128,7 @@ class CrudController extends Controller
 
          Subcategory::insert($data);
         //  return redirect()->back()->with('Success','The Subcategory succesfully added');
-        return redirect('admin/subcat/showw');
+        return redirect('admin/subcat/show/'.$request->category_id);
         }
 
 

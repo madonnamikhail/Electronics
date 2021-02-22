@@ -36,11 +36,13 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+			'auth_mode' => null,
         ],
 
         'ses' => [
@@ -61,6 +63,24 @@ return [
             'transport' => 'array',
         ],
     ],
+    ########################################
+
+
+
+	//..... below are the solution for another error
+	//..... I can't remember it XD
+
+	// 'driver' => env('MAIL_DRIVER', 'smtp'),
+	// 'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+	// 'port' => env('MAIL_PORT', 587),
+	// 'from' => ['address' => 'youEmail@gmail.com', 'name'=>'Your Title'],
+	// 'encryption' => 'tls',
+	// 'username' => env('MAIL_USERNAME'),
+	// 'password' => env('MAIL_PASSWORD'),
+	// 'sendmail' => '/usr/sbin/sendmail -bs',
+	// 'pretend' => false,
+
+    #####################################333
 
     /*
     |--------------------------------------------------------------------------

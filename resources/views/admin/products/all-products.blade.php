@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','all Categories')
+@section('title','all products')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">

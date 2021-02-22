@@ -55,7 +55,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::get('create','CrudController@subcreate');
         Route::post('store','CrudController@substore')->name('store.subcategory');
         //edit sub-category
-        Route::get('edit/{id}','CrudController@subedit');
+        Route::get('edit/{id}','CrudController@subedit')->name('edit.subcategory');
         Route::post('update/{id}','CrudController@subupdate')->name('update.subcategory');
         //delete
         Route::delete('delete','CrudController@subdelete')->name('delete.subcategory');

@@ -5,7 +5,7 @@
 <table id="example2" class="table table-bordered table-hover">
     <thead>
     <tr>
-        <th>{{ __('message.ID') }}</th>
+      <th>{{ __('message.ID') }}</th>
       <th>{{ __('message.NAME') }}</th>
       <th>{{ __('message.category ID') }}</th>
       <th>{{ __('message.IMAGE') }}</th>
@@ -21,13 +21,11 @@
             <td>{{ $subs->id }}</td>
             <td>{{ $subs->name}}</td>
             <td>
-
                 {{ $subs->category_id }}
                 {{-- @php
                     echo $category[$i]->name_en;
                     $i++;
                 @endphp --}}
-
             </td>
             <td>
                 <img src="{{ asset('images/subcategorys/'.$subs->photo) }}" style="width:10%;">
@@ -35,11 +33,11 @@
             <td>
                 <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                     <div>
-                        <a href="{{ asset('admin/subcat/edit/'.$subs->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                        <a href="{{ route('edit.subcategory',$subs->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                     <div>
                         <br>
                     <div>
-                        <form method="post" action="{{asset('admin/subcat/delete')}}">
+                        <form method="post" action="{{route('delete.subcategory')}}">
                             @csrf
                             @method('delete')
                             <input type="hidden" name="id" value="{{ $subs->id }}">

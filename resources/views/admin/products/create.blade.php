@@ -71,11 +71,25 @@
 
                           <div class="form-group">
                             <label for="exampleInputEmail1">{{ __('message.Sub Category') }}</label>
-                            <select name="subcategory_id" id="subcategory"class="form-control">
-                                @foreach ($subcategory as $subcategory )
-                                <option {{ old('subcategory_id')==$subcategory->id ? 'selected' : '' }} value="{{ $subcategory->id }}">{{ $subcategory->name_en }}</option>
-                                @endforeach
-                              </select>
+                                <div class="form-group">
+                                    <select  name="subcategory_id" id="subcategory_id" class="form-control">
+                                        @foreach ($category as $category )
+                                                <optgroup label="{{ $category->name_en }}">
+                                                    @foreach ($subcategory as $subcategoryss)
+                                                        @if ($subcategoryss->category_id == $category->id)
+                                                            <option value="{{ $subcategoryss->id }}" class="form-group">
+                                                                {{-- @php
+                                                                    echo $subcategoryss->name_en;
+                                                                @endphp --}}
+                                                                {{ $subcategoryss->name_en }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </optgroup>
+                                        @endforeach
+                                      </select>
+                                </div>
+
                           </div>
                           @error('subcategory_id')
                                 <span class="text-danger">{{ $message }}</span>

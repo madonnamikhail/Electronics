@@ -58,29 +58,29 @@
                     <td>{{ $products->details_en }}</td>
                     <td>{{ $products->details_ar }}</td>
                     <td>
-                        {{-- {{ $products->offer_id }} --}}
-                        @php
+                        {{ $products->offer_id }}
+                        {{-- @php
                             if($offer[$i]=='no offers'){
                                 echo $offer[$i];
                             }
                             else {
                               echo $offer[$i]->title_en;
                             }
-                        @endphp
+                        @endphp --}}
                     </td>
                     <td>
-                        {{-- {{ $products->brand_id }} --}}
-                        @php
+                        {{ $products->brand_id }}
+                        {{-- @php
                             echo $brand[$i]->name_en;
-                        @endphp
+                        @endphp --}}
 
                     </td>
                     <td>
-                        {{-- {{ $products->subCategory_id }} --}}
-                        @php
+                        {{ $products->subCategory_id }}
+                        {{-- @php
                              echo $SubCategory[$i]->name_en;
                              $i++;
-                        @endphp
+                        @endphp --}}
 
                     </td>
                     <td>

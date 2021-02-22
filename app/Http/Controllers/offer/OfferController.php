@@ -71,20 +71,20 @@ class OfferController extends Controller
         //  $products=Product::select('id','name_en','name_ar','photo','price','code', 'details_en','details_ar','offer_id','supplier_id','brand_id','subCategory_id')->where('offer_id','=',$id)->get();
         $allproducts=Product::get();
         $alloffers=Offer::get();
-        $i=1;
-        foreach($products  as $product){
-            if($product->offer_id == ''){
-                $offer[$i]='no offers';
-            }
-            else{
-                $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
-            }
-            $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
-            $SubCategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id );
-            $i++;
-        }
+        // $i=1;
+        // foreach($products  as $product){
+        //     if($product->offer_id == ''){
+        //         $offer[$i]='no offers';
+        //     }
+        //     else{
+        //         $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
+        //     }
+        //     $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
+        //     $SubCategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id );
+        //     $i++;
+        // }
         // return $offer;
-        return view('admin.products.offer-products',compact('products','allproducts','alloffers','offer','brand','SubCategory'));
+        return view('admin.products.offer-products',compact('products','allproducts','alloffers'));
     }
     public function addProductstoOffer(Request $request)
     {
