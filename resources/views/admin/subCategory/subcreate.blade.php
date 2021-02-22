@@ -21,7 +21,7 @@
           Session()->forget('Error');
           @endphp
   @endif
-      <form method="post" action="{{ asset('admin/subcat/store') }}" enctype="multipart/form-data">
+      <form method="post" action="{{ route('store.subcategory') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
           <div class="form-group">

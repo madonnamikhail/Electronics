@@ -28,46 +28,63 @@
             <thead>
 
             <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>price</th>
-              <th>code</th>
-              <th>details</th>
-              <th>Brand_id</th>
-              <th>subcategory_id</th>
-              <th>ACTION</th>
+              <th>{{ __('message.ID') }}</th>
+              <th>{{ __('message.English Name') }}</th>
+              <th>{{ __('message.Arabic Name') }}</th>
+              <th>{{ __('message.price') }}</th>
+              <th>{{ __('message.code') }}</th>
+              <th>{{ __('message.English details') }}</th>
+              <th>{{ __('message.Arabic details') }}</th>
+              <th>{{ __('message.Brand_id') }}</th>
+              <th>{{ __('message.subcategory_id') }}</th>
+              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
+                @php
+                    $i=0;
+                @endphp
                 @foreach ($products as $products)
                 <tr>
                     <td>{{ $products->id }}</td>
-                    <td>{{ $products->name }}</td>
+                    <td>{{ $products->name_en }}</td>
+                    <td>{{ $products->name_ar }}</td>
                     <td>{{ $products->price }}</td>
                     <td>{{ $products->code }}</td>
-                    <td>{{ $products->details }}</td>
-                    <td>{{ $products->brand_id }}</td>
-                    <td>{{ $products->subCategory_id }}</td>
-                    {{-- <td>
-                        <img src="{{ asset('images/photo/'.$category->photo) }}" style="width:30%;">
-                    </td> --}}
+                    <td>{{ $products->details_en }}</td>
+                    <td>{{ $products->details_ar }}</td>
+                    <td>
+                        {{ $products->brand_id }}
+                        {{-- @php
+                            echo $brand[$i]->name_en;
+                        @endphp --}}
+
+                    </td>
+                    <td>
+                        {{ $products->subCategory_id }}
+                        {{-- @php
+                             echo $subcategory[$i]->name_en;
+                             $i++;
+                        @endphp --}}
+
+                    </td>
+                    <td>
+                        <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
+                    </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ asset('admin/product/edit/'.$products->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
-
-                                <form method="post" action="{{asset('admin/product/delete')}}">
+                                <form method="post" action="{{route('delete.product')}}">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="id" value="{{ $products->id }}">
                                     <input type="hidden" name="photo" value="{{ $products->photo }}">
-                                    <button class="btn btn-danger form-group  ">Delete</button>
+                                    <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
-
-
-
                         </div>
 
                     </td>

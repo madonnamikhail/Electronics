@@ -28,37 +28,36 @@
             <thead>
 
             <tr>
-              <th>ID</th>
-              <th>NAME_EN</th>
-              <th>NAME_AR</th>
-              <th>IMAGE</th>
-              <th>ACTION</th>
+              <th>{{ __('message.ID') }}</th>
+              <th>{{ __('message.NAME') }}</th>
+              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
                 @foreach ($categorys as $category)
                 <tr>
                     <td>{{ $category->id }}</td>
-                    <td>{{ $category->name_en }}</td>
-                    <td>{{ $category->name_ar }}</td>
+                    <td>{{ $category->name }}</td>
+
                     <td>
                         <img src="{{ asset('images/photo/'.$category->photo) }}" style="width:30%;">
                     </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ asset('admin/edit/'.$category->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ asset('admin/edit/'.$category->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
 
-                                <form method="post" action="{{asset('admin/delete')}}">
+                                <form method="post" action="{{route('delete.category')}}">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="id" value="{{ $category->id }}">
                                     <input type="hidden" name="photo" value="{{ $category->photo }}">
-                                    <button class="btn btn-danger form-group  ">Delete</button>
+                                    <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
-                            <a href="{{asset('admin/subcat/show/'.$category->id)}}" class="btn btn-warning">show SUB-cATEGORY</a>
+                            <a href="{{asset('admin/subcat/show/'.$category->id)}}" class="btn btn-warning">{{ __('message.show SUB-cATEGORY') }}</a>
 
 
                         </div>

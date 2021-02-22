@@ -8,7 +8,7 @@ class Brand extends Model
 {
     //
     protected $fillable = [
-        'name','photo','created_at','updated_at'
+        'name_en','name_ar','photo','created_at','updated_at'
     ];
 
     /**

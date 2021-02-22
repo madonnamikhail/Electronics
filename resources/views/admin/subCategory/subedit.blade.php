@@ -21,18 +21,18 @@
           Session()->forget('Error');
           @endphp
   @endif
-      <form method="post" action="{{ asset('admin/subcat/update/'.$Subcategory->id) }}" enctype="multipart/form-data">
+      <form method="post" action="{{ route('update.subcategory',$Subcategory->id) }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
           <div class="form-group">
-            <label for="exampleInputEmail1">Sub-Category English Name</label>
+            <label for="exampleInputEmail1">{{ __('message.English Name') }}</label>
             <input type="text" name="name_en"  value="{{$Subcategory->name_en  }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Sub-category english name">
           </div>
           @error('name_en')
                 <span class="text-danger">{{ $message }}</span>
               @enderror
           <div class="form-group">
-            <label for="exampleInputEmail1">Sub-Category Arabic  Name</label>
+            <label for="exampleInputEmail1">{{ __('message.Arabic Name') }}</label>
             <input type="text" name="name_ar" value="{{$Subcategory->name_ar  }}" class="form-control" id="exampleInputEmail1" placeholder="Enter sub-category Arabic name">
           </div>
           @error('name_ar')
@@ -52,12 +52,12 @@
                   @enderror
 
           <div class="form-group">
-            <label for="exampleInputFile">Category photo</label>
+            <label for="exampleInputFile">{{ __('message.IMAGE') }}</label>
+            <div class="form-group">
+                <img style="width:10%" src="{{ asset('images/subcategorys/'.$Subcategory->photo) }}">
+            </div>
             <div class="input-group">
-                <div class="form-group">
-                    <img src="{{ asset('images/subcategorys/'.$Subcategory->photo) }}">
 
-                </div>
               <div class="custom-file">
                 <input type="file" name="photo" class="custom-file-input" id="exampleInputFile">
                 <label class="custom-file-label" for="exampleInputFile">Choose file</label>
@@ -74,7 +74,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>
       </form>
     </div>

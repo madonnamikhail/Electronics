@@ -5,28 +5,37 @@
 <table id="example2" class="table table-bordered table-hover">
     <thead>
     <tr>
-      <th>ID</th>
-      <th>English Name</th>
-      <th>Arabic Name</th>
-      <th>category ID</th>
-      <th>IMAGE</th>
-      <th>ACTION</th>
+        <th>{{ __('message.ID') }}</th>
+      <th>{{ __('message.NAME') }}</th>
+      <th>{{ __('message.category ID') }}</th>
+      <th>{{ __('message.IMAGE') }}</th>
+      <th>{{ __('message.ACTION') }}</th>
     </tr>
     </thead>
     <tbody>
+        @php
+            $i=0;
+        @endphp
         @foreach ($sub as $subs)
         <tr>
             <td>{{ $subs->id }}</td>
-            <td>{{ $subs->name_en}}</td>
-            <td>{{ $subs->name_ar}}</td>
-            <td>{{ $subs->category_id }}</td>
+            <td>{{ $subs->name}}</td>
+            <td>
+
+                {{ $subs->category_id }}
+                {{-- @php
+                    echo $category[$i]->name_en;
+                    $i++;
+                @endphp --}}
+
+            </td>
             <td>
                 <img src="{{ asset('images/subcategorys/'.$subs->photo) }}" style="width:10%;">
             </td>
             <td>
                 <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                     <div>
-                        <a href="{{ asset('admin/subcat/edit/'.$subs->id) }}" class="btn btn-success">Edit</a>
+                        <a href="{{ asset('admin/subcat/edit/'.$subs->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                     <div>
                         <br>
                     <div>
@@ -35,11 +44,11 @@
                             @method('delete')
                             <input type="hidden" name="id" value="{{ $subs->id }}">
                             <input type="hidden" name="photo" value="{{ $subs->photo }}">
-                            <button class="btn btn-danger form-group  ">Delete</button>
+                            <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                         </form>
                          <div>
                     <div>
-                        <a href="{{ asset('admin/product/show/'.$subs->id) }}" class="btn btn-warning">show Products</a>
+                        <a href="{{ asset('admin/product/show/'.$subs->id) }}" class="btn btn-warning">{{ __('message.show Products') }}</a>
 
                     </div>
 

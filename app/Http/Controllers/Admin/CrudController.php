@@ -9,13 +9,14 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use LaravelLocalization;
 
 class CrudController extends Controller
 {
     //for categories
     use generalTrait;
     public function show(){
-        $categorys=Category::Select('id','name_en','name_ar','photo')->get();
+        $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->get();
          return view('admin.category.all-category' , compact('categorys'));
     }
 
@@ -29,7 +30,8 @@ class CrudController extends Controller
          $data=$request->except('photo','_token');
          $data['photo']=$imageName;
          Category::insert($data);
-         return $this->returnSuccessMessage('the category has been successfully saved');
+        //  return $this->returnSuccessMessage('the category has been successfully saved');
+        return redirect('admin/show');
     }
 
     public function edit($id){
@@ -54,7 +56,8 @@ class CrudController extends Controller
         }
         $update=Category::where('id','=', $id)->update($data);
         if($update){
-            return redirect()->back()->with('Success','the category has been updated ');
+            // return redirect()->back()->with('Success','the category has been updated ');
+            return redirect('admin/show');
         }
         return redirect()->back()->with('Error','failed ');
 
@@ -79,9 +82,22 @@ class CrudController extends Controller
         }
 
         public function subshow($id){
-            $categorys=Category::find($id);
+            // $categorys=Category::find($id);
+            // return $categorys;
+            // $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->where('id','=',$id)->first();
+
+            $sub=Subcategory::select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo','category_id')->where('category_id','=',$id)->get();
+            // $i=0;
+            // foreach($sub as $sub)
+            // {
+            //     $category[$i]=Category::select('name_en')->find($sub->category_id);
+            //     $i++;
+            // }
+
+            // return $sub;
             //one-to-many relation
-            $sub= $categorys->subcategory;
+            // $sub= $categorys->subcategory;
+            // return $sub;
             // return $sub;
             return view ('admin.category.category-subcat',compact('sub'));
         }
@@ -107,7 +123,8 @@ class CrudController extends Controller
          $data['photo']=$imageName;
 
          Subcategory::insert($data);
-         return redirect()->back()->with('Success','The Subcategory succesfully added');
+        //  return redirect()->back()->with('Success','The Subcategory succesfully added');
+        return redirect('admin/subcat/showw');
         }
 
 
@@ -136,7 +153,8 @@ class CrudController extends Controller
             }
             $update=Subcategory::where('id','=', $id)->update($data);
             if($update){
-                return redirect()->back()->with('Success','the Sub-Category has been updated ');
+                // return redirect()->back()->with('Success','the Sub-Category has been updated ');
+                return redirect('admin/subcat/showw');
             }
             return redirect()->back()->with('Error','failed ');
 
@@ -155,8 +173,11 @@ class CrudController extends Controller
             }
             Subcategory::destroy($request->id);
             return redirect()->back()->with('Success','the SubCategory has been deleted successfully');
+        }
 
-
-
+        public function ssubshow(){
+            $sub=Subcategory::get();
+            // return $sub;
+            return view('admin.category.show-all',compact('sub'));
         }
 }

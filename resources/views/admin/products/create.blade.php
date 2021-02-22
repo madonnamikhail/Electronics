@@ -9,18 +9,25 @@
       </div>
       <!-- /.card-header -->
       <!-- form start -->
-      <form method="post" action="{{ asset('admin/product/store') }}" enctype="multipart/form-data">
+      <form method="post" action="{{ route('store.product') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
           <div class="form-group">
-            <label for="exampleInputEmail1">Product Name</label>
-            <input type="text" name="name"  value="{{ old('name') }}"class="form-control" id="exampleInputEmail1" placeholder="Enter Product  name">
+            <label for="exampleInputEmail1">{{ __('message.English Name') }}</label>
+            <input type="text" name="name_en"  value="{{ old('name_en') }}"class="form-control" id="exampleInputEmail1" placeholder="Enter Product english name">
           </div>
-          @error('name')
+          @error('name_en')
                 <span class="text-danger">{{ $message }}</span>
               @enderror
+              <div class="form-group">
+                <label for="exampleInputEmail1">{{ __('message.Arabic Name') }}</label>
+                <input type="text" name="name_ar"  value="{{ old('name_ar') }}"class="form-control" id="exampleInputEmail1" placeholder="Enter Product arabic name">
+              </div>
+              @error('name_ar')
+                    <span class="text-danger">{{ $message }}</span>
+                  @enderror
           <div class="form-group">
-            <label for="exampleInputEmail1">Product Price </label>
+            <label for="exampleInputEmail1">{{ __('message.Price') }}</label>
             <input type="text" name="price" value="{{ old('price') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Product Price">
           </div>
           @error('price')
@@ -28,7 +35,7 @@
               @enderror
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Product code </label>
+                <label for="exampleInputEmail1">{{ __('message.code') }} </label>
                 <input type="text" name="code" value="{{ old('code') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Product code">
               </div>
               @error('code')
@@ -36,18 +43,26 @@
                   @enderror
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Product Details </label>
-                    <input type="text" name="details" value="{{ old('details') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Product details">
+                    <label for="exampleInputEmail1">{{ __('message.English Details') }} </label>
+                    <input type="text" name="details_en" value="{{ old('details_en') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Product english details">
                   </div>
-                  @error('details')
+                  @error('details_en')
                         <span class="text-danger">{{ $message }}</span>
                       @enderror
 
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Brand</label>
+                        <label for="exampleInputEmail1">{{ __('message.Arabic Details') }} </label>
+                        <input type="text" name="details_ar" value="{{ old('details_ar') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter Product arabic details">
+                      </div>
+                      @error('details_ar')
+                            <span class="text-danger">{{ $message }}</span>
+                          @enderror
+
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">{{ __('message.Brand') }}</label>
                         <select name="brand_id" class="form-control">
                             @foreach ($brand as $brand )
-                            <option {{ old('brand_id')==$brand->id ? 'selected' : '' }} value="{{ $brand->id }}">{{ $brand->name }}</option>
+                            <option {{ old('brand_id')==$brand->id ? 'selected' : '' }} value="{{ $brand->id }}">{{ $brand->name_en }}</option>
                             @endforeach
                           </select>                      </div>
                       @error('brand_id')
@@ -55,7 +70,7 @@
                           @enderror
 
                           <div class="form-group">
-                            <label for="exampleInputEmail1">SubCategory</label>
+                            <label for="exampleInputEmail1">{{ __('message.Sub Category') }}</label>
                             <select name="subcategory_id" id="subcategory"class="form-control">
                                 @foreach ($subcategory as $subcategory )
                                 <option {{ old('subcategory_id')==$subcategory->id ? 'selected' : '' }} value="{{ $subcategory->id }}">{{ $subcategory->name_en }}</option>
@@ -65,6 +80,36 @@
                           @error('subcategory_id')
                                 <span class="text-danger">{{ $message }}</span>
                               @enderror
+
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">{{ __('message.Supplier') }}</label>
+                                <select name="supplier_id" id="subcategory"class="form-control">
+                                    @foreach ($supplier as $supplier )
+                                    <option {{ old('supplier_id')==$supplier->id ? 'selected' : '' }} value="{{ $supplier->id }}">{{ $supplier->name_en }}</option>
+                                    @endforeach
+                                  </select>
+                              </div>
+                              @error('supplier_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                  @enderror
+
+
+                                  <div class="form-group">
+                                    <label for="exampleInputFile">{{ __('message.IMAGE') }}</label>
+                                    <div class="input-group">
+                                      <div class="custom-file">
+                                        <input type="file" name="photo" class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                      </div>
+
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">save</span>
+                                      </div>
+                                    </div>
+                                    @error('photo')
+                                    <span class="text-danger">{{ $message }}</span>
+                                  @enderror
+                                  </div>
 
            {{-- <div class="form-group">
             <label for="exampleInputFile">Category photo</label>
@@ -85,7 +130,7 @@
         </div> --}}
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>
       </form>
     </div>
