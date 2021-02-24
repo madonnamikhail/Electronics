@@ -1,6 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
-
+    
 <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
-
+		
 		<!-- all css here -->
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
@@ -24,7 +24,6 @@
         <link rel="stylesheet" href="{{ asset('assets/css/meanmenu.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
-        @yield('link')
         <script src="{{ asset('assets/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     </head>
     <body>
@@ -36,7 +35,7 @@
                         <div class="col-lg-3 col-md-4 col-6">
                             <div class="logo">
                                 <a href="index.html">
-                                    <img alt="" src="assets/img/logo/logo.png">
+                                    <img alt="" src="{{ asset('assets/img/logo/logo.png') }}">
                                 </a>
                             </div>
                         </div>
@@ -45,7 +44,6 @@
                                 <div class="main-menu">
                                     <nav>
                                         <ul>
-
                                             <li class="top-hover"><a href="index.html">home</a>
                                                 <ul class="submenu">
                                                     <li><a href="index.html">home version 1</a></li>
@@ -176,6 +174,9 @@
                                                             <li>
                                                                 <a class="dropdown-item">profile</a>
                                                             </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('get.cart') }}">cart</a>
+                                                            </li>
                                                         </ul>
                                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                             @csrf
@@ -208,7 +209,7 @@
                                         <ul>
                                             <li class="single-shopping-cart">
                                                 <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="assets/img/cart/cart-1.jpg"></a>
+                                                    <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-1.jpg') }}"></a>
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4><a href="#">Phantom Remote </a></h4>
@@ -221,7 +222,7 @@
                                             </li>
                                             <li class="single-shopping-cart">
                                                 <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="assets/img/cart/cart-2.jpg"></a>
+                                                    <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-2.jpg') }}"></a>
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4><a href="#">Phantom Remote</a></h4>
@@ -442,7 +443,7 @@
                         <div class="col-md-6">
                             <div class="payment-img f-right">
                                 <a href="#">
-                                    <img alt="" src="assets/img/icon-img/payment.png">
+                                    <img alt="" src="{{ asset('assets/img/icon-img/payment.png') }}">
                                 </a>
                             </div>
                         </div>
@@ -464,26 +465,26 @@
                                 <!-- Thumbnail Large Image start -->
                                 <div class="tab-content">
                                     <div id="pro-1" class="tab-pane fade show active">
-                                        <img src="assets/img/product-details/product-detalis-l1.jpg" alt="">
+                                        <img src="{{ asset('assets/img/product-details/product-detalis-l1.jpg') }}" alt="">
                                     </div>
                                     <div id="pro-2" class="tab-pane fade">
-                                        <img src="assets/img/product-details/product-detalis-l2.jpg" alt="">
+                                        <img src="{{ asset('assets/img/product-details/product-detalis-l2.jpg') }}" alt="">
                                     </div>
                                     <div id="pro-3" class="tab-pane fade">
-                                        <img src="assets/img/product-details/product-detalis-l3.jpg" alt="">
+                                        <img src="{{ asset('assets/img/product-details/product-detalis-l3.jpg') }}" alt="">
                                     </div>
                                     <div id="pro-4" class="tab-pane fade">
-                                        <img src="assets/img/product-details/product-detalis-l4.jpg" alt="">
+                                        <img src="{{ asset('assets/img/product-details/product-detalis-l4.jpg') }}" alt="">
                                     </div>
                                 </div>
                                 <!-- Thumbnail Large Image End -->
                                 <!-- Thumbnail Image End -->
                                 <div class="product-thumbnail">
                                     <div class="thumb-menu owl-carousel nav nav-style" role="tablist">
-                                        <a class="active" data-toggle="tab" href="#pro-1"><img src="assets/img/product-details/product-detalis-s1.jpg" alt=""></a>
-                                        <a data-toggle="tab" href="#pro-2"><img src="assets/img/product-details/product-detalis-s2.jpg" alt=""></a>
-                                        <a data-toggle="tab" href="#pro-3"><img src="assets/img/product-details/product-detalis-s3.jpg" alt=""></a>
-                                        <a data-toggle="tab" href="#pro-4"><img src="assets/img/product-details/product-detalis-s4.jpg" alt=""></a>
+                                        <a class="active" data-toggle="tab" href="#pro-1"><img src="{{ asset('assets/img/product-details/product-detalis-s1.jpg') }}" alt=""></a>
+                                        <a data-toggle="tab" href="#pro-2"><img src="{{ asset('assets/img/product-details/product-detalis-s2.jpg') }}" alt=""></a>
+                                        <a data-toggle="tab" href="#pro-3"><img src="{{ asset('assets/img/product-details/product-detalis-s3.jpg') }}" alt=""></a>
+                                        <a data-toggle="tab" href="#pro-4"><img src="{{ asset('assets/img/product-details/product-detalis-s4.jpg') }}" alt=""></a>
                                     </div>
                                 </div>
                                 <!-- Thumbnail image end -->

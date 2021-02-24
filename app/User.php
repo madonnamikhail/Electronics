@@ -36,4 +36,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function product()
+    {
+        return $this->belongsToMany('App\Models\Product', 'carts')->withPivot('product_id', 'user_id', 'quantity');
+    }
 }

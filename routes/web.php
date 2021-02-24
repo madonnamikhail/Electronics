@@ -15,12 +15,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
+Route::group(['namespace'=>'Front', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
 
-        Route::get('/index', function () {
-            return view('front.userindex');
-        });
+    Route::get('/index', 'IndexController@index');
+    Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
+    Route::get('/cart', 'IndexController@getCart')->name('get.cart');
+    Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
 
+    Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
+    Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');
+
+    Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
 });
 
 

@@ -3,7 +3,7 @@
 @section('content')
 <div class="slider-area">
     <div class="slider-active owl-dot-style owl-carousel">
-        <div class="single-slider ptb-240 bg-img" style="background-image:url(assets/img/slider/slider-1.jpg);">
+        <div class="single-slider ptb-240 bg-img" style="background-image:url({{ asset('assets/img/slider/slider-1.jpg') }});">
             <div class="container">
                 <div class="slider-content slider-animated-1">
                     <h1 class="animated">Want to stay <span class="theme-color">healthy</span></h1>
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="single-slider ptb-240 bg-img" style="background-image:url(assets/img/slider/slider-1-1.jpg);">
+        <div class="single-slider ptb-240 bg-img" style="background-image:url({{ asset('assets/img/slider/slider-1-1.jpg') }});">
             <div class="container">
                 <div class="slider-content slider-animated-1">
                     <h1 class="animated">Want to stay <span class="theme-color">healthy</span></h1>
@@ -27,13 +27,35 @@
 <!-- Product Area Start -->
 <div class="product-area bg-image-1 pt-100 pb-95">
     <div class="container">
+        @if(Session()->has('Success'))
+            <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+                @php
+                Session()->forget('Success');
+                @endphp
+        @endif
+        @if(Session()->has('Error'))
+            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+                @php
+                Session()->forget('Error');
+                @endphp
+        @endif
         <div class="featured-product-active hot-flower owl-carousel product-nav">
+            @php
+                $i =0;
+            @endphp
+            @foreach($products as $product)
             <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="assets/img/product/product-1.jpg">
+                        <img alt="" src="{{ asset('images\product\\'. $product->photo ) }}">
                     </a>
-                    <span>-20%</span>
+                    @foreach ($offers[$i] as $offer)
+                        <span>{{ $offer->discount }}</span>
+                    @endforeach
+                    @php
+                        $i++;
+                    @endphp
+                    
                     <div class="product-action">
                         <a class="action-wishlist" href="#" title="Wishlist">
                             <i class="ion-android-favorite-outline"></i>
@@ -50,11 +72,22 @@
                     <div class="product-hover-style">
                         <div class="product-title">
                             <h4>
-                                <a href="product-details.html">Nature Close Tea</a>
+                                <a href="#">{{ $product->name_en }}</a>
                             </h4>
                         </div>
                         <div class="cart-hover">
-                            <h4><a href="product-details.html">+ Add to cart</a></h4>
+                            {{-- <h4><a href="product-details.html">+ Add to cart</a></h4> --}}
+                            <form action="{{ route('add.to.cart') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit">
+                                    <a class="action-cart" title="Add To Cart">
+                                        + Add to cart
+                                        <i class="ion-ios-shuffle-strong"></i>
+                                    </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div class="product-price-wrapper">
@@ -63,10 +96,11 @@
                     </div>
                 </div>
             </div>
-            <div class="product-wrapper">
+            @endforeach
+            {{-- <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="assets/img/product/product-2.jpg">
+                        <img alt="" src="{{ asset('assets/img/product/product-2.jpg">
                     </a>
                     <div class="product-action">
                         <a class="action-wishlist" href="#" title="Wishlist">
@@ -100,7 +134,7 @@
             <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="assets/img/product/product-3.jpg">
+                        <img alt="" src="{{ asset('assets/img/product/product-3.jpg">
                     </a>
                     <span>-50%</span>
                     <div class="product-action">
@@ -135,7 +169,7 @@
             <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="assets/img/product/product-4.jpg">
+                        <img alt="" src="{{ asset('assets/img/product/product-4.jpg">
                     </a>
                     <div class="product-action">
                         <a class="action-wishlist" href="#" title="Wishlist">
@@ -169,7 +203,7 @@
             <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="assets/img/product/product-5.jpg">
+                        <img alt="" src="{{ asset('assets/img/product/product-5.jpg">
                     </a>
                     <span>-30%</span>
                     <div class="product-action">
@@ -200,7 +234,7 @@
                         <span class="product-price-old">$120.00 </span>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -213,7 +247,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="single-banner img-zoom mb-30">
                         <a href="#">
-                            <img src="assets/img/banner/banner-1.png" alt="">
+                            <img src="{{ asset('assets/img/banner/banner-1.png') }}" alt="">
                         </a>
                         <div class="banner-content">
                             <h4>-50% Sale</h4>
@@ -224,7 +258,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="single-banner img-zoom mb-30">
                         <a href="#">
-                            <img src="assets/img/banner/banner-2.png" alt="">
+                            <img src="{{ asset('assets/img/banner/banner-2.png') }}" alt="">
                         </a>
                         <div class="banner-content">
                             <h4>-20% Sale</h4>
@@ -252,7 +286,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-1.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-1.jpg') }}">
                                 </a>
                                 <span>-30%</span>
                                 <div class="product-action">
@@ -287,7 +321,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-2.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-2.jpg') }}">
                                 </a>
                                 <span>-50%</span>
                                 <div class="product-action">
@@ -324,7 +358,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-3.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-3.jpg') }}">
                                 </a>
                                 <span>-60%</span>
                                 <div class="product-action">
@@ -359,7 +393,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-4.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-4.jpg') }}">
                                 </a>
                                 <div class="product-action">
                                     <a class="action-wishlist" href="#" title="Wishlist">
@@ -395,7 +429,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-5.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-5.jpg') }}">
                                 </a>
                                 <div class="product-action">
                                     <a class="action-wishlist" href="#" title="Wishlist">
@@ -429,7 +463,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-6.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-6.jpg') }}">
                                 </a>
                                 <span>-40%</span>
                                 <div class="product-action">
@@ -466,7 +500,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-7.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-7.jpg') }}">
                                 </a>
                                 <span>-60%</span>
                                 <div class="product-action">
@@ -501,7 +535,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-8.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-8.jpg') }}">
                                 </a>
                                 <div class="product-action">
                                     <a class="action-wishlist" href="#" title="Wishlist">
@@ -537,7 +571,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-4.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-4.jpg') }}">
                                 </a>
                                 <span>-30%</span>
                                 <div class="product-action">
@@ -572,7 +606,7 @@
                         <div class="product-wrapper mb-30">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img alt="" src="assets/img/product/product-3.jpg">
+                                    <img alt="" src="{{ asset('assets/img/product/product-3.jpg') }}">
                                 </a>
                                 <span>-70%</span>
                                 <div class="product-action">
@@ -619,7 +653,7 @@
                 <div class="testimonial-active owl-carousel">
                     <div class="single-testimonial text-center">
                         <div class="testimonial-img">
-                            <img alt="" src="assets/img/icon-img/testi.png">
+                            <img alt="" src="{{ asset('assets/img/icon-img/testi.png') }}">
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore</p>
                         <h4>Gregory Perkins</h4>
@@ -627,7 +661,7 @@
                     </div>
                     <div class="single-testimonial text-center">
                         <div class="testimonial-img">
-                            <img alt="" src="assets/img/icon-img/testi.png">
+                            <img alt="" src="{{ asset('assets/img/icon-img/testi.png') }}">
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore</p>
                         <h4>Khabuli Teop</h4>
@@ -635,7 +669,7 @@
                     </div>
                     <div class="single-testimonial text-center">
                         <div class="testimonial-img">
-                            <img alt="" src="assets/img/icon-img/testi.png">
+                            <img alt="" src="{{ asset('assets/img/icon-img/testi.png') }}">
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore </p>
                         <h4>Lotan Jopon</h4>
@@ -661,7 +695,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="blog-single mb-30">
                     <div class="blog-thumb">
-                        <a href="#"><img src="assets/img/blog/blog-single-1.jpg" alt="" /></a>
+                        <a href="#"><img src="{{ asset('assets/img/blog/blog-single-1.jpg') }}" alt="" /></a>
                     </div>
                     <div class="blog-content pt-25">
                         <span class="blog-date">14 Sep</span>
@@ -674,7 +708,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="blog-single mb-30">
                     <div class="blog-thumb">
-                        <a href="#"><img src="assets/img/blog/blog-single-2.jpg" alt="" /></a>
+                        <a href="#"><img src="{{ asset('assets/img/blog/blog-single-2.jpg') }}" alt="" /></a>
                     </div>
                     <div class="blog-content pt-25">
                         <span class="blog-date">20 Dec</span>
@@ -687,7 +721,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="blog-single mb-30">
                     <div class="blog-thumb">
-                        <a href="#"><img src="assets/img/blog/blog-single-3.jpg" alt="" /></a>
+                        <a href="#"><img src="{{ asset('assets/img/blog/blog-single-3.jpg') }}" alt="" /></a>
                     </div>
                     <div class="blog-content pt-25">
                         <span class="blog-date">18 Aug</span>
