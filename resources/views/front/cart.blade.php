@@ -61,7 +61,7 @@
                                         </td>
                                         {{-- <td class="product-subtotal">
                                             @php
-                                                $total = $product->price * 
+                                                $total = $product->price *
                                             @endphp
                                         </td> --}}
                                         <td class="product-remove">
@@ -117,10 +117,10 @@
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
                                 <div class="cart-shiping-update">
-                                    <a href="#">Continue Shopping</a>
+                                    <a href="{{ route('index.page') }}">Continue Shopping</a>
                                 </div>
                                 <div class="cart-shiping-update">
-                                    <a href="#">proceed to checkout</a>
+                                    <a href="{{ route('get.cart.total') }}">proceed to checkout</a>
                                 </div>
                                 <div class="cart-clear">
                                     {{-- <button>Update Shopping Cart</button> --}}
@@ -183,7 +183,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="discount-code-wrapper">
                             <div class="title-wrap">
-                               <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4> 
+                               <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
                             </div>
                             <div class="discount-code">
                                 <p>Enter your coupon code if you have one.</p>
@@ -194,7 +194,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12">
+                    {{-- <div class="col-lg-4 col-md-12">
                         <div class="grand-totall">
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
@@ -210,7 +210,7 @@
                             <h4 class="grand-totall-title">Grand Total  <span>$260.00</span></h4>
                             <a href="#">Proceed to Checkout</a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

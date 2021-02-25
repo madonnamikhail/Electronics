@@ -35,8 +35,8 @@
               <th>{{ __('message.code') }}</th>
               <th>{{ __('message.English details') }}</th>
               <th>{{ __('message.Arabic details') }}</th>
-              <th>{{ __('message.Brand_id') }}</th>
-              <th>{{ __('message.subcategory_id') }}</th>
+              <th>{{ __('message.Brand') }}</th>
+              <th>{{ __('message.Sub Category') }}</th>
               <th>{{ __('message.IMAGE') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
@@ -55,19 +55,19 @@
                     <td>{{ $products->details_en }}</td>
                     <td>{{ $products->details_ar }}</td>
                     <td>
-                        {{ $products->brand_id }}
-                        {{-- @php
-                            echo $brand[$i]->name_en;
-                        @endphp --}}
-
+                        @foreach ($brand as $brands)
+                            @if ($products->brand_id == $brands->id)
+                                    {{ $brands->name_en }}
+                            @endif
+                         @endforeach
                     </td>
                     <td>
-                        {{ $products->subCategory_id }}
-                        {{-- @php
-                             echo $subcategory[$i]->name_en;
-                             $i++;
-                        @endphp --}}
 
+                        @foreach ($subcategorys as $subcategory)
+                        @if ($products->subCategory_id == $subcategory->id)
+                                {{ $subcategory->name_en }}
+                        @endif
+                     @endforeach
                     </td>
                     <td>
                         <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">

@@ -37,9 +37,9 @@
               <th>{{ __('message.code') }}</th>
               <th>{{ __('message.English details') }}</th>
               <th>{{ __('message.Arabic details') }}</th>
-              <th>{{ __('message.offer_id') }}</th>
-              <th>{{ __('message.Brand_id') }}</th>
-              <th>{{ __('message.subcategory_id') }}</th>
+              <th>{{ __('message.offer') }}</th>
+              <th>{{ __('message.Brand') }}</th>
+              <th>{{ __('message.sub Category') }}</th>
               <th>{{ __('message.IMAGE') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>

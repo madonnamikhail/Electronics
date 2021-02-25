@@ -82,27 +82,10 @@ class CrudController extends Controller
         }
 
         public function subshow($id){
-            // $categorys=Category::find($id);
-            // return $categorys;
-            // $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->where('id','=',$id)->first();
-
+            $category=Category::get();
             $sub=Subcategory::select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo','category_id')->where('category_id','=',$id)->get();
-            // $i=0;
-            // foreach($sub as $sub)
-            // {
-            //     $category[$i]=Category::select('name_en')->find($sub->category_id);
-            //     // echo $category[$i];
-            //     $i++;
-            // }
-            // return $category;
-            // return "ok";
 
-            // return $sub;
-            //one-to-many relation
-            // $sub= $categorys->subcategory;
-            // return $sub;
-            // return $sub;
-            return view ('admin.category.category-subcat',compact('sub'));
+            return view ('admin.category.category-subcat',compact('sub','category'));
         }
 
         public function subcreate(){
@@ -181,7 +164,8 @@ class CrudController extends Controller
 
         public function ssubshow(){
             $sub=Subcategory::get();
+            $category=Category::get();
             // return $sub;
-            return view('admin.category.show-all',compact('sub'));
+            return view('admin.category.show-all',compact('sub','category'));
         }
 }

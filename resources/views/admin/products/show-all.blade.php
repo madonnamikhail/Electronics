@@ -36,9 +36,9 @@
               <th>{{ __('message.English Details') }}</th>
               <th>{{ __('message.Arabic Details') }}</th>
               <th>{{ __('message.IMAGE') }}</th>
-              <th>{{ __('message.Brand_id') }}</th>
+              <th>{{ __('message.Brand') }}</th>
               <th>{{ __('message.Sub Category') }}</th>
-              {{-- <th>{{ __('message.offer id') }}</th> --}}
+              <th>{{ __('message.Offer') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
@@ -70,23 +70,28 @@
                          {{-- @php
                              echo $brand[$i]->name_en;
                          @endphp --}}
-                        {{ $products->brand_id }}
-
+                        {{-- {{ $products->brand_id }} --}}
+                        @foreach ($brand as $brands)
+                        @if ($products->brand_id == $brands->id)
+                                {{ $brands->name_en }}
+                        @endif
+                     @endforeach
                     </td>
                     <td>
-                        {{-- @php
-                             echo $subcategory[$i]->name_en;
-                             $i++;
-                         @endphp --}}
-                        {{ $products->subCategory_id }}
+                        @foreach ($subcategorys as $subcategory)
+                        @if ($products->subCategory_id == $subcategory->id)
+                                {{ $subcategory->name_en }}
+                        @endif
+                     @endforeach
                     </td>
-                    {{-- <td>
-                        @php
-                             echo $offer[$i]->title_en;
-                             $i++;
-                         @endphp
-                        {{-- {{ $products->subCategory_id }} --}}
-                    {{-- </td> --}}
+                    <td>
+                             @foreach ($offer as $offers)
+                            @if ($products->offer_id == $offers->id)
+                                    {{ $offers->title_en }}
+                            @endif
+                        @endforeach
+                    </td>
+
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                             <a href="{{ asset('admin/product/edit/'.$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>

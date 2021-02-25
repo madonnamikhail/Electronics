@@ -16,14 +16,11 @@ class IndexController extends Controller
         $products = Product::get();
         $i =0;
         foreach ($products as $product) {
-            // return $product;
             $offers[$i] = Offer::select('discount')->where('id', '=', $product->offer_id)->get();
-            // return $offers;
             $i++;
         }
         return view('front.userindex', compact('products', 'offers'));
     }
-
     public function addCart(Request $request)
     {
         // user_id, product_id
@@ -117,10 +114,7 @@ class IndexController extends Controller
         // 'company_id' => $request->company_id,
         // 'user_id' => $request->user_id,
         // ]);
-
         // Product::find($id)->user()->updateExistingPivot($request->quantity, ['quantity' => $request->quantity]);
-
-
         return redirect('/cart')->with('Success', 'Your Cart Has Been Updated');
     }
 
@@ -134,5 +128,19 @@ class IndexController extends Controller
         $user = User::find($user_id)->product()->detach($request->product_id);
         // return $request;
         return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
+    }
+
+    public function cartTotal(){
+        // $products=
+        $user_id = Auth::user()->id;
+        // return $user_id;
+        $user = User::find($user_id);
+        $products = $user->product;
+        $i=0;
+        foreach ($products as $product){
+            $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+            $i++;
+        }
+        return view('front.cart-total',compact('products','productPrice'));
     }
 }

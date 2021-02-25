@@ -224,6 +224,8 @@
                 <p>
                     {{ __('message.Category') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Category::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -248,6 +250,8 @@
                 <p>
                     {{ __('message.Sub Category') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Subcategory::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -272,6 +276,8 @@
                 <p>
                     {{ __('message.Product') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Product::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -296,6 +302,8 @@
                 <p>
                     {{ __('message.Brands') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Brand::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -320,6 +328,8 @@
                 <p>
                     {{ __('message.Offers') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Offer::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -344,6 +354,8 @@
                 <p>
                     {{ __('message.Suppliers') }}
                     <i class="right fas fa-angle-left"></i>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Supplier::count() }}</span>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -367,12 +379,15 @@
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     {{ __('message.Promo Codes') }}
+                    <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Promocode::count() }}</span>
                     <i class="right fas fa-angle-left"></i>
+
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="{{ route('all.promocodes') }}" class="nav-link active">
+
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ __('message.Show Promo Codes') }}</p>
                     </a>

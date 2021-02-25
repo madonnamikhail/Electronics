@@ -1,16 +1,15 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
-    
+
 <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Sabujcha - Matcha eCommerce Bootstrap4 Template</title>
+        <title>Electronics</title>
         <meta name="description" content="">
         <meta name="robots" content="noindex, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
-		
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logoo.png') }}">
 		<!-- all css here -->
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
@@ -44,7 +43,7 @@
                                 <div class="main-menu">
                                     <nav>
                                         <ul>
-                                            <li class="top-hover"><a href="index.html">home</a>
+                                            <li class="top-hover"><a href="index.html">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
                                                     <li><a href="index.html">home version 1</a></li>
                                                     <li><a href="index-2.html">home version 2</a></li>

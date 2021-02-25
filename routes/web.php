@@ -17,15 +17,23 @@ Route::get('/', function () {
 });
 Route::group(['namespace'=>'Front', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
 
-    Route::get('/index', 'IndexController@index');
+    Route::get('/index', 'IndexController@index')->name('index.page');
     Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
     Route::get('/cart', 'IndexController@getCart')->name('get.cart');
     Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
 
     Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
     Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');
-
+    //delete product from cart
     Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
+    //proceed cart
+    Route::get('cart-total','IndexController@cartTotal')->name('get.cart.total');
+
+
+
+});
+Route::group(['namespace'=>'Order','prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
+    Route::post('place-order','OrderController@placeOrder')->name('place.order');
 });
 
 

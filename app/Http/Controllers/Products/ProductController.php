@@ -21,15 +21,10 @@ class ProductController extends Controller
 
     public function showall(){
         $products=Product::get();
-        // $i=0;
-        // foreach($products as $product){
-        //     $subcategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id);
-        //     $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
-        //     // $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
-        //     $i++;
-        // }
-
-        return view('admin.products.show-all' , compact('products'));
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
+        $offer=Offer::get();
+        return view('admin.products.show-all' , compact('products','brand','subcategorys','offer'));
         // return $products;
     }
 
@@ -40,6 +35,8 @@ class ProductController extends Controller
         // return $products;
         $subcategory=Subcategory::find($id);
         $products=$subcategory->product;
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
 
         // $i=0;
         // foreach($products as $product){
@@ -49,7 +46,7 @@ class ProductController extends Controller
         // }
         // $brand=Brand::find($id);
         // return $brand;
-        return view('admin.products.all-products', compact('products'));
+        return view('admin.products.all-products', compact('products','brand','subcategorys'));
     }
 
     public function create(){
@@ -67,8 +64,8 @@ class ProductController extends Controller
         $rules=[
             "name_en"=>'required|max:100',
             "name_ar"=>'required|max:100',
-            "price"=>'required|integer',
-            "code"=>'required|integer',
+            "price"=>'required',
+            "code"=>'required',
             "details_en"=>'required',
             "details_ar"=>'required',
             "photo"=>'image|mimes:png,jpg,jepg|max:1024',

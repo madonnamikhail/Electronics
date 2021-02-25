@@ -76,4 +76,8 @@ return [
     'New Offer'=>'New Offer',
     'New Brand'=>'New Brand',
     'Edit Product'=>'Edit Product',
+    'Edit Cart'=>'Edit Cart',
+    'Cart'=>'Cart',
+    'Product Quantity'=>'Product Quantity',
+    'HOME'=>'HOME',
 ];

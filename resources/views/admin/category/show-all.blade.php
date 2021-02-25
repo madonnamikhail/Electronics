@@ -31,9 +31,8 @@
               <th>{{ __('message.ID') }}</th>
               <th>{{ __('message.English Name') }}</th>
               <th>{{ __('message.Arabic Name') }}</th>
-              <th>{{ __('message.photo') }}</th>
-
-              <th>{{ __('message.category_id') }}</th>
+              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.Category') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
@@ -46,7 +45,13 @@
                     <td>
                         <img src="{{ asset('images/subcategorys/'.$sub->photo) }}" style="width:30%;">
                     </td>
-                    <td>{{ $sub->category_id }}</td>
+                    <td>
+                        @foreach ($category as $categorys)
+                        @if ($sub->category_id == $categorys->id)
+                                {{ $categorys->name_en }}
+                        @endif
+                    @endforeach
+                    </td>
 
 
                     <td>

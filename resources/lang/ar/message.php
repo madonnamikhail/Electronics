@@ -75,7 +75,13 @@ return [
     'Edit Offer'=>'تعديل العرض',
     'New Offer'=>'عرض جديد',
     'New Brand'=>'براند جديد',
-    'Edit Product'=>'تعديل المنتج'
+    'Edit Product'=>'تعديل المنتج',
+    'Edit Cart'=>'تعديل عربة التسوق',
+    'Cart'=>'عربة التسوق',
+    'Product Quantity'=>'الكمية',
+    'HOME'=>'الصفحة الرئيسية',
+
+
 
 
 

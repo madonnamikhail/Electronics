@@ -41,4 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany('App\Models\Product', 'carts')->withPivot('product_id', 'user_id', 'quantity');
     }
+
+    public function orders(){
+        return $this->hasMany('App\Models\Order','user_id');
+    }
 }

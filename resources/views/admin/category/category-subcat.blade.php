@@ -21,11 +21,11 @@
             <td>{{ $subs->id }}</td>
             <td>{{ $subs->name}}</td>
             <td>
-                {{ $subs->category_id }}
-                {{-- @php
-                    echo $category[$i]->name_en;
-                    $i++;
-                @endphp --}}
+                    @foreach ($category as $categorys)
+                        @if ($subs->category_id == $categorys->id)
+                                {{ $categorys->name_en }}
+                        @endif
+                    @endforeach
             </td>
             <td>
                 <img src="{{ asset('images/subcategorys/'.$subs->photo) }}" style="width:10%;">
