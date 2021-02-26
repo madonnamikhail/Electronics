@@ -131,10 +131,10 @@
                                                     <li><a href="wishlist.html">wishlist</a></li>
                                                     <li><a href="my-account.html">my account</a></li>
                                                     <li><a href="login-register.html">login / register</a></li>
-                                                    <li><a href="contact.html">contact</a></li>
+                                                    <li><a href="{{route('contact-us.message')}}">contact</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="contact.html">contact</a></li>
+                                            <li><a href="{{route('contact-us.message')}}">contact</a></li>
 
                                                 @guest
                                                     <li class="top-hover">
@@ -267,7 +267,7 @@
                                             <li><a href="wishlist.html">wishlist</a></li>
                                             <li><a href="my-account.html">my account</a></li>
                                             <li><a href="login-register.html">login / register</a></li>
-                                            <li><a href="contact.html">contact</a></li>
+                                            <li><a href="{{route('contact-us.message')}}">contact</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="shop.html"> Shop </a>
@@ -336,7 +336,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="contact.html"> Contact us </a></li>
+                                    <li><a href="{{route('contact-us.message')}}"> Contact us </a></li>
                                 </ul>
                             </nav>
                         </div>

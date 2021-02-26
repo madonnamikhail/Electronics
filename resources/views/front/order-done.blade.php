@@ -74,6 +74,21 @@
                                <h4 class="cart-bottom-title section-bg-gray">Promo Code :
                                 @if ($promoCode)
                                     {{ $promoCode->name }}
+                                    {{-- {{$rangValue}}
+                                    {{$out_of_date}} --}}
+                                    @if($rangValue != 1 and $out_of_date != 1)
+                                        <div class="alert alert-danger">
+                                            {{ $rangValue }} and {{ $out_of_date }}
+                                        </div>
+                                    @elseif($rangValue != 1)
+                                        <div class="alert alert-danger">
+                                            {{ $rangValue }} 
+                                        </div>
+                                    @elseif($out_of_date != 1)
+                                        <div class="alert alert-danger">
+                                            {{ $out_of_date }}
+                                        </div>
+                                    @endif
                                 @else
                                     No Promo Code Entered !
                                 @endif
@@ -86,12 +101,12 @@
                         <h4 class="grand-totall-title">Grand Total  <span>
 
                             @php
-                                if($discount){
+                                if($discount != 1){
                                     if($paymentMethod == "Master Card ( 10% Discount )")
                                         $grand_total= $sum * (0.9) * $discount;
 
                                     elseif ($paymentMethod == "Cash On Delivery ( +5 EGP )")
-                                        $grand_total= $sum + (5) * $discount;
+                                        $grand_total= ($sum + (5)) * $discount;
                                     echo $grand_total . "EGP";
                                 }else{
                                     if($paymentMethod == "Master Card ( 10% Discount )")

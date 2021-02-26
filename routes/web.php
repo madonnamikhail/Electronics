@@ -28,12 +28,14 @@ Route::group(['namespace'=>'Front', 'prefix'=>LaravelLocalization::setLocale() ,
     Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
     //proceed cart
     Route::get('cart-total','IndexController@cartTotal')->name('get.cart.total');
-
-
-
 });
 Route::group(['namespace'=>'Order','prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
     Route::post('place-order','OrderController@placeOrder')->name('place.order');
+});
+
+Route::group(['namespace'=>'staticPage', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function(){
+    Route::get('/contactUs','ContactUsMessageController@message')->name('contact-us.message');
+    Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
 });
 
 
