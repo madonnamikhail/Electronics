@@ -106,6 +106,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::post('update/{id}','OfferController@update')->name('update.offer');
                  //delete
                  Route::delete('delete','OfferController@delete')->name('delete.offer');
+                 Route::delete('delete-product-from-offer','OfferController@deleteProductFromOffer')->name('delete.product.offer');
 
             });
 
@@ -138,7 +139,38 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('update/{id}','PromocodeController@update')->name('update.promocode');
                 //delete
             Route::delete('delete','PromocodeController@delete')->name('delete.promocode');
-    });
+              });
+
+        Route::group(['prefix'=>'admin/message','namespace'=>'Admin\Message'],function(){
+            Route::get('show-message','MessageController@showMessage')->name('show.Message');
+            //delete message
+            Route::delete('delete-message','MessageController@delete')->name('delete.Message');
+            Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
+
+        });
+        Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
+            Route::get('show-order','OrderCrudController@show')->name('show.order');
+            //update
+            Route::get('update/{id}/{action}','OrderCrudController@update')->name('update.order');
+            // //delete
+            Route::delete('delete-order','OrderCrudController@delete')->name('delete.order');
+            // Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
+        });
+
+        Route::group(['prefix' => 'admin/chart','namespace'=>'Admin\Cart'],function(){
+            //show-all
+            Route::get('all-carts','CartController@allCarts')->name('all.carts');
+            //add Supplier
+            Route::get('create','CartController@create')->name('add.cart');
+            Route::post('store','CartController@store')->name('store.cart');
+            // //edit
+            Route::get('edit/{id}','CartController@edit')->name('edit.cart');
+            Route::post('update/{id}','CartController@update')->name('update.cart');
+                //delete
+            Route::delete('delete','CartController@delete')->name('delete.cart');
+              });
+
+
 
 });
 

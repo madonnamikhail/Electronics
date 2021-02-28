@@ -80,6 +80,9 @@ return [
     'Cart'=>'عربة التسوق',
     'Product Quantity'=>'الكمية',
     'HOME'=>'الصفحة الرئيسية',
+    'Payment Method'=>'وسيلة الدفع',
+    'Net Total Price'=>'السعر الإجمالي الصافي',
+    
 
 
 

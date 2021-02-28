@@ -80,4 +80,6 @@ return [
     'Cart'=>'Cart',
     'Product Quantity'=>'Product Quantity',
     'HOME'=>'HOME',
+    'Payment Method'=>'Payment Method',
+    'Net Total Price'=>'Net Total Price',
 ];

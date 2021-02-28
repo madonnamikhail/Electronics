@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Supplier;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
@@ -21,7 +23,11 @@ class SupplierController extends Controller
         //return products only
         $suppliers=Supplier::find($id);
         $products= $suppliers->products;
-        return view('admin.supplier.supplier-products',compact('products'));
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
+        $suppliers=Supplier::get();
+        
+        return view('admin.supplier.supplier-products',compact('products','brand','subcategorys','suppliers'));
     }
 
     public function create(){

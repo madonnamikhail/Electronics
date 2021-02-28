@@ -67,6 +67,10 @@
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
+                            <div>
+                                <a href="{{ asset('admin/product/show/'.$sub->id) }}" class="btn btn-warning">{{ __('message.show Products') }}</a>
+
+                            </div>
                         </div>
 
                     </td>

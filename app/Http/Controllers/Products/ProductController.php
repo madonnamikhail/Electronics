@@ -23,12 +23,10 @@ class ProductController extends Controller
         $products=Product::get();
         $brand=Brand::get();
         $subcategorys=Subcategory::get();
-        $offer=Offer::get();
-        return view('admin.products.show-all' , compact('products','brand','subcategorys','offer'));
+        $suppliers=Supplier::get();
+        return view('admin.products.show-all' , compact('products','brand','subcategorys','suppliers'));
         // return $products;
     }
-
-
     public function show($id)
     {
         // $products=Product::select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','details_'.LaravelLocalization::getCurrentLocale().' as details','price','code','brand_id ','subCategory_id')->where('subCategory_id','=',$id)->get();
@@ -37,6 +35,8 @@ class ProductController extends Controller
         $products=$subcategory->product;
         $brand=Brand::get();
         $subcategorys=Subcategory::get();
+        $suppliers=Supplier::get();
+
 
         // $i=0;
         // foreach($products as $product){
@@ -46,7 +46,7 @@ class ProductController extends Controller
         // }
         // $brand=Brand::find($id);
         // return $brand;
-        return view('admin.products.all-products', compact('products','brand','subcategorys'));
+        return view('admin.products.all-products', compact('products','brand','subcategorys','suppliers'));
     }
 
     public function create(){

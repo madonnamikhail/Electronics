@@ -8,6 +8,7 @@ use App\Models\Offer;
 use App\Models\Product;
 use App\Models\Promocode;
 use App\Models\Subcategory;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
 
@@ -40,7 +41,6 @@ class OfferController extends Controller
     }
 
     public function update(Request $request , $id){
-
         $rules=[
             "title_en"=>'string|max:100',
             "title_ar"=>'string|max:100',
@@ -48,7 +48,6 @@ class OfferController extends Controller
             "details_en"=>'string|max:100',
             "details_ar"=>'string|max:100',
             "photo"=>'image|mimes:png,jpg,jepg|max:1024',
-
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');
@@ -62,33 +61,24 @@ class OfferController extends Controller
             return redirect('admin/offer/all-offers');
         }
         return redirect()->back()->with('Error','failed ');
-
     }
 #################################################Trying#######################################################################3
     public function showOffersProduct($id){
+
         $offers=Offer::find($id);
         $products= $offers->products;
+        //to get offer id fro delete from pivot
+        $offer_id=$id;
         //  $products=Product::select('id','name_en','name_ar','photo','price','code', 'details_en','details_ar','offer_id','supplier_id','brand_id','subCategory_id')->where('offer_id','=',$id)->get();
         $allproducts=Product::get();
         $alloffers=Offer::get();
-        // $i=1;
-        // foreach($products  as $product){
-        //     if($product->offer_id == ''){
-        //         $offer[$i]='no offers';
-        //     }
-        //     else{
-        //         $offer[$i]=Offer::select('title_en','title_ar')->find($product->offer_id);
-        //     }
-        //     $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
-        //     $SubCategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id );
-        //     $i++;
-        // }
-        // return $offer;
-        return view('admin.products.offer-products',compact('products','allproducts','alloffers'));
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
+        $suppliers=Supplier::get();
+        return view('admin.products.offer-products',compact('products','allproducts','alloffers','brand','subcategorys','suppliers','offer_id'));
     }
     public function addProductstoOffer(Request $request)
     {
-        // return $request;
         $offer=Offer::find($request->offers);
         if(!$offer)
             return abort('404');
@@ -100,6 +90,28 @@ class OfferController extends Controller
         // $product->save();
         // return $product;
         return redirect('admin/offer/show-offers-product/'.$offer->id);
+    }
+
+    public function deleteProductFromOffer(Request $request)
+    {
+
+        // return $request;
+        // $rule=[
+        //     "id"=>'required|exists:products,id|integer'
+        // ];
+        // $request->validate($rule);
+        // $photoPath=public_path("images\product\\" . $request->photo);
+        // // return $photoPath;
+        // if(file_exists($photoPath)){
+        //    unlink($photoPath);
+        // }
+        // Product::destroy($request->id);
+        // return redirect('admin/product/show-all');
+
+
+        $product_id = $request->id;
+        $offer = Offer::find($request->offer_id)->products()->detach($product_id);
+        return redirect()->back()->with('Success','Product has been removed from this offer');
     }
 
 

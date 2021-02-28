@@ -51,9 +51,27 @@
                     <td>{{ $products->code }}</td>
                     <td>{{ $products->details_en }}</td>
                     <td>{{ $products->details_ar }}</td>
-                    <td>{{ $products->supplier_id }}</td>
-                    <td>{{ $products->brand_id }}</td>
-                    <td>{{ $products->subCategory_id }}</td>
+                    <td>
+                        @foreach ($suppliers as $supplier)
+                        @if ($products->supplier_id == $supplier->id)
+                                {{ $supplier->name_en }}
+                        @endif
+                     @endforeach
+                    </td>
+                    <td>
+                        @foreach ($brand as $brands)
+                        @if ($products->brand_id == $brands->id)
+                                {{ $brands->name_en }}
+                        @endif
+                     @endforeach
+                    </td>
+                    <td>
+                        @foreach ($subcategorys as $subcategory)
+                        @if ($products->subCategory_id == $subcategory->id)
+                                {{ $subcategory->name_en }}
+                        @endif
+                     @endforeach
+                    </td>
                     {{-- <td>
                         <img src="{{ asset('images/photo/'.$category->photo) }}" style="width:30%;">
                     </td> --}}
@@ -70,6 +88,7 @@
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
+                          
                         </div>
 
                     </td>

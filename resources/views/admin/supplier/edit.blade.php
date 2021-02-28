@@ -71,7 +71,7 @@
                         <span class="text-danger">{{ $message }}</span>
                       @enderror
                       </div>
-                      <div class="form-group">
+                      {{-- <div class="form-group">
                         <label for="exampleInputEmail1">{{ __('message.Product') }}</label>
                         <select name="product_id" class="form-control">
                             @foreach ($product as $product )
@@ -80,7 +80,7 @@
                           </select>                      </div>
                       @error('product_id')
                             <span class="text-danger">{{ $message }}</span>
-                          @enderror
+                          @enderror --}}
         <div class="card-footer">
           <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>

@@ -37,7 +37,6 @@
               <th>{{ __('message.code') }}</th>
               <th>{{ __('message.English details') }}</th>
               <th>{{ __('message.Arabic details') }}</th>
-              <th>{{ __('message.offer') }}</th>
               <th>{{ __('message.Brand') }}</th>
               <th>{{ __('message.sub Category') }}</th>
               <th>{{ __('message.IMAGE') }}</th>
@@ -50,7 +49,10 @@
                 @endphp
                 @foreach ($products as $products)
                 <tr>
-                    <td>{{ $products->id }}</td>
+                    <td>{{ $i }} @php
+                        $i++;
+                    @endphp
+                    </td>
                     <td>{{ $products->name_en }}</td>
                     <td>{{ $products->name_ar }}</td>
                     <td>{{ $products->price }}</td>
@@ -58,29 +60,18 @@
                     <td>{{ $products->details_en }}</td>
                     <td>{{ $products->details_ar }}</td>
                     <td>
-                        {{ $products->offer_id }}
-                        {{-- @php
-                            if($offer[$i]=='no offers'){
-                                echo $offer[$i];
-                            }
-                            else {
-                              echo $offer[$i]->title_en;
-                            }
-                        @endphp --}}
+                        @foreach ($brand as $brands)
+                        @if ($products->brand_id == $brands->id)
+                                {{ $brands->name_en }}
+                        @endif
+                     @endforeach
                     </td>
                     <td>
-                        {{ $products->brand_id }}
-                        {{-- @php
-                            echo $brand[$i]->name_en;
-                        @endphp --}}
-
-                    </td>
-                    <td>
-                        {{ $products->subCategory_id }}
-                        {{-- @php
-                             echo $SubCategory[$i]->name_en;
-                             $i++;
-                        @endphp --}}
+                        @foreach ($subcategorys as $subcategory)
+                        @if ($products->subCategory_id == $subcategory->id)
+                                {{ $subcategory->name_en }}
+                        @endif
+                     @endforeach
 
                     </td>
                     <td>
@@ -91,11 +82,12 @@
                             <a href="{{ route('edit.product' , $products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
-                                <form method="post" action="{{route('delete.product')}}">
+                                <form method="post" action="{{route('delete.product.offer')}}">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="id" value="{{ $products->id }}">
                                     <input type="hidden" name="photo" value="{{ $products->photo }}">
+                                    <input type="hidden" name="offer_id" value="{{ $offer_id}}">
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>

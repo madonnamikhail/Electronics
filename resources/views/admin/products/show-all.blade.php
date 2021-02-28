@@ -38,24 +38,22 @@
               <th>{{ __('message.IMAGE') }}</th>
               <th>{{ __('message.Brand') }}</th>
               <th>{{ __('message.Sub Category') }}</th>
-              <th>{{ __('message.Offer') }}</th>
+              <th>{{ __('message.Supplier') }}</th>
+
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
                 @php
-                    $i=0;
+                    $i=1;
                     $j=1;
                 @endphp
                 @foreach ($products as $products)
                 <tr>
-                    <td>
-                        {{-- @php
 
-                            echo $j;
-                            $j++;
-                        @endphp --}}
-                        {{ $products->id }}
+                    <td>{{ $i }} @php
+                            $i++;
+                        @endphp
                     </td>
                     <td>{{ $products->name_en }}</td>
                     <td>{{ $products->name_ar }}</td>
@@ -67,10 +65,6 @@
                         <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
                     </td>
                     <td>
-                         {{-- @php
-                             echo $brand[$i]->name_en;
-                         @endphp --}}
-                        {{-- {{ $products->brand_id }} --}}
                         @foreach ($brand as $brands)
                         @if ($products->brand_id == $brands->id)
                                 {{ $brands->name_en }}
@@ -85,11 +79,13 @@
                      @endforeach
                     </td>
                     <td>
-                             @foreach ($offer as $offers)
-                            @if ($products->offer_id == $offers->id)
-                                    {{ $offers->title_en }}
-                            @endif
-                        @endforeach
+
+                        @foreach ($suppliers as $supplier)
+                        @if ($products->supplier_id == $supplier->id)
+                                {{ $supplier->name_en }}
+                        @endif
+                     @endforeach
+
                     </td>
 
                     <td>

@@ -122,7 +122,7 @@
                                 <div class="cart-shiping-update">
                                     <a href="{{ route('get.cart.total') }}">proceed to checkout</a>
                                 </div>
-                                <div class="cart-clear">
+                                <div class="cart-clear cart-shiping-update">
                                     {{-- <button>Update Shopping Cart</button> --}}
                                     <a>
                                         <form action="{{ route('cart.clear') }}" method="post">
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                 {{-- </form> --}}
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="cart-tax">
                             <div class="title-wrap">
@@ -180,7 +180,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
+                    {{-- <div class="col-lg-4 col-md-6">
                         <div class="discount-code-wrapper">
                             <div class="title-wrap">
                                <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
@@ -193,7 +193,7 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-lg-4 col-md-12">
                         <div class="grand-totall">
                             <div class="title-wrap">

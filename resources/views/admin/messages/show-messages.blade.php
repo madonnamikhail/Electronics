@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','all products')
+@section('title','Show Messages')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -29,75 +29,72 @@
 
             <tr>
               <th>{{ __('message.ID') }}</th>
-              <th>{{ __('message.English Name') }}</th>
-              <th>{{ __('message.Arabic Name') }}</th>
-              <th>{{ __('message.price') }}</th>
-              <th>{{ __('message.code') }}</th>
-              <th>{{ __('message.English details') }}</th>
-              <th>{{ __('message.Arabic details') }}</th>
-              <th>{{ __('message.Brand') }}</th>
-              <th>{{ __('message.Sub Category') }}</th>
-              <th>{{ __('message.Supplier') }}</th>
-              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.User Name') }}</th>
+              <th>{{ __('message.User Email') }}</th>
+              <th>{{ __('message.Subject') }}</th>
+              <th>{{ __('message.Message') }}</th>
+              <th>{{ __('message.User Exist') }}</th>
+              <th>{{ __('message.User Verified') }}</th>
+              <th>{{ __('message.Message Status') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
-                @php
-                    $i=1;
-                @endphp
-                @foreach ($products as $products)
+                @foreach ($messages as $message)
                 <tr>
-                    <td>{{ $i }} @php
-                        $i++;
-                    @endphp
-                </td>
-                    <td>{{ $products->name_en }}</td>
-                    <td>{{ $products->name_ar }}</td>
-                    <td>{{ $products->price }}</td>
-                    <td>{{ $products->code }}</td>
-                    <td>{{ $products->details_en }}</td>
-                    <td>{{ $products->details_ar }}</td>
+                    <td>{{ $message->id }}</td>
+                    <td>{{ $message->name }}</td>
+                    <td>{{ $message->email }}</td>
+                    <td>{{ $message->subject }}</td>
+                    <td>{{ $message->message }}</td>
                     <td>
-                        @foreach ($brand as $brands)
-                            @if ($products->brand_id == $brands->id)
-                                    {{ $brands->name_en }}
-                            @endif
-                         @endforeach
-                    </td>
-                    <td>
-
-                        @foreach ($subcategorys as $subcategory)
-                        @if ($products->subCategory_id == $subcategory->id)
-                                {{ $subcategory->name_en }}
+                        @if ($message->user_exist == 1)
+                                {{ "User Exists"}}
+                        @else
+                                 {{ "User Doesnot Exist"}}
                         @endif
-                     @endforeach
                     </td>
                     <td>
-
-                        @foreach ($suppliers as $supplier)
-                        @if ($products->supplier_id == $supplier->id)
-                                {{ $supplier->name_en }}
+                        @if ($message->verified == 1)
+                                {{ "User is Verified"}}
+                        @else
+                                 {{ "User is not verified"}}
                         @endif
-                     @endforeach
+                    </td>
+                    <td>
+                        @if ($message->status == 0)
+                                {{ "Message is sent to admin"}}
+                        @elseif($message->status == 1)
+                                 {{ "Complain is In Progress"}}
+                        @elseif($message->status == 2)
+                            {{ "Done"}}
+                        @endif
+                    </td>
 
-                    </td>
                     <td>
-                        <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
-                    </td>
-                    <td>
+                        @php
+                            $x=1;
+                            $y=2;
+                        @endphp
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                            {{-- <a href="{{ asset('admin/subcat/edit/'.$message->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a> --}}
+                            <a href="{{ route('update.Message',['id'=>$message->id,'action'=>$x]) }}" class="btn btn-success">In Progress</a>
+                            <br>
+                            <a  href="{{ route('update.Message',['id'=>$message->id,'action'=>$y]) }}" class="btn btn-success">Done</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
-                                <form method="post" action="{{route('delete.product')}}">
+                                <form method="post" action="{{route('delete.Message')}}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $products->id }}">
-                                    <input type="hidden" name="photo" value="{{ $products->photo }}">
+                                    <input type="hidden" name="id" value="{{ $message->id }}">
+                                    {{-- <input type="hidden" name="photo" value="{{ $sub->photo }}"> --}}
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
+                            {{-- <div>
+                                <a href="{{ asset('admin/product/show/'.$message->id) }}" class="btn btn-warning">{{ __('message.show Products') }}</a>
+
+                            </div> --}}
                         </div>
 
                     </td>

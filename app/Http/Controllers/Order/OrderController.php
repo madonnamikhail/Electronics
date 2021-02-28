@@ -16,7 +16,7 @@ class OrderController extends Controller
     //
 
     public function placeOrder(Request $request){
-        
+
         $rules=[
         //     "photo"=>'image|mimes:png,jpg,jepg|max:1024',
         //     "name"=>'required',
@@ -27,7 +27,7 @@ class OrderController extends Controller
         ];
         $request->validate($rules);
         $data=$request->except('_token');
-        $orderInsert['status']=1;//order placed
+        $orderInsert['status']=0;//order placed
         $orderInsert['amount']=count($request->photo);
         $orderInsert['total_price']=array_sum($request->productPrice);
         $orderInsert['user_id']=Auth::user()->id;
@@ -68,7 +68,7 @@ class OrderController extends Controller
         $out_of_date = 1;
         $flag = 0;
         $flag2=0;
-      
+
         if($promoCode){
             $flag2 = 1;
             if($promoCode->start_date <= $ldate && $promoCode->expire_date >= $ldate){
@@ -77,7 +77,7 @@ class OrderController extends Controller
                 // promocode not applied (out of date)
                 $out_of_date = "The entered promocode is out of date";
             }
-            if($promoCode->minOrderValue <=$totalOrderValue && 
+            if($promoCode->minOrderValue <=$totalOrderValue &&
                $promoCode->maxOrderValue >=$totalOrderValue){
                    if($flag == 1){
                         $discount=$promoCode->discountValue;
@@ -96,7 +96,7 @@ class OrderController extends Controller
         // $user_id = Auth::user()->id;
         // $user = User::find($user_id)->product()->detach();
         $sendmail = new sendMail($orderInsert, $products);
-        
+
         Mail::to(Auth::user()->email)->send($sendmail);
         // end of send mail
         return view('front.order-done',compact('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
