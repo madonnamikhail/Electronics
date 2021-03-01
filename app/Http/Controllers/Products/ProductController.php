@@ -36,16 +36,6 @@ class ProductController extends Controller
         $brand=Brand::get();
         $subcategorys=Subcategory::get();
         $suppliers=Supplier::get();
-
-
-        // $i=0;
-        // foreach($products as $product){
-        //     $subcategory[$i]=Subcategory::select('name_en','name_ar')->find($product->subCategory_id);
-        //     $brand[$i]=Brand::select('name_en','name_ar')->find($product->brand_id);
-        //     $i++;
-        // }
-        // $brand=Brand::find($id);
-        // return $brand;
         return view('admin.products.all-products', compact('products','brand','subcategorys','suppliers'));
     }
 

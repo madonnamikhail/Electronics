@@ -46,7 +46,7 @@
                     <td>{{ $staticPage->details_ar }}</td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('edit.staticPage'.$staticPage->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                            <a href="{{ route('edit.staticPage',$staticPage->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
 

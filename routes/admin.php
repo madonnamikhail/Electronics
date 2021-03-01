@@ -167,7 +167,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::delete('delete','CartController@delete')->name('delete.cart');
         });
 
-        
+
         ########################## citys ######################
         Route::group(['prefix' => 'admin/city','namespace'=>'Admin\city'],function(){
             //show-all
@@ -219,7 +219,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
 
 
         ######### static pages ################
-    Route::group(['prefix'=>'admin/staticPages', 'namespace'=>'Admin/StaticPage'], function(){
+    Route::group(['prefix'=>'admin/staticPages' ,'namespace'=>'Admin\Statics'], function(){
         Route::get('show','StaticPageController@show')->name('all.staticPages');
         //add new staticPage
         Route::get('create','StaticPageController@create')->name('add.staticPage');
