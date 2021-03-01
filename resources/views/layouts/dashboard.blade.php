@@ -464,6 +464,116 @@
             </li>
 
 
+            {{-- City --}}
+            <li class="nav-item ">
+              <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                  {{ __('message.Cities') }}
+                  <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\City::count() }}</span>
+                  <i class="right fas fa-angle-left"></i>
+
+              </p>
+              </a>
+              <ul class="nav nav-treeview">
+              <li class="nav-item">
+                  <a href="{{ route('all.cities') }}" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('message.Show All Cities') }}</p>
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('add.city') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{ __('message.Add Cities') }}</p>
+                </a>
+            </li>
+              </ul>
+          </li>
+
+          {{-- Region --}}
+          <li class="nav-item ">
+            <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+                {{ __('message.Regions') }}
+                <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Region::count() }}</span>
+                <i class="right fas fa-angle-left"></i>
+
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                  <a href="{{ route('all.regions') }}" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('message.Show All Regions') }}</p>
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('add.region') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{ __('message.Add Region') }}</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+
+
+        {{-- Address --}}
+        <li class="nav-item ">
+          <a href="#" class="nav-link active">
+          <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p>
+              {{ __('message.Addresses') }}
+              <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Address::count() }}</span>
+              <i class="right fas fa-angle-left"></i>
+
+          </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('all.address') }}" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{ __('message.Show All Addresses') }}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('add.address') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>{{ __('message.Add Address') }}</p>
+              </a>
+            </li>
+          </ul>
+      </li>
+
+
+      {{-- Static Pages --}}
+      <li class="nav-item ">
+        <a href="#" class="nav-link active">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+            {{ __('message.Static Pages') }}
+            <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\StaticPage::count() }}</span>
+            <i class="right fas fa-angle-left"></i>
+
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+              <a href="{{ route('all.staticPages') }}" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>{{ __('message.Show All Static Pages') }}</p>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('add.staticPage') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.Add Static Page') }}</p>
+            </a>
+          </li>
+        </ul>
+    </li>
+
 
 
         </ul>

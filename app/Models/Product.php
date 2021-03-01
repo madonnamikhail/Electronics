@@ -17,7 +17,7 @@ class Product extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at','updated_at',
+        'created_at','updated_at', 'pivot',
     ];
 
 
@@ -34,6 +34,6 @@ class Product extends Model
 
     public function user()
     {
-    return $this->belongsToMany('App\User', 'carts')->withPivot('product_id', 'user_id', 'quantity');
+    return $this->belongsToMany('App\User', 'carts')/*->withPivot('product_id', 'user_id', 'quantity')*/;
     }
 }

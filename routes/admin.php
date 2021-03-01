@@ -157,21 +157,79 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             // Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
         });
 
-        Route::group(['prefix' => 'admin/chart','namespace'=>'Admin\Cart'],function(){
+        Route::group(['prefix' => 'admin/cart','namespace'=>'Admin\Cart'],function(){
             //show-all
             Route::get('all-carts','CartController@allCarts')->name('all.carts');
-            //add Supplier
-            Route::get('create','CartController@create')->name('add.cart');
-            Route::post('store','CartController@store')->name('store.cart');
-            // //edit
-            Route::get('edit/{id}','CartController@edit')->name('edit.cart');
-            Route::post('update/{id}','CartController@update')->name('update.cart');
-                //delete
+            Route::get('show-cart/{id}','CartController@showCart')->name('show.cart');
+            //update
+            Route::get('update/{id}/{action}','CartController@update')->name('update.cart');
+            // //delete
             Route::delete('delete','CartController@delete')->name('delete.cart');
+        });
+
+        
+        ########################## citys ######################
+        Route::group(['prefix' => 'admin/city','namespace'=>'Admin\city'],function(){
+            //show-all
+            Route::get('all-cities','CityControler@allCities')->name('all.cities');
+            //add Supplier
+            Route::get('create','CityControler@create')->name('add.city');
+            Route::post('store','CityControler@store')->name('store.city');
+            // //edit
+            Route::get('edit/{id}','CityControler@edit')->name('edit.city');
+            Route::post('update/{id}','CityControler@update')->name('update.city');
+                //delete
+            Route::delete('delete','CityControler@delete')->name('delete.city');
               });
+        ########################### end citys #####################
 
 
+        ########################## regions ######################
+        Route::group(['prefix' => 'admin/region','namespace'=>'Admin\region'],function(){
+            //show-all
+            Route::get('all-region/{id}','RegionController@allCityRegions')->name('all.city.regions');
+            Route::get('all-region','RegionController@allRegions')->name('all.regions');
+            //add Supplier
+            Route::get('create','RegionController@create')->name('add.region');
+            Route::post('store','RegionController@store')->name('store.region');
+            // //edit
+            Route::get('edit/{id}','RegionController@edit')->name('edit.region');
+            Route::post('update/{id}','RegionController@update')->name('update.region');
+                //delete
+            Route::delete('delete','RegionController@delete')->name('delete.region');
+              });
+        ########################### end regions #####################
 
+
+        ########################## address ######################
+        Route::group(['prefix' => 'admin/address','namespace'=>'Admin\address'],function(){
+            //show-all
+            Route::get('all-address/{id}','AddressController@allRegionsAddress')->name('all.region.address');
+            Route::get('all-address','AddressController@allAddress')->name('all.address');
+            //add Supplier
+            Route::get('create','AddressController@create')->name('add.address');
+            Route::post('store','AddressController@store')->name('store.address');
+            // //edit
+            Route::get('edit/{id}','AddressController@edit')->name('edit.address');
+            Route::post('update/{id}','AddressController@update')->name('update.address');
+                //delete
+            Route::delete('delete','AddressController@delete')->name('delete.address');
+              });
+        ########################### end address #####################
+
+
+        ######### static pages ################
+    Route::group(['prefix'=>'admin/staticPages', 'namespace'=>'Admin/StaticPage'], function(){
+        Route::get('show','StaticPageController@show')->name('all.staticPages');
+        //add new staticPage
+        Route::get('create','StaticPageController@create')->name('add.staticPage');
+        Route::post('store','StaticPageController@store')->name('create.staticPage');
+        //edit staticPage
+        Route::get('edit/{id}','StaticPageController@edit')->name('edit.staticPage');
+        Route::post('update/{id}','StaticPageController@update')->name('update.staticPage');
+        //delete staticPage
+        Route::delete('delete','StaticPageController@delete')->name('delete.staticPage');
+    });
 });
 
 
