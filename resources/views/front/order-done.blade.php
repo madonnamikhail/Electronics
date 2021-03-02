@@ -74,15 +74,13 @@
                                <h4 class="cart-bottom-title section-bg-gray">Promo Code :
                                 @if ($promoCode)
                                     {{ $promoCode->name }}
-                                    {{-- {{$rangValue}}
-                                    {{$out_of_date}} --}}
                                     @if($rangValue != 1 and $out_of_date != 1)
                                         <div class="alert alert-danger">
                                             {{ $rangValue }} and {{ $out_of_date }}
                                         </div>
                                     @elseif($rangValue != 1)
                                         <div class="alert alert-danger">
-                                            {{ $rangValue }} 
+                                            {{ $rangValue }}
                                         </div>
                                     @elseif($out_of_date != 1)
                                         <div class="alert alert-danger">

@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
     //
 
     public function placeOrder(Request $request){
-
         $rules=[
         //     "photo"=>'image|mimes:png,jpg,jepg|max:1024',
         //     "name"=>'required',
@@ -26,28 +26,35 @@ class OrderController extends Controller
             "method_payment"=>'required'
         ];
         $request->validate($rules);
+        $user_id = Auth::user()->id;
         $data=$request->except('_token');
         $orderInsert['status']=0;//order placed
-        $orderInsert['amount']=count($request->photo);
+        $orderInsert['amount']=array_sum($request->quantity);
         $orderInsert['total_price']=array_sum($request->productPrice);
         $orderInsert['user_id']=Auth::user()->id;
         if($request->promoCodes_id){
             $orderInsert['promoCodes_id']=$request->promoCodes_id;
         }
-        // $imageName= $this->UploadPhoto($request->photo , 'product');
-        // $data=$request->except('photo','_token');
-        // // $data['photo']=$imageName;
         Order::insert($orderInsert);
+        $now=Carbon::now();
+        $order_id=Order::where('user_id','=',$user_id)->latest('id')->first();
+        $orderInsert['order_id']=$order_id->id;
+        // return $order_id->id ;
         $orderInsert['title'] = 'Thank you for your order';
         $orderInsert['body'] = 'body is';
-        $user_id = Auth::user()->id;
+
         // return $user_id;
         $user = User::find($user_id);
         $orderInsert['userName'] = $user->name;
         $products = $user->product;
         $i=0;
         foreach ($products as $product){
-            $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+            foreach ($product->offers as $pro){
+                $offer=(100-trim($pro->discount,"% , -"))/(100);
+                $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+                // return $productPrice;
+            }
+            // return $product->offers;
             $i++;
         }
         $promoCode=$request->promoCodes_id;
@@ -95,6 +102,24 @@ class OrderController extends Controller
         // detach l cart
         // $user_id = Auth::user()->id;
         // $user = User::find($user_id)->product()->detach();
+
+        //
+        $Order_Product=[];
+        $pivot_forgien=[];
+        foreach ($products as $product){
+            $pivot_forgien['product_id']= $product->id;
+            $pivot_forgien['order_id']=$orderInsert['order_id'];
+
+            // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
+            $Order_Product['quantity']=$product->pivot->quantity;
+            $Order_Product['payment_method']=$orderInsert['payment_method'];
+            $Order_Product['promocode']=$request->promoCodes_id;
+            // return "ed";
+            $order_id->products()->attach($pivot_forgien,$Order_Product);
+            //attach(array want to change with forgirn key , attributes that will be changed)
+            // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
+        }
+        // return $Order_Product;
         $sendmail = new sendMail($orderInsert, $products);
 
         Mail::to(Auth::user()->email)->send($sendmail);

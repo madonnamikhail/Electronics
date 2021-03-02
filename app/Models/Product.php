@@ -17,10 +17,9 @@ class Product extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at','updated_at', 'pivot',
+        'created_at','updated_at',
+
     ];
-
-
     public function subcategory(){
         return $this->belongsTo('App\Models\Subcategory','subCategory_id');
     }
@@ -34,6 +33,10 @@ class Product extends Model
 
     public function user()
     {
-    return $this->belongsToMany('App\User', 'carts')/*->withPivot('product_id', 'user_id', 'quantity')*/;
+    return $this->belongsToMany('App\User', 'carts')->withPivot('product_id', 'user_id', 'quantity');
+    }
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order', 'order_product')->withPivot('product_id', 'order_id', 'quantity','payment_method','promocode');
     }
 }

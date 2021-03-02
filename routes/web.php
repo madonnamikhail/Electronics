@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::group(['namespace'=>'Front', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
-
+    Route::get('shop','IndexController@shop')->name('shop');
     Route::get('/index', 'IndexController@index')->name('index.page');
     Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
     Route::get('/cart', 'IndexController@getCart')->name('get.cart');

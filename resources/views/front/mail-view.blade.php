@@ -9,7 +9,7 @@
     <style>
         #parent{
             margin: 10px auto;
-            width:70%; 
+            width:70%;
             text-align: center;
             /* display: flex;
             flex-direction: column;
@@ -46,9 +46,8 @@
     <div id="parent">
         <div id="title">{{ $orderInsert['title'] }}</div>
         <h1> Hi  {{ $orderInsert['userName'] }},</h1>
+        <h3> Your order ID {{ $orderInsert['order_id']->id }}  </h3>
         <p>Just to let you know - we have recieved your order, and it is now being processed.</p>
-        {{-- <h1>{{ $orderInsert['body'] }}</h1>
-        <p>{{ $products }}</p> --}}
         <table>
         <tr>
             <th>Product Name</th>
@@ -62,7 +61,7 @@
                 <td>{{$product->price}}</td>
             </tr>
         @endforeach
-        
+
         <tr>
             <td colspan="2" style="font-weight: bold;">Subtotal: </td>
             <td>{{$orderInsert['subtotal']}}</td>
@@ -81,7 +80,23 @@
                 $orderInsert['promoCodes_id'] = true;
             @endphp --}}
             @if($orderInsert['flag'])
-                <td>{{$orderInsert['promoCodes_id']}}</td>
+                <td>{{$orderInsert['promoCodes_id']}}
+                <br>
+                    @if($orderInsert['rangValue'] != 1 and $orderInsert['out_of_date'] != 1)
+                    <div class="alert alert-danger">
+                        {{ $orderInsert['rangValue'] }} and {{ $orderInsert['out_of_date'] }}
+                    </div>
+                    @elseif($orderInsert['rangValue'] != 1)
+                        <div class="alert alert-danger">
+                            {{ $orderInsert['rangValue'] }}
+                        </div>
+                    @elseif($orderInsert['out_of_date'] != 1)
+                        <div class="alert alert-danger">
+                            {{ $orderInsert['out_of_date'] }}
+                        </div>
+                    @endif
+                </td>
+
             @else
                 <td>No promocode used</td>
             @endif

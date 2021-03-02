@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Offer;
 use App\Models\Product;
 use App\User;
@@ -11,15 +12,26 @@ use Auth;
 
 class IndexController extends Controller
 {
+    public function shop()
+    {
+        $categories=Category::get();
+        return view ('layouts.site',compact('categories'));
+    }
     public function index()
     {
+        $categories=Category::get();
         $products = Product::get();
-        $i =0;
-        foreach ($products as $product) {
-            $offers[$i] = Offer::select('discount')->where('id', '=', $product->offer_id)->get();
+        $i=0;
+        foreach($products as $product){
+             $offerValues[$i]=$product->offers;
+             if(empty($offerValues[$i])){
+                echo "hena aho";
+             }
+            //  echo $offerValues[$i];
             $i++;
         }
-        return view('front.userindex', compact('products', 'offers'));
+
+        return view('front.userindex', compact('products','offerValues','categories'));
     }
     public function addCart(Request $request)
     {
@@ -79,8 +91,9 @@ class IndexController extends Controller
         $product = Product::find($product_id);
         $quantities = $product->user;
         foreach ($quantities as $quantity) {
-            $product_quantity =  $quantity->pivot->quantity;
+             $product_quantity =  $quantity->pivot->quantity;
         }
+
         // return $product_quantity;
         return view('front.editCart', compact('product', 'product_quantity'));
     }
@@ -91,30 +104,8 @@ class IndexController extends Controller
             'product_quantity' => 'required|integer',
         ];
         $request->validate($rules);
-        // $data=$request->except('_token');
-
-        // $product = Product::find($id);
-
-        // $product->user()->updateExistingPivot($product, $request->product_quantity);
-        // $quantities = $product->user;
-        // foreach ($quantities as $quantity) {
-            // $quantity->pivot->quantity = $request->product_quantity;
-            Product::find($id)->user()->updateExistingPivot($request->quantity, ['quantity' => $request->quantity]);
-            // Product::find($id)->user()->save($request->quantity, ['quantity' => $request->quantity]);
-        // }
-
-        // $invoice = Invoice::findOrFail($id);
-        // $invoice->update([
-        // 'number' => $request->number,
-        // 'status' => $request->status,
-        // 'place_issue' => $request->place_issue,
-        // 'date_issue' => $request->date_issue,
-        // 'date_payment' => $request->date_payment,
-        // 'description' => $request->description,
-        // 'company_id' => $request->company_id,
-        // 'user_id' => $request->user_id,
-        // ]);
-        // Product::find($id)->user()->updateExistingPivot($request->quantity, ['quantity' => $request->quantity]);
+        $user_id = Auth::user()->id;
+        $one=Product::find($id)->user()->updateExistingPivot($user_id, ['quantity' => $request->product_quantity]);
         return redirect('/cart')->with('Success', 'Your Cart Has Been Updated');
     }
 

@@ -52,6 +52,7 @@
                                             <li><a href="about-us.html">about</a></li>
                                             <li class="mega-menu-position top-hover"><a href="shop.html">shop</a>
                                                 <ul class="mega-menu">
+                                                    {{ $categories }}
                                                     <li>
                                                         <ul>
                                                             <li class="mega-menu-title">Categories 01</li>
@@ -61,39 +62,6 @@
                                                             <li><a href="shop.html">Anemone</a></li>
                                                             <li><a href="shop.html">Angelica</a></li>
                                                             <li><a href="shop.html">Angelonia</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <ul>
-                                                            <li class="mega-menu-title">Categories 02</li>
-                                                            <li><a href="shop.html">Balsam</a></li>
-                                                            <li><a href="shop.html">Baneberry</a></li>
-                                                            <li><a href="shop.html">Bee Balm</a></li>
-                                                            <li><a href="shop.html">Begonia</a></li>
-                                                            <li><a href="shop.html">Bellflower</a></li>
-                                                            <li><a href="shop.html">Bergenia</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <ul>
-                                                            <li class="mega-menu-title">Categories 03</li>
-                                                            <li><a href="shop.html">Caladium</a></li>
-                                                            <li><a href="shop.html">Calendula</a></li>
-                                                            <li><a href="shop.html">Carnation</a></li>
-                                                            <li><a href="shop.html">Catmint</a></li>
-                                                            <li><a href="shop.html">Celosia</a></li>
-                                                            <li><a href="shop.html">Chives</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <ul>
-                                                            <li class="mega-menu-title">Categories 04</li>
-                                                            <li><a href="shop.html">Daffodil</a></li>
-                                                            <li><a href="shop.html">Dahlia</a></li>
-                                                            <li><a href="shop.html">Daisy</a></li>
-                                                            <li><a href="shop.html">Diascia</a></li>
-                                                            <li><a href="shop.html">Dusty Miller</a></li>
-                                                            <li><a href="shop.html">Dame’s Rocket</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>

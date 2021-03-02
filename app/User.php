@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'pivot',
+        'password', 'remember_token', 
     ];
 
     /**
@@ -39,7 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function product()
     {
-        return $this->belongsToMany('App\Models\Product', 'carts')/*->withPivot('product_id', 'user_id', 'quantity')*/;
+        return $this->belongsToMany('App\Models\Product', 'carts')->withPivot('product_id', 'user_id', 'quantity');
     }
 
     public function orders(){
