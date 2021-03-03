@@ -15,34 +15,44 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['namespace'=>'Front', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
-    Route::get('shop','IndexController@shop')->name('shop');
-    Route::get('/index', 'IndexController@index')->name('index.page');
-    Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
-    Route::get('/cart', 'IndexController@getCart')->name('get.cart');
-    Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
+Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
+    
+    ###################### front
+    Route::group(['namespace'=>'Front'], function(){
+        Route::get('shop','IndexController@shop')->name('shop');
+        Route::get('/index', 'IndexController@index')->name('index.page');
+        Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
+        Route::get('/cart', 'IndexController@getCart')->name('get.cart');
+        Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
 
-    Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
-    Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');
-    //delete product from cart
-    Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
-    //proceed cart
-    Route::get('cart-total','IndexController@cartTotal')->name('get.cart.total');
+        Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
+        Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');
+        //delete product from cart
+        Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
+        //proceed cart
+        Route::get('cart-total','IndexController@cartTotal')->name('get.cart.total');
+
+        ########################## Profile
+        Route::group(['namespace'=>'profile'], function(){
+            Route::get('/profile', 'ProfileController@getProfile')->name('get.profile');
+            Route::get('/rating','ProfileController@getRating')->name('get.rating');
+        });
+        ########################## end profile
+    });
+
+    ###################### end front
+
+    Route::group(['namespace'=>'Order'],function(){
+        Route::post('place-order','OrderController@placeOrder')->name('place.order');
+    });
+
+    Route::group(['namespace'=>'staticPage'], function(){
+        Route::get('/contactUs','ContactUsMessageController@message')->name('contact-us.message');
+        Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
+    });
+
+    
 });
-Route::group(['namespace'=>'Order','prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
-    Route::post('place-order','OrderController@placeOrder')->name('place.order');
-});
-
-Route::group(['namespace'=>'staticPage', 'prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function(){
-    Route::get('/contactUs','ContactUsMessageController@message')->name('contact-us.message');
-    Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
-});
-
-
-
-
-
-
 
 
 Auth::routes(['verify' => true]);

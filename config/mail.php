@@ -67,31 +67,23 @@ return [
 
 
     //...this is the equivalent of the array in the native
-	// 'stream' => [
-	// 	'ssl' => [
-	// 	'allow_self_signed' => true,
-	// 	'verify_peer' => false,
-	// 	'verify_peer_name' => false,
-	// 	],
-	// ],
-
-    // 'stream' => [
-    //     'ssl' => [
-    //         'allow_self_signed' => true,
-    //         'verify_peer' => false,
-    //         'verify_peer_name' => false,
-    //     ],
-    // ],
+	'stream' => [
+		'ssl' => [
+		'allow_self_signed' => true,
+		'verify_peer' => false,
+		'verify_peer_name' => false,
+		],
+	],
 	//..... below are the solution for another error
 	//..... I can't remember it XD
 
-	// 'driver' => env('MAIL_DRIVER', 'smtp'),
-	// 'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-	// 'port' => env('MAIL_PORT', 587),
+	'driver' => env('MAIL_DRIVER', 'smtp'),
+	'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+	'port' => env('MAIL_PORT', 587),
 	// // 'from' => ['address' => 'youEmail@gmail.com', 'name'=>'Your Title'],
-	// 'encryption' => 'tls',
-	// 'username' => env('MAIL_USERNAME'),
-	// 'password' => env('MAIL_PASSWORD'),
+	'encryption' => 'tls',
+	'username' => env('MAIL_USERNAME'),
+	'password' => env('MAIL_PASSWORD'),
 	// 'sendmail' => '/usr/sbin/sendmail -bs',
 	// 'pretend' => false,
 

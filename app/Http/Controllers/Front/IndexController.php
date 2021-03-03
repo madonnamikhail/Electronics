@@ -19,7 +19,7 @@ class IndexController extends Controller
     }
     public function index()
     {
-        $categories=Category::get();
+        // $categories=Category::get();
         $products = Product::get();
         $i=0;
         foreach($products as $product){
@@ -31,7 +31,7 @@ class IndexController extends Controller
             $i++;
         }
 
-        return view('front.userindex', compact('products','offerValues','categories'));
+    return view('front.userindex', compact('products','offerValues'/*,'categories'*/));
     }
     public function addCart(Request $request)
     {

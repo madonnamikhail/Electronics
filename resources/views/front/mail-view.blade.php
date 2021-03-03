@@ -46,7 +46,7 @@
     <div id="parent">
         <div id="title">{{ $orderInsert['title'] }}</div>
         <h1> Hi  {{ $orderInsert['userName'] }},</h1>
-        <h3> Your order ID {{ $orderInsert['order_id']->id }}  </h3>
+        <h3> Your order ID {{ $orderInsert['order_id'] }}  </h3>
         <p>Just to let you know - we have recieved your order, and it is now being processed.</p>
         <table>
         <tr>
