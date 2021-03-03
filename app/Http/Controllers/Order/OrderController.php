@@ -38,6 +38,7 @@ class OrderController extends Controller
         Order::insert($orderInsert);
         $now=Carbon::now();
         $order_id=Order::where('user_id','=',$user_id)->latest('id')->first();
+        // $orderInsert['order_id_mail']=$order_id;
         $orderInsert['order_id']=$order_id->id;
         // return $order_id->id ;
         $orderInsert['title'] = 'Thank you for your order';

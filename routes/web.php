@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
-    
+
     ###################### front
     Route::group(['namespace'=>'Front'], function(){
         Route::get('shop','IndexController@shop')->name('shop');
@@ -36,6 +36,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::group(['namespace'=>'profile'], function(){
             Route::get('/profile', 'ProfileController@getProfile')->name('get.profile');
             Route::get('/rating','ProfileController@getRating')->name('get.rating');
+            Route::post('/rating/product','ProfileController@ProductRating')->name('product.rating');
+            Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
         });
         ########################## end profile
     });
@@ -51,7 +53,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
     });
 
-    
+
 });
 
 

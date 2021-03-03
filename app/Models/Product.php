@@ -39,4 +39,9 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Models\Order', 'order_product')->withPivot('product_id', 'order_id', 'quantity','payment_method','promocode');
     }
+    public function userRate()
+    {
+    return $this->belongsToMany('App\User', 'ratings')->withPivot('product_id', 'user_id', 'value','comment');
+    }
+
 }
