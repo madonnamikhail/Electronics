@@ -116,7 +116,7 @@ class OrderController extends Controller
             $Order_Product['payment_method']=$orderInsert['payment_method'];
             $Order_Product['promocode']=$request->promoCodes_id;
             // return "ed";
-            $order_id->products()->attach($pivot_forgien,$Order_Product);
+            $order_id->products()->attach($product->id,$Order_Product);
             //attach(array want to change with forgirn key , attributes that will be changed)
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
         }

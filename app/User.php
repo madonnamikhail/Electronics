@@ -49,4 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany('App\Models\Product', 'ratings')->withPivot('product_id', 'user_id', 'value','comment');
     }
+
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new MyNotification);
+    // }
+
 }

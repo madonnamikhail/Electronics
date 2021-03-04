@@ -38,6 +38,18 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('/rating','ProfileController@getRating')->name('get.rating');
             Route::post('/rating/product','ProfileController@ProductRating')->name('product.rating');
             Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
+
+            ####### changing user data
+            Route::post('/profile/changing-info', 'ProfileController@profileChangeInfo')->name('profile.change.info');
+            Route::post('/profile/changing-email', 'ProfileController@profileChangeEmail')->name('profile.change.email');
+            Route::post('/profile/changing-password', 'ProfileController@profileChangePassword')->name('profile.change.password');
+
+            Route::get('/profile/editing-address/{id}','ProfileController@profileEditAddress')->name('profile.edit.address');
+            Route::post('/profile/changing-address/{id}', 'ProfileController@profileChangeAddress')->name('profile.change.address');
+            Route::delete('/profile/deleting-address','ProfileController@profileDeleteAddress')->name('profile.delete.address');
+
+            Route::get('/profile/creating-address','ProfileController@profileCreateAddress')->name('profile.create.address');
+            Route::post('/profile/storing-address','ProfileController@profileStoreAddress')->name('profile.store.address');
         });
         ########################## end profile
     });

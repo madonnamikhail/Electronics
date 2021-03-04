@@ -53,6 +53,7 @@ class IndexController extends Controller
         // add record in pivot "cart"
         // return $product;
         $user->product()->syncWithoutDetaching($data);
+        // $user->product()->syncWithoutDetaching($request->product_id, $data);
         // $product->user()->attach($data);
         return redirect()->back()->with('Success', 'Added Successfully to Cart');
     }
