@@ -48,6 +48,7 @@ class OrderController extends Controller
         $user = User::find($user_id);
         $orderInsert['userName'] = $user->name;
         $products = $user->product;
+        $productPrice=[];
         $i=0;
         foreach ($products as $product){
             foreach ($product->offers as $pro){
@@ -55,6 +56,7 @@ class OrderController extends Controller
                 $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
                 // return $productPrice;
             }
+            // return $productPrice;
             // return $product->offers;
             $i++;
         }
@@ -67,7 +69,8 @@ class OrderController extends Controller
         }
         $promoCode=Promocode::where('name','=',$request->promoCodes_id)->first();
         $ldate = date('Y-m-d');
-        $totalOrderValue=array_sum($request->productPrice);
+        // $totalOrderValue=array_sum($request->productPrice); //mn4er offers..3shan tgili fl mail
+        $totalOrderValue=array_sum($productPrice);
         $orderInsert['subtotal'] = $totalOrderValue;
         $orderInsert['payment_method'] = $paymentMethod;
         $discount = 1;
@@ -125,6 +128,7 @@ class OrderController extends Controller
 
         Mail::to(Auth::user()->email)->send($sendmail);
         // end of send mail
+        // return redirect('place-order')->with('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date');
         return view('front.order-done',compact('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
     }
 

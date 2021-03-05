@@ -77,8 +77,7 @@ class ProfileController extends Controller
         else{
             $user->productRate()->attach($request->product_id,$pivot_attribute);
         }
-
-        return view('front.profile');
+        return redirect('profile');
     }
 
     public function profileChangeInfo(Request $request)
