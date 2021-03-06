@@ -49,11 +49,9 @@
                     <a href="product-details.html">
                         <img alt="" src="{{ asset('images\product\\'. $product->photo ) }}">
                     </a>
-                    @foreach ($offerValues[$i] as $offerValue)
-                        @if($offerValue)
-                        <span>{{ $offerValue->discount }}</span>
+                        @if ($discount_amount[$i] != 1)
+                            <span>{{ $discount_amount[$i] }}</span>
                         @endif
-                    @endforeach
                     {{-- @php
                         $i++;
                     @endphp --}}
@@ -93,26 +91,17 @@
                         </div>
                     </div>
                     <div class="product-price-wrapper">
-                        @foreach ($offerValues[$i] as $offerValue)
-                            @if($offerValue)
-                                @php
-                                    $offer=(100-trim($offerValue->discount,"% , -"))/(100);
-                                @endphp
-                                <span>EGP {{ $product->price * $offer }} -</span>
-                                <span class="product-price-old">EGP {{ $product->price}} </span>
-                            @elseif(empty($offerValue) )
-                            @php
-                                return "mm";
-                            @endphp
 
-                                <span>EGP {{ $product->price}} -</span>
-                            @endif
-                             {{-- <span>EGP {{ $product->price}} -</span> --}}
-                    @endforeach
-                    @php
+                        @if ($discount_amount[$i] != 1)
+                            <span>EGP {{ $price[$i] }} -</span>
+                            <span class="product-price-old">EGP {{ $product->price}} </span>
+                        @else
+                            <span>EGP {{ $price[$i] }} </span>
+                        @endif
+
+                        @php
                         $i++;
                     @endphp
-                        {{-- <span>EGP {{ $product->price}} -</span> --}}
                     </div>
                 </div>
             </div>

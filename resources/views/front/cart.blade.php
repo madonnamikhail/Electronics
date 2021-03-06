@@ -47,13 +47,24 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                $i=0;
+                            @endphp
                                 @foreach ($products as $product)
                                     <tr>
                                         <td class="product-thumbnail">
                                             <a href="#"><img style="width:50%" src="{{ asset('images\product\\'. $product->photo ) }}" alt=""></a>
                                         </td>
                                         <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
-                                        <td class="product-price-cart"><span class="amount">{{ $product->price }}</span></td>
+
+                                        <td class="product-price-cart"><span class="amount">
+
+                                            {{ $price[$i] }}
+                                            @php
+                                                $i++;
+                                            @endphp
+
+                                        </span></td>
                                         <td class="product-quantity">
                                             <div class="pro-dec-cart">
                                                 <p class="cart-plus-minus-box">{{ $product->pivot->quantity }}</p>

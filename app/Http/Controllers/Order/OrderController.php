@@ -49,12 +49,22 @@ class OrderController extends Controller
         $orderInsert['userName'] = $user->name;
         $products = $user->product;
         $productPrice=[];
+        $priceWithOffer=[];
         $i=0;
         foreach ($products as $product){
-            foreach ($product->offers as $pro){
-                $offer=(100-trim($pro->discount,"% , -"))/(100);
-                $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
-                // return $productPrice;
+            if( $product->offers && count($product->offers)>0)
+            {
+                foreach ($product->offers as $pro){
+                    $offer=(100-trim($pro->discount,"% , -"))/(100);
+                    $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+                    $priceWithOffer[$i]= ($product->price)*($offer);
+
+
+                    // return $productPrice;
+                }
+            }else{
+                $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+                $priceWithOffer[$i]= ($product->price);
             }
             // return $productPrice;
             // return $product->offers;
@@ -129,7 +139,7 @@ class OrderController extends Controller
         Mail::to(Auth::user()->email)->send($sendmail);
         // end of send mail
         // return redirect('place-order')->with('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date');
-        return view('front.order-done',compact('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
+        return view('front.order-done',compact('products','productPrice','priceWithOffer','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
     }
 
 }

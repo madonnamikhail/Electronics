@@ -32,6 +32,7 @@
                         <tbody>
                             @php
                                 $i=0;
+
                             @endphp
                             @foreach ($products as $product)
                                 <tr>
@@ -39,7 +40,11 @@
                                         <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->photo ) }}" alt=""></a>
                                     </td>
                                     <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
-                                    <td class="product-price-cart"><span class="amount">{{ $product->price }}</span></td>
+
+                                    <td class="product-price-cart"><span class="amount">
+                                       {{ $priceWithOffer[$i]}}
+                                      
+                                    </span></td>
 
                                     <td class="product-quantity">
                                         <div class="pro-dec-cart">

@@ -21,17 +21,32 @@ class IndexController extends Controller
     {
         // $categories=Category::get();
         $products = Product::get();
+        $discount_amount=[];
+        $offerValues=[];
         $i=0;
         foreach($products as $product){
-             $offerValues[$i]=$product->offers;
-             if(empty($offerValues[$i])){
-                echo "hena aho";
-             }
-            //  echo $offerValues[$i];
-            $i++;
-        }
+            if(count($product->offers)>0){
+                $offerValues[$i]=$product->offers;
+                foreach( $offerValues[$i] as $offerValue){
+                   $discount_amount[$i]=$offerValue->discount;
+                   $offers=(100-trim($offerValue->discount,"% , -"))/(100);
+                   $price[$i] = $product->price * $offers;
 
-    return view('front.userindex', compact('products','offerValues'/*,'categories'*/));
+                }
+                // return $offerValues[$i]->discount;
+                // echo $offerValues[$i];
+                $i++;
+            }
+            else{
+                $discount_amount[$i]=1;
+                $price[$i] = $product->price;
+                $i++;
+            }
+
+        }
+        // return "ok";
+        // return $offerValues;
+    return view('front.userindex', compact('products','offerValues','discount_amount','price'/*,'categories'*/));
     }
     public function addCart(Request $request)
     {
@@ -66,7 +81,36 @@ class IndexController extends Controller
         $user = User::find($user_id);
         $products = $user->product;
         // return $products;
-        return view('front.cart', compact('products'));
+        $price=[];
+        $i=0;
+        foreach ($products as $product){
+            $product_offers= $product->offers;
+            // return $product_offers;
+            if($product_offers && count($product_offers)>0 ){
+                foreach($product_offers as $product_offer){
+                    $offers=(100-trim($product_offer->discount,"% , -"))/(100);
+                    $price[$i] = $product->price * $offers;
+                    $i++;
+                }
+            }
+            else{
+                $price[$i] = $product->price;
+                $i++;
+            }
+        }
+        // return $price;
+        // return $products;
+        return view('front.cart', compact('products','price'));
+
+    //     foreach($products as $product){
+    //         $offerValues[$i]=$product->offers;
+
+    //         if(empty($offerValues[$i])){
+    //            echo "hena aho";
+    //         }
+    //        //  echo $offerValues[$i];
+    //        $i++;
+    //    }
     }
 
     public function cartClear()
@@ -128,11 +172,30 @@ class IndexController extends Controller
         // return $user_id;
         $user = User::find($user_id);
         $products = $user->product;
+        $priceWithOffer=[];
         $i=0;
+
         foreach ($products as $product){
-            $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+            // $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+             $product_offers=$product->offers;
+            if( $product_offers && count($product_offers)>0)
+            {
+                foreach ($product_offers as $product_offer)
+                    {
+                        // return $product_offer;
+                            $offer=(100-trim($product_offer->discount,"% , -"))/(100);
+                            $priceWithOffer[$i]=($product->price)*($offer);
+                            $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+                            // return $pro->discount;
+                    }
+            }
+            else{
+                    $priceWithOffer[$i]=($product->price)*1;
+                    $productPrice[$i]= ($product->pivot->quantity)*($product->price)*1;
+                }
             $i++;
         }
-        return view('front.cart-total',compact('products','productPrice'));
+
+        return view('front.cart-total',compact('products','productPrice','priceWithOffer'));
     }
 }

@@ -34,7 +34,9 @@
                         <tbody>
                             @php
                                 $i=0;
+                                $j=0;
                             @endphp
+
                             @foreach ($products as $product)
                                 <tr>
                                     <td class="product-thumbnail">
@@ -43,7 +45,12 @@
                                     <input type="hidden" name="photo[]" value="{{ $product->photo }}">
                                     <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
                                     <input type="hidden" name="name[]" value="{{ $product->name_en }}">
-                                    <td class="product-price-cart"><span class="amount">{{ $product->price }}</span></td>
+                                    <td class="product-price-cart"><span class="amount">
+                                        {{ $priceWithOffer[$j] }}
+                                        @php
+                                            $j++;
+                                        @endphp
+                                    </span></td>
                                     <input type="hidden" name="price[]" value="{{ $product->price }}">
 
                                     <td class="product-quantity">
@@ -57,9 +64,10 @@
                                         @php
                                             echo $productPrice[$i];
                                         @endphp
-                                        <input type="hidden" name="productPrice[]" value="@php  echo $productPrice[$i]; $i++;@endphp">
+                                        <input type="hidden" name="productPrice[]" value="@php  echo $productPrice[$i]; $i++; @endphp">
                                     </td>
                                 </tr>
+
                             @endforeach
                         </tbody>
                     </table>

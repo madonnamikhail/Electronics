@@ -190,7 +190,7 @@
                                                                     <p> Building number: {{ $address->building }} </p>
                                                                     <p> Floor Number: {{ $address->floor }} </p>
                                                                     <p> Street Name: {{ $address->street_en }} </p>
-                                                                    <p> 
+                                                                    <p>
                                                                         @foreach ($regions as $region)
                                                                             @if($region->id == $address->region_id)
                                                                                 Region: {{ $region->name_en }}
@@ -198,7 +198,7 @@
                                                                                     $region_city_id = $region->city_id;
                                                                                 @endphp
                                                                             @endif
-                                                                        @endforeach 
+                                                                        @endforeach
                                                                     </p>
                                                                     <p>
                                                                         {{-- @foreach ($regions as $region) --}}
@@ -222,10 +222,10 @@
                                                                             {{-- <a href="">Delete</a> --}}
                                                                         </div>
                                                                     </div>
-                                                                @endif     
+                                                                @endif
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                                 <div class="billing-back-btn">

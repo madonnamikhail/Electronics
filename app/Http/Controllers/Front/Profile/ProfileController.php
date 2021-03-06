@@ -35,11 +35,16 @@ class ProfileController extends Controller
         $orders = Order::where('user_id','=', $user_id)->get();
         // $orders = Order::find('user_id',$user_id);
         // return $orders;
+        $products=[];
         $i=0;
-        foreach($orders as $order){
-            $products[$i] =  $order->products;
-            // return $products[$i];
-            $i++;
+        if($orders && count($orders)>0){
+            foreach($orders as $order){
+                $products[$i] =  $order->products;
+                // return $products[$i];
+                $i++;
+            }
+        }else{
+            $products[$i] =1;
         }
         // return $products;
         return view('front.rating', compact('orders','products','suppliers'));
@@ -97,7 +102,7 @@ class ProfileController extends Controller
     }
     public function profileChangeEmail(Request $request)
     {
-        
+
         $rules=[
             'email' =>'email:rfc,dns',
         ];
@@ -128,7 +133,7 @@ class ProfileController extends Controller
         return redirect()->back()->with('Success', 'Your Address Has Been Deleted Successfully');;
 
     }
-    
+
     public function profileEditAddress($id)
     {
         $regions = Region::get();
