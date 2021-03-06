@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class LoginController extends Controller
 {
     //
     public function dashboard(){
+
+        // $role = Role::create(['name' => 'writer']);
+        // $permission = Permission::create(['name' => 'edit articles']);
+        $role=Role::find(1);
+        $permission=Permission::find(1);
+        $role->givePermissionTo($permission);
+
         return view('admin.adminindex');
     }
 
@@ -33,5 +42,5 @@ class LoginController extends Controller
 
     }
 
- 
+
 }
