@@ -62,8 +62,8 @@
                       <div class="form-group">
                         <label for="exampleInputEmail1">{{ __('message.Brand') }}</label>
                         <select name="brand_id" class="form-control">
-                            @foreach ($brand as $brand )
-                            <option {{ old('brand_id')==$brand->id ? 'selected' : '' }} value="{{ $brand->id }}">{{ $brand->name_en }}</option>
+                            @foreach ($brand as $brands )
+                            <option {{ old('brand_id')==$brands->id ? 'selected' : '' }}  value="{{ $brands->id }}">{{ $brands->name_en }}</option>
                             @endforeach
                           </select>                      </div>
                       @error('brand_id')
@@ -71,6 +71,18 @@
                           @enderror
 
                           <div class="form-group">
+                            <label for="exampleInputEmail1">{{ __('message.Supplier') }}</label>
+                            <select name="supplier_id" id="subcategory"class="form-control">
+                                @foreach ($supplier as $suppliers )
+                                <option {{ old('supplier_id')==$suppliers->id ? 'selected' : '' }} value="{{ $suppliers->id }}">{{ $suppliers->name_en }}</option>
+                                @endforeach
+                              </select>
+                          </div>
+                          @error('supplier_id')
+                                <span class="text-danger">{{ $message }}</span>
+                              @enderror
+
+                          {{-- <div class="form-group">
                             <label for="exampleInputEmail1">{{ __('message.Sub Category') }}</label>
                             <select name="subcategory_id" id="subcategory"class="form-control">
                                 @foreach ($subcategory as $subcategory )
@@ -80,9 +92,36 @@
                           </div>
                           @error('subcategory_id')
                                 <span class="text-danger">{{ $message }}</span>
-                              @enderror
+                              @enderror --}}
 
                               <div class="form-group">
+                                <label for="exampleInputEmail1">{{ __('message.Sub Category') }}</label>
+                                    <div class="form-group">
+                                        <select  name="subcategory_id" id="subcategory_id" class="form-control">
+                                            @foreach ($category as $category )
+                                                    <optgroup label="{{ $category->name_en }}">
+                                                        @foreach ($subcategory as $subcategoryss)
+                                                            @if ($subcategoryss->category_id == $category->id)
+                                                                <option value="{{ $subcategoryss->id }}" class="form-group">
+                                                                    {{-- @php
+                                                                        echo $subcategoryss->name_en;
+                                                                    @endphp --}}
+                                                                    {{ $subcategoryss->name_en }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    </optgroup>
+                                            @endforeach
+                                          </select>
+                                    </div>
+
+                              </div>
+                              @error('subcategory_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                  @enderror
+
+
+                              {{-- <div class="form-group">
                                 <label for="exampleInputEmail1">{{ __('message.Offer ') }}</label>
                                 <select name="offer_id" id="subcategory"class="form-control">
                                     @foreach ($offer as $offer )
@@ -92,7 +131,7 @@
                               </div>
                               @error('offer_id')
                                     <span class="text-danger">{{ $message }}</span>
-                                  @enderror
+                                  @enderror --}}
 
                               <div class="form-group">
                                 <label for="exampleInputFile">{{ __('message.IMAGE') }}</label>

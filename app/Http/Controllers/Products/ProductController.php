@@ -58,7 +58,7 @@ class ProductController extends Controller
             "code"=>'required',
             "details_en"=>'required',
             "details_ar"=>'required',
-            "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            // "photo"=>'image|mimes:png,jpg,jepg|max:1024',
             "brand_id"=>'required|integer|exists:brands,id',
             "subcategory_id"=>'required|exists:subcategories,id',
         ];
@@ -72,11 +72,13 @@ class ProductController extends Controller
     }
     public function edit($id){
         $product=Product::find($id);
+        $category=Category::get();
+        $supplier=Supplier::get();
         // return $product;
         $brand=Brand::get();
         $subcategory=Subcategory::get();
         $offer=Offer::get();
-        return view ('admin.products.edit',compact('product','brand','subcategory','offer'));
+        return view ('admin.products.edit',compact('product','brand','subcategory','offer','category','supplier'));
 
     }
     public function update(Request $request , $id)
@@ -86,7 +88,6 @@ class ProductController extends Controller
             "name_ar"=>'string|max:100',
             "price"=>'integer',
             "code"=>'integer',
-            "offer_id"=>'integer|exists:offers,id',
             "brand_id"=>'integer|exists:brands,id',
             "subcategory_id"=>'exists:subcategories,id',
         ];

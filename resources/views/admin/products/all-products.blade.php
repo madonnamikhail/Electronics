@@ -87,7 +87,7 @@
                     </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                          {{-- @role('SuperAdmin')  
+                          {{-- @role('SuperAdmin')
                           <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             @endrole --}}
@@ -98,11 +98,11 @@
                                 echo('ioioo');
                                 return auth()->user();
                             @endphp --}}
-                            
-                            @if(auth()->user()->can('Update Database'))
+
+                            {{-- @if(auth()->user()->can('Update Database')) --}}
                           <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
-                            <br>
-                            @endif
+                            {{-- <br>
+                            @endif --}}
                             {{-- @endcan --}}
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
                                 <form method="post" action="{{route('delete.product')}}">

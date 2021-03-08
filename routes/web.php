@@ -24,6 +24,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
         Route::get('/cart', 'IndexController@getCart')->name('get.cart');
         Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
+        Route::get('/hot_deals/{id}', 'IndexController@hotDeals')->name('hot.deals');
+
 
         Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
         Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');

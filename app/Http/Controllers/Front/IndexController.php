@@ -31,7 +31,6 @@ class IndexController extends Controller
                    $discount_amount[$i]=$offerValue->discount;
                    $offers=(100-trim($offerValue->discount,"% , -"))/(100);
                    $price[$i] = $product->price * $offers;
-
                 }
                 // return $offerValues[$i]->discount;
                 // echo $offerValues[$i];
@@ -44,9 +43,33 @@ class IndexController extends Controller
             }
 
         }
-        // return "ok";
+        //Hot Deals(50% & 70% only from offers)
+        $offers=Offer::get();
+        $hot_deals=[];
+        $sales=[];
+        $j=0;
+        $i=0;
+        foreach($offers as $offer){
+            $discount_value=(100-trim($offer->discount,"% , -"));
+            //lma kona bntktbha $discount_value > 50 kan bygeb al 3aks
+            if($discount_value == 50 || $discount_value < 50){
+                $hot_deals[$i]=$offer;
+                $i++;
+            }
+        }
+        foreach($offers as $offer){
+            $discount_value=(100-trim($offer->discount,"% , -"));
+            //lma kona bntktbha $discount_value > 50 kan bygeb al 3aks
+            if($discount_value > 50){
+                $sales[$j]=$offer;
+                $j++;
+            }
+        }
+        //newest products
+        $newest_products=Product::orderBy('id', 'desc')->limit(5)->get();
+
         // return $offerValues;
-    return view('front.userindex', compact('products','offerValues','discount_amount','price'/*,'categories'*/));
+    return view('front.userindex', compact('products','offerValues','discount_amount','price','hot_deals','sales','newest_products'/*,'categories'*/));
     }
     public function addCart(Request $request)
     {
@@ -197,5 +220,13 @@ class IndexController extends Controller
         }
 
         return view('front.cart-total',compact('products','productPrice','priceWithOffer'));
+    }
+    public function hotDeals($id)
+    {
+        //kda m3ana id al offer
+      $offers=Offer::find($id);
+      $products_offers=$offers->products;
+      $discount_value=$offers->discount;
+        return view('front.hot_deals',compact('products_offers','discount_value'));
     }
 }

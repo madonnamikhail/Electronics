@@ -45,18 +45,18 @@
                     </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                          @hasanyrole('DbAdmin|SuperAdmin|UsersAdmin|StaticPagesAdmin|RepoAndStatisticsAdmin|MessagesAdmin|manager')
+                          {{-- @hasanyrole('DbAdmin|SuperAdmin|UsersAdmin|StaticPagesAdmin|RepoAndStatisticsAdmin|MessagesAdmin|manager')
                               I am a super-admin!
                           @else
                               I am not a super-admin...
-                          @endhasanyrole
-                          
+                          @endhasanyrole --}}
+
                           {{-- @can('Update Database')
                             <a href="{{ asset('admin/edit/'.$category->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                           @endcan --}}
-                            
-                          
+
+
                           {{-- @role('DbAdmin') --}}
                           @if($flag)
                             <a href="{{ asset('admin/edit/'.$category->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
@@ -75,8 +75,8 @@
                             <br>
                             <a href="{{asset('admin/subcat/show/'.$category->id)}}" class="btn btn-warning">{{ __('message.show SUB-cATEGORY') }}</a>
 
-                          
-                            
+
+
 
                         </div>
 

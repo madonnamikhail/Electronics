@@ -28,7 +28,6 @@ class CrudController extends Controller
         if($superAdmin_name == $current_admin){
             $flag=1;
         }
-
         $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->get();
          return view('admin.category.all-category' , compact('categorys','flag'));
     }
