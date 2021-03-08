@@ -87,8 +87,23 @@
                     </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                          {{-- @role('SuperAdmin')  
+                          <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
+                            @endrole --}}
+
+                            {{-- @can('Update Database')   --}}
+                            {{-- @php
+                                echo('user authenticated');
+                                echo('ioioo');
+                                return auth()->user();
+                            @endphp --}}
+                            
+                            @if(auth()->user()->can('Update Database'))
+                          <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                            <br>
+                            @endif
+                            {{-- @endcan --}}
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
                                 <form method="post" action="{{route('delete.product')}}">
                                     @csrf

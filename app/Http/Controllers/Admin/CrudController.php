@@ -5,19 +5,32 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MainCategoryRequest;
 use App\Http\Requests\SubCategoryRequest;
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
 use LaravelLocalization;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use Auth;
+
 class CrudController extends Controller
 {
     //for categories
     use generalTrait;
     public function show(){
+        $flag =0;
+        $current_admin = Auth::guard('admin')->user()->name;
+        $superAdmin_name =  Admin::role('SuperAdmin')->first()->name;
+        if($superAdmin_name == $current_admin){
+            $flag=1;
+        }
+
         $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->get();
-         return view('admin.category.all-category' , compact('categorys'));
+         return view('admin.category.all-category' , compact('categorys','flag'));
     }
 
     public function create(){

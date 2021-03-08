@@ -35,14 +35,16 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         #########categories################
     Route::group(['prefix'=>'admin', 'namespace'=>'Admin'], function(){
         Route::get('show','CrudController@show')->name('all.categorys');
-        //add new category
-        Route::get('create','CrudController@create');
-        Route::post('store','CrudController@store')->name('create.category');
-        //edit category
-        Route::get('edit/{id}','CrudController@edit')->name('edit.category');
-        Route::post('update/{id}','CrudController@update')->name('update.category');
-        //delete category
-        Route::delete('delete','CrudController@delete')->name('delete.category');
+        //add new category 'role:super-admin','permission:publish articles'
+        Route::group(['middleware'=>['role:DbAdmin']],function(){
+            Route::get('create','CrudController@create');
+            Route::post('store','CrudController@store')->name('create.category');
+            //edit category
+            Route::get('edit/{id}','CrudController@edit')->name('edit.category');
+            Route::post('update/{id}','CrudController@update')->name('update.category');
+            //delete category
+            Route::delete('delete','CrudController@delete')->name('delete.category');
+        });
     });
 
 
@@ -52,13 +54,15 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::get('showw','CrudController@ssubshow')->name('show-all-subcategory');
         Route::get('show/{id}','CrudController@subshow');
         //add new sub category
-        Route::get('create','CrudController@subcreate');
-        Route::post('store','CrudController@substore')->name('store.subcategory');
-        //edit sub-category
-        Route::get('edit/{id}','CrudController@subedit')->name('edit.subcategory');
-        Route::post('update/{id}','CrudController@subupdate')->name('update.subcategory');
-        //delete
-        Route::delete('delete','CrudController@subdelete')->name('delete.subcategory');
+        Route::group(['middleware'=>['role:DbAdmin|SuperAdmin']],function(){
+            Route::get('create','CrudController@subcreate');
+            Route::post('store','CrudController@substore')->name('store.subcategory');
+            //edit sub-category
+            Route::get('edit/{id}','CrudController@subedit')->name('edit.subcategory');
+            Route::post('update/{id}','CrudController@subupdate')->name('update.subcategory');
+            //delete
+            Route::delete('delete','CrudController@subdelete')->name('delete.subcategory');
+        });
     });
 
         ########################products#######################
@@ -70,7 +74,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::get('create','ProductController@create');
         Route::post('store','ProductController@store')->name('store.product');
         //edit
-        Route::get('edit/{id}','ProductController@edit')->name('edit.product');
+        Route::get('edit/{id}','ProductController@edit')->name('edit.product')->middleware(['role:SuperAdmin']);
         Route::post('update/{id}','ProductController@update')->name('update.product');
         //delete
         Route::delete('delete','ProductController@delete')->name('delete.product');
