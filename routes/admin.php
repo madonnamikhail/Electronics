@@ -154,6 +154,19 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         });
         Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
             Route::get('show-order','OrderCrudController@show')->name('show.order');
+            // add order (Ajax):
+            // 1)
+            Route::get('add-order','OrderCrudController@add')->name('add.order');
+            // 2) 
+            Route::get('get-subcategories', 'OrderCrudController@getSubcategoriesByCategoryId')->name('get.subcategory.by.category_id');
+            
+            //3) 
+            Route::get('get-products', 'OrderCrudController@getProductsBySubcategoryId');
+
+
+            // 4) save to cart
+            Route::post('add-to-cart','OrderCrudController@adminAddToCart')->name('admin.add.to.cart');
+
             //update
             Route::get('update/{id}/{action}','OrderCrudController@update')->name('update.order');
             // //delete

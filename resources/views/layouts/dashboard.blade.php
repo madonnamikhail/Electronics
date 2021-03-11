@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   @yield('link')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -460,6 +461,12 @@
                     <p>{{ __('message.Show All Orders') }}</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{ route('add.order') }}" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('message.Add Order') }}</p>
+                  </a>
+              </li>
                 </ul>
             </li>
 

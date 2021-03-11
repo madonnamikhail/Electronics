@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Promocode;
+use App\Models\Subcategory;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -33,5 +37,31 @@ class OrderCrudController extends Controller
        $order->status=$action;
        $order->save();
        return redirect()->back()->with('Success','The Order\'s Status Has Been updated');
+    }
+
+    // add order using Ajax
+    public function add()
+    {
+        $categories = Category::get();
+        $users = User::get();
+        $promocodes = Promocode::get();
+
+    return view('admin.order.create-order', compact('categories','users','promocodes'));
+    }
+
+    public function getSubcategoriesByCategoryId(Request $request)
+    {
+        $data = Subcategory::where('category_id','=', $request->category_id)->get();
+        return response()->json($data);
+    }
+    public function getProductsBySubcategoryId(Request $request)
+    {
+        $data = Product::where('subCategory_id','=', $request->subcategory_id)->get();
+        return response()->json($data);
+    }
+
+    public function adminAddToCart(Request $request)
+    {
+        return $request;
     }
 }
