@@ -14,9 +14,58 @@ use Auth;
 
 class OrderCrudController extends Controller
 {
+    public function getUser()
+    {
+        $users = User::get();
+        return view('admin.order.select-user', compact('users'));
+    }
+
+    public function selectUserAndAddToCart(Request $request)
+    {
+        $rules=[
+            'user_id' => 'required|exists:users,id',
+        ];
+        $request->validate($rules);
+        $user_id = $request->user_id;
+        return redirect('admin/order/admin-show-cart/'.$user_id);
+    }
+    public function AdminShowCart($user_id)
+    {
+        // 2) get cart
+        // return $user_id;
+        $user = User::find($user_id);
+        $products = $user->product;
+        $price=[];
+        $i=0;
+        foreach ($products as $product){
+            $product_offers= $product->offers;
+            // return $product_offers;
+            if($product_offers && count($product_offers)>0 ){
+                foreach($product_offers as $product_offer){
+                    $offers=(100-trim($product_offer->discount,"% , -"))/(100);
+                    $price[$i] = $product->price * $offers;
+                    $i++;
+                }
+            }
+            else{
+                $price[$i] = $product->price;
+                $i++;
+            }
+        }
+
+        $categories = Category::get();
+        $promocodes = Promocode::get();
+        return view('admin.order.create-order',compact('products','price','categories','promocodes','user_id'));
+    }
     //
     public function show()
     {
+        
+        // return $price;
+        // return $products;
+        // return redirect('admin/order/admin-add-cart')->back()->with('products','price');
+        //view('front.cart', compact('products','price'));
+
         $orders=Order::get();
         $user=User::get();
         return view('admin.order.show-all',compact('orders','user'));
@@ -40,14 +89,13 @@ class OrderCrudController extends Controller
     }
 
     // add order using Ajax
-    public function add()
-    {
-        $categories = Category::get();
-        $users = User::get();
-        $promocodes = Promocode::get();
-
-    return view('admin.order.create-order', compact('categories','users','promocodes'));
-    }
+    // public function add()
+    // {
+    //     $categories = Category::get();
+    //     $users = User::get();
+    //     $promocodes = Promocode::get();
+    //     return view('admin.order.create-order', compact('categories','users','promocodes'));
+    // }
 
     public function getSubcategoriesByCategoryId(Request $request)
     {
@@ -62,6 +110,31 @@ class OrderCrudController extends Controller
 
     public function adminAddToCart(Request $request)
     {
-        return $request;
+        $rules=[
+                "product_id"=>'required|exists:products,id',
+                "method_payment"=>'required',
+                "quantity"=>'required|integer',
+                "promocode_id"=>'required|exists:promocodes,id',
+                "user_id" => 'required|exists:users,id',
+                // "master_number" => '',
+        ];
+        $request->validate($rules);
+        
+        // 1) add to cart
+        $user = User::find($request->user_id);
+        $user->product()->syncWithoutDetaching($request->product_id, ['quantity' => $request->quantity]);
+        Product::find($request->product_id)->user()->updateExistingPivot($request->user_id, ['quantity' => $request->quantity]);
+        return redirect()->back()->with('Success', 'Added Successfully to Cart');
+    }
+    public function AdminCartProductDelete(Request $request)
+    {
+        $rules=[
+            'product_id' => 'required|exists:products,id|integer',
+            'user_id' => 'required|exists:users,id|integer',
+        ];
+        $request->validate($rules);
+        // return $request;
+        $user = User::find($request->user_id)->product()->detach($request->product_id);
+        return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
     }
 }

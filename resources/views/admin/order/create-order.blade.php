@@ -3,6 +3,70 @@
 @section('content')
 
 <div class="col-12">
+
+  <div class="table-content table-responsive">
+    <table>
+        @if(Session()->has('Success'))
+            <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+                @php
+                Session()->forget('Success');
+                @endphp
+        @endif
+        @if(Session()->has('Error'))
+            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+                @php
+                Session()->forget('Error');
+                @endphp
+        @endif
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Qty</th>
+                {{-- <th>Subtotal</th> --}}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+            $i=0;
+        @endphp
+            @foreach ($products as $product)
+                <tr>
+                    <td class="product-thumbnail">
+                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->photo ) }}" alt=""></a>
+                    </td>
+                    <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
+
+                    <td class="product-price-cart"><span class="amount">
+
+                        {{ $price[$i] }}
+                        @php
+                            $i++;
+                        @endphp
+
+                    </span></td>
+                    <td class="product-quantity">
+                        <div class="pro-dec-cart">
+                            <p class="cart-plus-minus-box">{{ $product->pivot->quantity }}</p>
+                        </div>
+                    </td>
+                    <td class="product-remove">
+                        <a href="{{ route('cart.product.edit', $product->id) }}"><i class="fa fa-pencil"></i></a>
+                        <form action="{{ route('admin.cart.product.delete') }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <input type="hidden" name="user_id" value="{{ $user_id }}">
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button style="display: contents;" type="submit"><a><i class="fa fa-times"></i></a></button>
+                        </form>
+                </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
     <!-- general form elements -->
     <div class="card card-primary">
       <div class="card-header">
@@ -35,8 +99,8 @@
       <div class="col-lg-6 m-1">
         <form action="{{ route('admin.add.to.cart') }}" method="post">
           @csrf
-          {{-- <div class="card-body"> --}}
-
+          <div class="card-body"> 
+            <input type="hidden" name="user_id" value="{{ $user_id }}">
           <div class="form-group">
             <label>{{ __('message.Select Product') }}</label>
             <select class="product" id="product" name="product_id">
@@ -52,19 +116,7 @@
             <input type="number" name="quantity" placeholder="Enter Quantity">
           </div>
 
-          <div class="form-group">
-            <label>{{ __('message.Select User') }}</label>
-            <select class="user" id="user" name="user_id">
-              <option value="0" selected disabled>
-                Select User
-              </option>
-              @foreach ($users as $user)
-                  <option value="{{ $user->id }}">{{ $user->name }}</option>
-              @endforeach
-            </select>
-          </div>
-
-        <div class="form-group">
+        {{-- <div class="form-group">
           <label>{{ __('message.Select Promocode') }}</label>
           <select class="promocode" id="promocode" name="promocode_id">
             <option value="0" selected disabled>
@@ -90,7 +142,7 @@
                 <label for="cash">{{ __('message.Cash on Delivery') }}<span>&nbsp; &nbsp; ( +5 EGP ) </span></label>
             </li>
           </ul>
-        </div>
+        </div> --}}
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Add</button>
         </div>

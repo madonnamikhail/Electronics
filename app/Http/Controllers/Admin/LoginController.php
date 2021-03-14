@@ -79,13 +79,13 @@ class LoginController extends Controller
         // return auth()->user()->permissions;
 
         ///// work around
-        // $flag =0;
-        // $roles_of_currrent_admin = auth()->user()->roles;
-        // foreach ($roles_of_currrent_admin as $role_of_currrent_admin) {
-        //     if($role_of_currrent_admin->name == "SuperAdmin"){
-        //         $flag = 1;
-        //     }
-        // }
+        $flag =0;
+        $roles_of_currrent_admin = auth()->user()->roles;
+        foreach ($roles_of_currrent_admin as $role_of_currrent_admin) {
+            if($role_of_currrent_admin->name == "SuperAdmin"){
+                $flag = 1;
+            }
+        }
         
 
 

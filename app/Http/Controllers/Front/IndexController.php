@@ -90,8 +90,8 @@ class IndexController extends Controller
         $data=$request->except('_token');
         // add record in pivot "cart"
         // return $product;
-        $user->product()->syncWithoutDetaching($data);
-        // $user->product()->syncWithoutDetaching($request->product_id, $data);
+        // $user->product()->syncWithoutDetaching($data);
+        $user->product()->syncWithoutDetaching($request->product_id, $data);
         // $product->user()->attach($data);
         return redirect()->back()->with('Success', 'Added Successfully to Cart');
     }
