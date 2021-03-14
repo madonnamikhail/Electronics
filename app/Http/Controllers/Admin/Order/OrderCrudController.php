@@ -60,7 +60,7 @@ class OrderCrudController extends Controller
     //
     public function show()
     {
-        
+
         // return $price;
         // return $products;
         // return redirect('admin/order/admin-add-cart')->back()->with('products','price');
@@ -112,14 +112,11 @@ class OrderCrudController extends Controller
     {
         $rules=[
                 "product_id"=>'required|exists:products,id',
-                "method_payment"=>'required',
-                "quantity"=>'required|integer',
-                "promocode_id"=>'required|exists:promocodes,id',
+               "quantity"=>'required|integer',
                 "user_id" => 'required|exists:users,id',
                 // "master_number" => '',
         ];
         $request->validate($rules);
-        
         // 1) add to cart
         $user = User::find($request->user_id);
         $user->product()->syncWithoutDetaching($request->product_id, ['quantity' => $request->quantity]);

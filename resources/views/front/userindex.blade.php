@@ -53,6 +53,7 @@
 </div>
 <!-- Hot Deals Banner End -->
 <!--  all sales Banner Start -->
+
 <div class="banner-area pt-100 pb-70">
     <div class="container">
         <div class="product-top-bar section-border mb-55">
@@ -206,7 +207,10 @@
                 <h3 class="section-title">New Products</h3>
             </div>
         </div>
-
+        <div class="row">
+        {{-- @php
+        $j=0;
+    @endphp --}}
             @foreach ($newest_products as $newest_product)
             <div class="col-3 d-flex">
                 <div class="product-wrapper-single">
@@ -215,7 +219,14 @@
                                         <a href="product-details.html">
                                             <img alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
                                         </a>
-                                        <span>-30%</span>
+                                        {{-- <span>-30%</span> --}}
+
+                                        {{-- @if ($offer_value[$j] != 1)
+                                             <span>{{ $offer_value[$j] }} </span>
+                                         @endif
+                                         @php
+                                             $j++;
+                                         @endphp --}}
                                         <div class="product-action">
                                             <a class="action-wishlist" href="#" title="Wishlist">
                                                 <i class="ion-android-favorite-outline"></i>
@@ -248,6 +259,7 @@
                             </div>
                         </div>
             @endforeach
+        </div>
 
 
     </div>
