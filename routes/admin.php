@@ -171,6 +171,11 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::delete('admin-delete-cart','OrderCrudController@AdminCartProductDelete')->name('admin.cart.product.delete');
             Route::post('admin-add-cart','OrderCrudController@adminAddToCart')->name('admin.add.to.cart');
 
+            // 5) add fl orders && order-product
+            Route::get('admin-proceed-checkout/{user_id}','OrderCrudController@adminProceedToCheckout')->name('admin.proceed.checkout'); 
+
+            Route::post('admin-place-order','OrderCrudController@adminPlaceOrder')->name('admin.place.order');
+
             //update
             Route::get('update/{id}/{action}','OrderCrudController@update')->name('update.order');
             // //delete

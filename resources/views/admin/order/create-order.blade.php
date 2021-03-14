@@ -66,6 +66,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="cart-shiping-update">
+      <a href="{{ route('admin.proceed.checkout', $user_id) }}">proceed to checkout</a>
+  </div>
 </div>
     <!-- general form elements -->
     <div class="card card-primary">

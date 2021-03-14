@@ -134,4 +134,41 @@ class OrderCrudController extends Controller
         $user = User::find($request->user_id)->product()->detach($request->product_id);
         return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
     }
+
+    public function adminProceedToCheckout($user_id)
+    {
+        $user = User::find($user_id);
+        $products = $user->product;
+        $price=[];
+        $priceWithOffer=[];
+        $i=0;
+
+        foreach ($products as $product){
+            // $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+             $product_offers=$product->offers;
+            if( $product_offers && count($product_offers)>0)
+            {
+                foreach ($product_offers as $product_offer)
+                    {
+                        // return $product_offer;
+                            $offer=(100-trim($product_offer->discount,"% , -"))/(100);
+                            $priceWithOffer[$i]=($product->price)*($offer);
+                            $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+                            // return $pro->discount;
+                    }
+            }
+            else{
+                    $priceWithOffer[$i]=($product->price)*1;
+                    $productPrice[$i]= ($product->pivot->quantity)*($product->price)*1;
+                }
+            $i++;
+        }
+
+        return view('admin.order.proceed-to-checkout',compact('user_id', 'products', 'productPrice','priceWithOffer'));
+    }
+
+    public function adminPlaceOrder(Request $request)
+    {
+        return $request;
+    }
 }
