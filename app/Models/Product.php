@@ -25,6 +25,7 @@ class Product extends Model
     }
     public function offers(){
         return $this->belongsToMany('App\Models\Offer','offer_product','product_id','offer_id');
+
     }
 
     public function supplier(){

@@ -9,40 +9,24 @@ use App\Models\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
+use NunoMaduro\Collision\Adapters\Phpunit\Printer;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
-    public function shop()
-    {
-        $categories=Category::get();
-        return view ('layouts.site',compact('categories'));
-    }
     public function index()
     {
-        // $categories=Category::get();
-        $products = Product::get();
-        $discount_amount=[];
-        $offerValues=[];
-        $i=0;
-        foreach($products as $product){
-            if(count($product->offers)>0){
-                $offerValues[$i]=$product->offers;
-                foreach( $offerValues[$i] as $offerValue){
-                   $discount_amount[$i]=$offerValue->discount;
-                   $offers=(100-trim($offerValue->discount,"% , -"))/(100);
-                   $price[$i] = $product->price * $offers;
-                }
-                // return $offerValues[$i]->discount;
-                // echo $offerValues[$i];
-                $i++;
-            }
-            else{
-                $discount_amount[$i]=1;
-                $price[$i] = $product->price;
-                $i++;
-            }
+        $products=Product::/*with('offers')->*/Join('offer_product','offer_product.product_id','=','products.id','left outer')
+                    ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
+                    ->select('products.id as products_id','products.photo as product_photo','products.*','offers.*',DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+                    ->orderBy('products.id', 'asc')
+                    ->take(5)->get();
+        // return $products;
 
-        }
+         //newest products
+         $newest_products=Product::with('offers')->orderBy('id', 'desc')->limit(4)->get();
+        //  return $newest_products->price;
+
         //Hot Deals(50% & 70% only from offers)
         $offers=Offer::get();
         $hot_deals=[];
@@ -65,11 +49,10 @@ class IndexController extends Controller
                 $j++;
             }
         }
-        //newest products
-        $newest_products=Product::orderBy('id', 'desc')->limit(5)->get();
+
 
         // return $offerValues;
-    return view('front.userindex', compact('products','offerValues','discount_amount','price','hot_deals','sales','newest_products'/*,'categories'*/));
+    return view('front.userindex', compact('products','hot_deals','sales','newest_products'/*,'categories'*/));
     }
     public function addCart(Request $request)
     {

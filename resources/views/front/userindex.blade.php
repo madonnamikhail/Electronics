@@ -81,7 +81,7 @@
     </div>
 </div>
 <!-- all sales Banner End -->
-<!-- Product Area Start -->
+<!-- Product Area Start (doneeeeeeeeeeeeeeeeeeeeee)-->
 <div class="product-area bg-image-1 pt-100 pb-95">
     <div class="container">
         @if(Session()->has('Success'))
@@ -97,22 +97,15 @@
                 @endphp
         @endif
         <div class="featured-product-active hot-flower owl-carousel product-nav">
-            @php
-                $i =0;
-            @endphp
             @foreach($products as $product)
             <div class="product-wrapper">
                 <div class="product-img">
                     <a href="product-details.html">
-                        <img alt="" src="{{ asset('images\product\\'. $product->photo ) }}">
+                        <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                     </a>
-                        @if ($discount_amount[$i] != 1)
-                            <span>{{ $discount_amount[$i] }}</span>
+                        @if($product->discount )
+                            <span>{{$product->discount}}%</span>
                         @endif
-                    {{-- @php
-                        $i++;
-                    @endphp --}}
-
                     <div class="product-action">
                         <a class="action-wishlist" href="#" title="Wishlist">
                             <i class="ion-android-favorite-outline"></i>
@@ -148,17 +141,13 @@
                         </div>
                     </div>
                     <div class="product-price-wrapper">
-
-                        @if ($discount_amount[$i] != 1)
-                            <span>EGP {{ $price[$i] }} -</span>
-                            <span class="product-price-old">EGP {{ $product->price}} </span>
+                        @if($product->discount )
+                                <span>EGP {{ $product->price_after_discount }} -</span>
+                                <span class="product-price-old">EGP {{ $product->price}} </span>
                         @else
-                            <span>EGP {{ $price[$i] }} </span>
+                            <span >EGP {{ $product->price}} </span>
                         @endif
 
-                        @php
-                        $i++;
-                    @endphp
                     </div>
                 </div>
             </div>
@@ -208,10 +197,8 @@
             </div>
         </div>
         <div class="row">
-        {{-- @php
-        $j=0;
-    @endphp --}}
             @foreach ($newest_products as $newest_product)
+            {{-- <h1> {{ $newest_product->price }}</h1> --}}
             <div class="col-3 d-flex">
                 <div class="product-wrapper-single">
                                 <div class="product-wrapper mb-30">
@@ -219,14 +206,11 @@
                                         <a href="product-details.html">
                                             <img alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
                                         </a>
-                                        {{-- <span>-30%</span> --}}
-
-                                        {{-- @if ($offer_value[$j] != 1)
-                                             <span>{{ $offer_value[$j] }} </span>
-                                         @endif
-                                         @php
-                                             $j++;
-                                         @endphp --}}
+                                        @foreach ($newest_product->offers as $offer)
+                                            @if($offer->discount)
+                                                <span>{{ $offer->discount }}%</span>
+                                            @endif
+                                        @endforeach
                                         <div class="product-action">
                                             <a class="action-wishlist" href="#" title="Wishlist">
                                                 <i class="ion-android-favorite-outline"></i>
@@ -250,10 +234,19 @@
                                                 <h4><a href="product-details.html">+ Add to cart</a></h4>
                                             </div>
                                         </div>
+
                                         <div class="product-price-wrapper">
-                                            <span>EGP {{ $newest_product->price }}-</span>
-                                            <span class="product-price-old">EGP{{ $newest_product->price }}</span>
+                                                @if(count($newest_product->offers)>0)
+                                                    @foreach ($newest_product->offers as $offer)
+                                                    <span>EGP {{ $newest_product->price*((100-$offer->discount)/100) }}-</span>
+                                                    <span class="product-price-old">EGP{{ $newest_product->price }}</span>
+                                                    @endforeach
+                                                @else
+                                                     <span >EGP{{ $newest_product->price }}</span>
+                                                @endif
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
