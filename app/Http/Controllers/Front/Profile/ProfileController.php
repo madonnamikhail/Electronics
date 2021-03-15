@@ -11,7 +11,7 @@ use App\Models\Region;
 use App\Models\Supplier;
 use App\User;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -32,7 +32,10 @@ class ProfileController extends Controller
         $suppliers=Supplier::get();
         $user_id = Auth::user()->id;
         // return $user_id;
-        $orders = Order::where('user_id','=', $user_id)->get();
+
+        // with...btzabat l products fl orders...mn4er l loop li t7t "if($orders && count($orders)>0){"
+        $orders = Order::with('products')->where('user_id','=', $user_id)->get();
+        // print_r($orders);die;
         // $orders = Order::find('user_id',$user_id);
         // return $orders;
         $products=[];
@@ -66,22 +69,26 @@ class ProfileController extends Controller
     }
     public function ProductRatingInsert(Request $request)
     {
-        $forgien_key=[];
-        $pivot_attribute=[];
-        $forgien_key['user_id']=$request->user_id;
-        $forgien_key['product_id']=$request->product_id;
-        $pivot_attribute['value']=$request->value;
-        $pivot_attribute['comment']=$request->comment;
+        // $forgien_key=[];
+        // $pivot_attribute=[];
+        // $forgien_key['user_id']=$request->user_id;
+        // $forgien_key['product_id']=$request->product_id;
+        $forgien_key = $request->only('user_id', 'product_id');
+        $pivot_attribute = $request->only('value', 'comment');
+        // $pivot_attribute['value']=$request->value;
+        // $pivot_attribute['comment']=$request->comment;
 
         // return "wsgwdhs";
-        $user=User::find($request->user_id);
+
+        // user_id should be given from the auth not from the from
+        $user_id = Auth::user()->id;
+        $user=User::findOrFail($user_id);
         $check=$user->productRate()->where('product_id', $forgien_key['product_id'])->exists();
-        if($check){
+        if($check)
             $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
-        }
-        else{
+        else
             $user->productRate()->attach($request->product_id,$pivot_attribute);
-        }
+        
         return redirect('profile');
     }
 

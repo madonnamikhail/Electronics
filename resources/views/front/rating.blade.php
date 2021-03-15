@@ -20,8 +20,7 @@
                 <h3 class="page-title">Your orders</h3>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        @if( $products[0] !=1)
-                            @foreach($orders as $order)
+                            @forelse($orders as $order)
                                 <form action="{{ route('product.rating') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="table-content table-responsive wishlist">
@@ -95,10 +94,12 @@
                                 </div>
                             </form>
                             <br><br>
-                        @endforeach
-                        @else
-                           <div class="alert alert-danger"> there are no orders yet !</div>
-                        @endif
+                            @empty
+                            <div class="alert alert-danger"> there are no orders yet !</div>
+                        @endforelse
+                        {{-- @else
+                           <div class="alert alert-danger"> there are no orders yet !</div> --}}
+                        {{-- @endif --}}
                     </div>
                 </div>
             </div>
