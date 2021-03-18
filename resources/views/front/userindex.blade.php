@@ -34,18 +34,16 @@
         </div>
         <div class="banner-wrap">
             <div class="row">
-                @foreach ($hot_deals as $hot_deal)
-                    <div class="col-lg-6 col-md-6">
-                        <div class="single-banner img-zoom mb-30">
-                            <a href="{{ route('hot.deals',$hot_deal->id) }}">
-                                <img src="{{ asset('images/offers/'.$hot_deal->photo ) }}" alt="">
-                            </a>
-                            <div class="banner-content">
-                                {{-- <h4>{{$hot_deal->discount}} Sale</h4> --}}
-                                {{-- <h5>Summer Vacation</h5> --}}
+                @foreach ($offers as $offer)
+                    @if ($offer->discount == 50 || $offer->discount > 50)
+                        <div class="col-lg-6 col-md-6">
+                            <div class="single-banner img-zoom mb-30">
+                                <a href="{{ route('hot.deals',$offer->id) }}">
+                                    <img style="width: 20%" src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
+                                </a>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -63,18 +61,16 @@
         </div>
         <div class="banner-wrap">
             <div class="row">
-                @foreach ($sales as $sale)
-                    <div class="col-lg-6 col-md-6">
-                        <div class="single-banner img-zoom mb-30">
-                            <a href="{{ route('hot.deals',$sale->id) }}">
-                                <img style="width:50%;"src="{{ asset('images/offers/'.$sale->photo ) }}" alt="">
-                            </a>
-                            <div class="banner-content">
-                                {{-- <h4>{{$hot_deal->discount}} Sale</h4> --}}
-                                {{-- <h5>Summer Vacation</h5> --}}
+                @foreach ($offers as $offer)
+                    @if ($offer->discount < 50)
+                        <div class="col-lg-6 col-md-6">
+                            <div class="single-banner img-zoom mb-30">
+                                <a href="{{ route('hot.deals',$offer->id) }}">
+                                    <img style="width:50%;"src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
+                                </a>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -130,10 +126,10 @@
                             <form action="{{ route('add.to.cart') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="product_id" value="{{ $product->products_id }}">
                                 <button type="submit">
                                     <a class="action-cart" title="Add To Cart">
-                                        + Add to cart
+                                        + Add to cartttt
                                         <i class="ion-ios-shuffle-strong"></i>
                                     </a>
                                 </button>

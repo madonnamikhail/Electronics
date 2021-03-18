@@ -57,47 +57,13 @@
                                                         <ul>
                                                             <li class="mega-menu-title">{{ $category->name_en }}</li>
                                                             @foreach(App\Models\Subcategory::get() as $subcategory)
-                                                                <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
+                                                                 @if ($category->id == $subcategory->category_id )
+                                                                    <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
+                                                                 @endif
                                                             @endforeach
                                                         </ul>
                                                     </li>
                                                     @endforeach
-                                                </ul>
-                                            </li>
-                                            <li class="top-hover"><a href="blog-left-sidebar.html">blog</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                                    <li><a href="#">Blog Standard <span><i class="ion-ios-arrow-right"></i></span></a>
-                                                        <ul class="lavel-menu">
-                                                            <li><a href="blog-left-sidebar.html">left sidebar</a></li>
-                                                            <li><a href="blog-right-sidebar.html">right sidebar</a></li>
-                                                            <li><a href="blog-no-sidebar.html">no sidebar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Post Types <span><i class="ion-ios-arrow-right"></i></span> </a>
-                                                        <ul class="lavel-menu">
-                                                            <li><a href="blog-details-standerd.html">Standard post</a></li>
-                                                            <li><a href="blog-details-audio.html">audio post</a></li>
-                                                            <li><a href="blog-details-video.html">video post</a></li>
-                                                            <li><a href="blog-details-gallery.html">gallery post</a></li>
-                                                            <li><a href="blog-details-link.html">link post</a></li>
-                                                            <li><a href="blog-details-quote.html">quote post</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="top-hover"><a href="#">pages</a>
-                                                <ul class="submenu">
-                                                    <li><a href="about-us.html">about us </a></li>
-                                                    <li><a href="shop.html">shop Grid</a></li>
-                                                    <li><a href="shop-list.html">shop list</a></li>
-                                                    <li><a href="product-details.html">product details</a></li>
-                                                    <li><a href="cart-page.html">cart page</a></li>
-                                                    <li><a href="checkout.html">checkout</a></li>
-                                                    <li><a href="wishlist.html">wishlist</a></li>
-                                                    <li><a href="my-account.html">my account</a></li>
-                                                    <li><a href="login-register.html">login / register</a></li>
-                                                    <li><a href="{{route('contact-us.message')}}">contact</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="{{route('contact-us.message')}}">contact</a></li>
@@ -222,52 +188,18 @@
                                             <li><a href="index-2.html">home version 2</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="#">pages</a>
-                                        <ul>
-                                            <li><a href="about-us.html">about us </a></li>
-                                            <li><a href="shop.html">shop Grid</a></li>
-                                            <li><a href="shop-list.html">shop list</a></li>
-                                            <li><a href="product-details.html">product details</a></li>
-                                            <li><a href="cart-page.html">cart page</a></li>
-                                            <li><a href="checkout.html">checkout</a></li>
-                                            <li><a href="wishlist.html">wishlist</a></li>
-                                            <li><a href="my-account.html">my account</a></li>
-                                            <li><a href="login-register.html">login / register</a></li>
-                                            <li><a href="{{route('contact-us.message')}}">contact</a></li>
-                                        </ul>
-                                    </li>
                                     <li><a href="shop.html"> Shop </a>
                                         <ul>
                                             @foreach (App\Models\Category::get() as $category)
                                                 <li><a href="#">{{ $category->name_en }}</a>
                                                     <ul>
                                                         @foreach(App\Models\Subcategory::get() as $subcategory)
-                                                            <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
+                                                            @if ($category->id == $subcategory->category_id )
+                                                                <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
+                                                            @endif
                                                         @endforeach
                                                     </ul>   
                                             @endforeach
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">BLOG</a>
-                                        <ul>
-                                            <li><a href="blog-masonry.html">Blog Masonry</a></li>
-                                            <li><a href="#">Blog Standard</a>
-                                                <ul>
-                                                    <li><a href="blog-left-sidebar.html">left sidebar</a></li>
-                                                    <li><a href="blog-right-sidebar.html">right sidebar</a></li>
-                                                    <li><a href="blog-no-sidebar.html">no sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">Post Types</a>
-                                                <ul>
-                                                    <li><a href="blog-details-standerd.html">Standard post</a></li>
-                                                    <li><a href="blog-details-audio.html">audio post</a></li>
-                                                    <li><a href="blog-details-video.html">video post</a></li>
-                                                    <li><a href="blog-details-gallery.html">gallery post</a></li>
-                                                    <li><a href="blog-details-link.html">link post</a></li>
-                                                    <li><a href="blog-details-quote.html">quote post</a></li>
-                                                </ul>
                                             </li>
                                         </ul>
                                     </li>

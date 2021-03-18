@@ -55,11 +55,19 @@
             <th>Price</th>
         </tr>
         @foreach($products as $product)
-            <tr>
-                <td>{{$product->name_en}}</td>
-                <td>{{$product->pivot->quantity}}</td>
-                <td>{{$product->price}}</td>
-            </tr>
+            @if ($product->user_id == $orderInsert['user_id'])
+                <tr>
+                    <td>{{$product->name_en}}</td>
+                    <td>{{$product->quantity}}</td>
+                    <td>
+                        @if ($product->discount)
+                            {{ $product->price_after_discount }}
+                        @else
+                            {{ $product->price }}
+                        @endif
+                    </td>
+                </tr>
+            @endif
         @endforeach
 
         <tr>

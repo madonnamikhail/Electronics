@@ -32,50 +32,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $i=0;
-                                $j=0;
-                            @endphp
-
                             @foreach ($products as $product)
+                                @if ($product->user_id == $user_id)
                                 <tr>
                                     <td class="product-thumbnail">
-                                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->photo ) }}" alt=""></a>
+                                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
                                     </td>
-                                    <input type="hidden" name="photo[]" value="{{ $product->photo }}">
+                                    <input type="hidden" name="photo[]" value="{{ $product->product_photo }}">
                                     <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
                                     <input type="hidden" name="name[]" value="{{ $product->name_en }}">
                                     <td class="product-price-cart"><span class="amount">
-                                        {{ $priceWithOffer[$j] }}
-                                        @php
-                                            $j++;
-                                        @endphp
+                                        @if ($product->discount)
+                                            {{ $product->price_after_discount }}
+                                            <input type="hidden" name="price[]" value="{{ $product->price_after_discount }}">
+                                        @else
+                                            {{ $product->price }}
+                                            <input type="hidden" name="price[]" value="{{ $product->price }}">
+                                        @endif
                                     </span></td>
-                                    <input type="hidden" name="price[]" value="{{ $product->price }}">
+                                    
 
                                     <td class="product-quantity">
                                         <div class="pro-dec-cart">
-                                            <p class="cart-plus-minus-box">{{ $product->pivot->quantity }}</p>
-                                            <input type="hidden" name="quantity[]" value="{{ $product->pivot->quantity }}">
+                                            <p class="cart-plus-minus-box">{{ $product->quantity }}</p>
+                                            <input type="hidden" name="quantity[]" value="{{ $product->quantity }}">
 
                                         </div>
                                     </td>
                                     <td>
-                                        @php
-                                            echo $productPrice[$i];
-                                        @endphp
-                                        <input type="hidden" name="productPrice[]" value="@php  echo $productPrice[$i]; $i++; @endphp">
+                                        @if ($product->discount)
+                                            {{ $product->total_price_after_discount }}
+                                            <input type="hidden" name="productPrice[]" value="{{ $product->total_price_after_discount }}">
+                                        @else
+                                            {{ $product->total_price }}
+                                            <input type="hidden" name="productPrice[]" value="{{ $product->total_price }}">
+                                        @endif
                                     </td>
                                 </tr>
-
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
                     <h5>{{ __('message.Net Total Price') }} <span>
-                        @php
+                        {{-- @php
                            $sum= array_sum($productPrice);
                            echo $sum;
-                        @endphp
+                        @endphp --}}
                         EGP
                     </span></h5>
                     <div class="total-shipping">

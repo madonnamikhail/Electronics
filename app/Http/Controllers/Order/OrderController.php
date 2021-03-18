@@ -7,10 +7,12 @@ use App\Models\Order;
 use App\Models\Promocode;
 use App\User;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
+use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -28,6 +30,9 @@ class OrderController extends Controller
         $request->validate($rules);
         $user_id = Auth::user()->id;
         $data=$request->except('_token');
+
+        // return $data;
+        // 1) insert in orders' table
         $orderInsert['status']=0;//order placed
         $orderInsert['amount']=array_sum($request->quantity);
         $orderInsert['total_price']=array_sum($request->productPrice);
@@ -36,6 +41,9 @@ class OrderController extends Controller
             $orderInsert['promoCodes_id']=$request->promoCodes_id;
         }
         Order::insert($orderInsert);
+
+        // return "m";
+        // 2) 
         $now=Carbon::now();
         $order_id=Order::where('user_id','=',$user_id)->latest('id')->first();
         // $orderInsert['order_id_mail']=$order_id;
@@ -43,33 +51,46 @@ class OrderController extends Controller
         // return $order_id->id ;
         $orderInsert['title'] = 'Thank you for your order';
         $orderInsert['body'] = 'body is';
-
         // return $user_id;
         $user = User::find($user_id);
         $orderInsert['userName'] = $user->name;
-        $products = $user->product;
-        $productPrice=[];
-        $priceWithOffer=[];
-        $i=0;
-        foreach ($products as $product){
-            if( $product->offers && count($product->offers)>0)
-            {
-                foreach ($product->offers as $pro){
-                    $offer=(100-trim($pro->discount,"% , -"))/(100);
-                    $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
-                    $priceWithOffer[$i]= ($product->price)*($offer);
+        // $products = $user->product;
+
+        $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
+                    ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
+                    ->join('carts','carts.product_id','=','products.id')
+                    ->select('carts.user_id as user_id','carts.quantity as quantity',
+                        'products.id as product_id',
+                        'products.photo as product_photo',
+                        'products.*',
+                        'offers.*',
+                        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'),
+                        DB::raw('(products.price *((100-offers.discount)/100)) * carts.quantity as total_price_after_discount'),
+                        DB::raw('products.price * carts.quantity as total_price'))
+                    ->orderBy('products.id', 'asc')->get();
+        // return $products;
+        // $productPrice=[];
+        // $priceWithOffer=[];
+        // $i=0;
+        // foreach ($products as $product){
+        //     if( $product->offers && count($product->offers)>0)
+        //     {
+        //         foreach ($product->offers as $pro){
+        //             $offer=(100-trim($pro->discount,"% , -"))/(100);
+        //             $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+        //             $priceWithOffer[$i]= ($product->price)*($offer);
 
 
-                    // return $productPrice;
-                }
-            }else{
-                $productPrice[$i]= ($product->pivot->quantity)*($product->price);
-                $priceWithOffer[$i]= ($product->price);
-            }
-            // return $productPrice;
-            // return $product->offers;
-            $i++;
-        }
+        //             // return $productPrice;
+        //         }
+        //     }else{
+        //         $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+        //         $priceWithOffer[$i]= ($product->price);
+        //     }
+        //     // return $productPrice;
+        //     // return $product->offers;
+        //     $i++;
+        // }
         $promoCode=$request->promoCodes_id;
         if($request->method_payment == 0.9){
             $paymentMethod="Master Card ( 10% Discount )";
@@ -80,7 +101,7 @@ class OrderController extends Controller
         $promoCode=Promocode::where('name','=',$request->promoCodes_id)->first();
         $ldate = date('Y-m-d');
         // $totalOrderValue=array_sum($request->productPrice); //mn4er offers..3shan tgili fl mail
-        $totalOrderValue=array_sum($productPrice);
+        $totalOrderValue=array_sum($request->productPrice);
         $orderInsert['subtotal'] = $totalOrderValue;
         $orderInsert['payment_method'] = $paymentMethod;
         $discount = 1;
@@ -121,25 +142,26 @@ class OrderController extends Controller
         $Order_Product=[];
         $pivot_forgien=[];
         foreach ($products as $product){
-            $pivot_forgien['product_id']= $product->id;
+            $pivot_forgien['product_id']= $product->product_id;
             $pivot_forgien['order_id']=$orderInsert['order_id'];
 
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
-            $Order_Product['quantity']=$product->pivot->quantity;
+            $Order_Product['quantity']=$product->quantity;
             $Order_Product['payment_method']=$orderInsert['payment_method'];
             $Order_Product['promocode']=$request->promoCodes_id;
             // return "ed";
-            $order_id->products()->attach($product->id,$Order_Product);
+            $order_id->products()->attach($product->product_id,$Order_Product);
             //attach(array want to change with forgirn key , attributes that will be changed)
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
         }
+        $orderInsert['user_id'] = $user_id;
         // return $Order_Product;
         $sendmail = new sendMail($orderInsert, $products);
 
         Mail::to(Auth::user()->email)->send($sendmail);
         // end of send mail
         // return redirect('place-order')->with('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date');
-        return view('front.order-done',compact('products','productPrice','priceWithOffer','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
+        return view('front.order-done',compact('products','user_id'/*,'productPrice','priceWithOffer'*/,'promoCode','paymentMethod','discount', 'rangValue', 'out_of_date'))->with('Success','Your Order Has Been Placed');
     }
 
 }

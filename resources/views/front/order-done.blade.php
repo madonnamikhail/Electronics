@@ -30,43 +30,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $i=0;
-
-                            @endphp
                             @foreach ($products as $product)
+                                @if ($product->user_id == $user_id)
                                 <tr>
                                     <td class="product-thumbnail">
-                                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->photo ) }}" alt=""></a>
+                                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
                                     </td>
                                     <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
 
                                     <td class="product-price-cart"><span class="amount">
-                                       {{ $priceWithOffer[$i]}}
+                                        @if ($product->discount)
+                                            {{ $product->price_after_discount }}
+                                            <input type="hidden" name="price[]" value="{{ $product->price_after_discount }}">
+                                        @else
+                                            {{ $product->price }}
+                                            <input type="hidden" name="price[]" value="{{ $product->price }}">
+                                        @endif
                                       
                                     </span></td>
 
                                     <td class="product-quantity">
                                         <div class="pro-dec-cart">
-                                            <p class="cart-plus-minus-box">{{ $product->pivot->quantity }}</p>
+                                            <p class="cart-plus-minus-box">{{ $product->quantity }}</p>
 
                                         </div>
                                     </td>
                                     <td>
-                                        @php
-                                            echo $productPrice[$i];
-                                            $i++;
-                                        @endphp
+                                        @if ($product->discount)
+                                            {{ $product->total_price_after_discount }}
+                                            <input type="hidden" name="productPrice[]" value="{{ $product->total_price_after_discount }}">
+                                        @else
+                                            {{ $product->total_price }}
+                                            <input type="hidden" name="productPrice[]" value="{{ $product->total_price }}">
+                                        @endif
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
                     <h5>{{ __('message.Net Total Price') }} <span>
-                        @php
+                        {{-- @php
                            $sum= array_sum($productPrice);
                            echo $sum;
-                        @endphp
+                        @endphp --}}
                         EGP
                     </span></h5>
                     <div class="total-shipping">
@@ -103,7 +110,7 @@
                     </div>
                         <h4 class="grand-totall-title">Grand Total  <span>
 
-                            @php
+                            {{-- @php
                                 if($discount != 1){
                                     if($paymentMethod == "Master Card ( 10% Discount )")
                                         $grand_total= $sum * (0.9) * $discount;
@@ -119,7 +126,7 @@
                                         $grand_total= $sum + (5);
                                     echo $grand_total . "EGP";
                                 }
-                            @endphp
+                            @endphp --}}
                         </span>
                     </h4>
         </div>
