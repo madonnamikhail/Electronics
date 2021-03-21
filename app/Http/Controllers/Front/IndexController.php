@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\Region;
 use App\User;
+use Facade\Ignition\Middleware\AddLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use NunoMaduro\Collision\Adapters\Phpunit\Printer;
@@ -50,6 +54,10 @@ class IndexController extends Controller
     {
         // get l carts
         $user_id = Auth::user()->id;
+        $regions = Region::get();
+        $cities = City::get();
+        $addresses = Address::where('user_id', '=', $user_id)->get();
+        // return $addresses;
         $user = User::find($user_id);
         $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
                     ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
@@ -61,7 +69,7 @@ class IndexController extends Controller
                         'offers.*',
                         DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
                     ->orderBy('products.id', 'asc')->get();
-        return view('front.cart', compact('products','user_id'));
+        return view('front.cart', compact('products','user_id','addresses','regions','cities'));
     }
 
     public function cartClear()
@@ -104,7 +112,19 @@ class IndexController extends Controller
         return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
     }
 
-    public function cartTotal(){
+    public function cartTotal(Request $request){
+        // return $request;
+        $rules=[
+            'address_id'=>'exists:addresss,id|required',
+
+        ];
+        $request->validate($rules);
+
+        $address_id=$request->address_id;
+        $address=Address::where('id','=',$request->address_id)->first();
+        $regions = Region::get();
+        $cities = City::get();
+        // return $address_id;
         $user_id = Auth::user()->id;
         $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
                     ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
@@ -118,7 +138,7 @@ class IndexController extends Controller
                         DB::raw('(products.price *((100-offers.discount)/100)) * carts.quantity as total_price_after_discount'),
                         DB::raw('products.price * carts.quantity as total_price'))
                     ->orderBy('products.id', 'asc')->get();
-        return view('front.cart-total',compact('products','user_id'));
+        return view('front.cart-total',compact('products','user_id','address','address_id','regions','cities'));
     }
     public function hotDeals($id)
     {

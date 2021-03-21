@@ -181,7 +181,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
                                                             <div class="entries-info text-center">
-                                                                {{-- @foreach ($addresses as $address) --}}
+                                                                @foreach ($addresses as $address)
                                                                 @if (!$address)
                                                                     <p>No Address Entered !</p>
                                                                     <button><a href="{{ route('profile.create.address') }}">Add Address</a></button>
@@ -219,20 +219,25 @@
                                                                                 <input type="hidden" name="address_id" value="{{ $address->id }}">
                                                                                 <button type="submit">Delete</button>
                                                                             </form>
-                                                                            {{-- <a href="">Delete</a> --}}
                                                                         </div>
                                                                     </div>
                                                                 @endif
+                                                            @endforeach
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                 </div>
+
                                                 <div class="billing-back-btn">
                                                     <div class="billing-back">
                                                         <a href="#"><i class="ion-arrow-up-c"></i> back</a>
                                                     </div>
+                                                    <div>
+                                                        <button><a href="{{ route('profile.create.address') }}">Add Address</a></button>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>

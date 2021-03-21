@@ -84,16 +84,15 @@
         </tr>
         <tr>
             <td colspan="2" style="font-weight: bold;">PromoCode Used:</td>
-            {{-- @php
-                $orderInsert['promoCodes_id'] = true;
-            @endphp --}}
-            @if($orderInsert['flag'])
+
+            @if($orderInsert['flag'] and $orderInsert['usage'])
                 <td>{{$orderInsert['promoCodes_id']}}
                 <br>
-                    @if($orderInsert['rangValue'] != 1 and $orderInsert['out_of_date'] != 1)
-                    <div class="alert alert-danger">
-                        {{ $orderInsert['rangValue'] }} and {{ $orderInsert['out_of_date'] }}
-                    </div>
+
+                    @if($orderInsert['rangValue'] != 1 and $orderInsert['out_of_date'] != 1 )
+                        <div class="alert alert-danger">
+                            {{ $orderInsert['rangValue'] }} and {{ $orderInsert['out_of_date'] }}
+                        </div>
                     @elseif($orderInsert['rangValue'] != 1)
                         <div class="alert alert-danger">
                             {{ $orderInsert['rangValue'] }}
@@ -101,6 +100,10 @@
                     @elseif($orderInsert['out_of_date'] != 1)
                         <div class="alert alert-danger">
                             {{ $orderInsert['out_of_date'] }}
+                        </div>
+                    @elseif($orderInsert['usage'] != 1)
+                        <div class="alert alert-danger">
+                            {{ $orderInsert['usage'] }}
                         </div>
                     @endif
                 </td>
@@ -112,12 +115,12 @@
         <tr>
             <td colspan="2" style="font-weight: bold;">Grand Total:</td>
             @php
-                if($orderInsert['discount'] != 1){
+                if($orderInsert['discountOfPromocode'] != 1){
                     if($orderInsert['payment_method'] == "Master Card ( 10% Discount )")
-                        $grand_total= $orderInsert['subtotal'] * (0.9) * $orderInsert['discount'];
+                        $grand_total= $orderInsert['subtotal'] * (0.9) * $orderInsert['discountOfPromocode'];
 
                     elseif ($orderInsert['payment_method'] == "Cash On Delivery ( +5 EGP )")
-                        $grand_total= $orderInsert['subtotal'] + (5) * $orderInsert['discount'];
+                        $grand_total= $orderInsert['subtotal'] + (5) * $orderInsert['discountOfPromocode'];
                     // echo $grand_total . "EGP";
                 }else{
                     if($orderInsert['payment_method'] == "Master Card ( 10% Discount )")
@@ -131,9 +134,29 @@
             <td>{{$grand_total}} EGP</td>
         </tr>
         <tr>
-            <td colspan="2" style="font-weight: bold;">Mailing Address:</td>
-            <td>{{$orderInsert['payment_method']}}</td>
+            <td colspan="2" style="font-weight: bold;">Delivery Address:</td>
+            <td>
+                {{-- {{$orderInsert['payment_method']}} --}}
+                <p> Flat number: {{ $orderInsert['address']->flat }} ,  Building number: {{ $orderInsert['address']->building }} ,
+                    Floor Number: {{ $orderInsert['address']->floor }}, Street Name: {{ $orderInsert['address']->street_en }} ,
+                   @foreach ($orderInsert['regions'] as $region)
+                       @if($region->id == $orderInsert['address']->region_id)
+                           Region: {{ $region->name_en }}
+                           @php
+                               $region_city_id = $region->city_id;
+                           @endphp
+                       @endif
+                   @endforeach
+               ,
+                       @foreach ($orderInsert['cities'] as $city)
+                           @if($city->id == $region_city_id)
+                               City: {{ $city->name_en }}
+                           @endif
+                       @endforeach
+               </p>
+            </td>
         </tr>
+
         </table>
 
 

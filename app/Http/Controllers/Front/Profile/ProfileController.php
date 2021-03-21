@@ -21,10 +21,10 @@ class ProfileController extends Controller
         $user_info = User::find($user_id);
         $regions = Region::get();
         $cities = City::get();
-        $address = Address::where('user_id', '=', $user_id)->first();
+        $addresses = Address::where('user_id', '=', $user_id)->get();
         // return $address->flat;
         // return $addresses;
-        return view('front.profile',compact('user_info','address', 'regions', 'cities'));
+        return view('front.profile',compact('user_info','addresses', 'regions', 'cities'));
     }
     public function getRating()
     {
@@ -88,7 +88,7 @@ class ProfileController extends Controller
             $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
         else
             $user->productRate()->attach($request->product_id,$pivot_attribute);
-        
+
         return redirect('profile');
     }
 
@@ -193,5 +193,9 @@ class ProfileController extends Controller
         Address::insert($data);
         return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
 
+    }
+    public function chooseAddress()
+    {
+        
     }
 }

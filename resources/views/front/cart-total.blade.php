@@ -7,8 +7,11 @@
             <div class="title-wrap">
                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
             </div>
+
             <form method="post" action="{{ route('place.order') }}" enctype="multipart/form-data">
                 @csrf
+                {{-- 3ayzeno 3shan al address yfdal m3aya --}}
+                <input type="hidden" name="address_id" value="{{ $address_id }}">
                  <table>
                         @if(Session()->has('Success'))
                             <div class="alert alert-success">{{ Session()->get('Success') }}</div>
@@ -50,13 +53,12 @@
                                             <input type="hidden" name="price[]" value="{{ $product->price }}">
                                         @endif
                                     </span></td>
-                                    
+
 
                                     <td class="product-quantity">
                                         <div class="pro-dec-cart">
                                             <p class="cart-plus-minus-box">{{ $product->quantity }}</p>
                                             <input type="hidden" name="quantity[]" value="{{ $product->quantity }}">
-
                                         </div>
                                     </td>
                                     <td>
@@ -68,11 +70,37 @@
                                             <input type="hidden" name="productPrice[]" value="{{ $product->total_price }}">
                                         @endif
                                     </td>
+
                                 </tr>
                                 @endif
                             @endforeach
                         </tbody>
                     </table>
+
+                        <section class="">
+                            <h3>Order will be deliverd to :</h3>
+                            <p> Flat number: {{ $address->flat }} ,  Building number: {{ $address->building }} ,
+                                 Floor Number: {{ $address->floor }}, Street Name: {{ $address->street_en }} ,
+                                @foreach ($regions as $region)
+                                    @if($region->id == $address->region_id)
+                                        Region: {{ $region->name_en }}
+                                        @php
+                                            $region_city_id = $region->city_id;
+                                        @endphp
+                                    @endif
+                                @endforeach
+                            ,
+                                    @foreach ($cities as $city)
+                                        @if($city->id == $region_city_id)
+                                            City: {{ $city->name_en }}
+                                        @endif
+                                    @endforeach
+                            </p>
+
+                        </section>
+
+
+
                     <h5>{{ __('message.Net Total Price') }} <span>
                         {{-- @php
                            $sum= array_sum($productPrice);

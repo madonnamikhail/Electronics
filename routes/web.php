@@ -31,7 +31,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         //delete product from cart
         Route::delete('/cart-delete','IndexController@cartProductDelete')->name('cart.product.delete');
         //proceed cart
-        Route::get('cart-total','IndexController@cartTotal')->name('get.cart.total');
+        Route::post('cart-total','IndexController@cartTotal')->name('get.cart.total');
 
         ########################## Profile
         Route::group(['namespace'=>'profile'], function(){
@@ -51,6 +51,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
 
             Route::get('/profile/creating-address','ProfileController@profileCreateAddress')->name('profile.create.address');
             Route::post('/profile/storing-address','ProfileController@profileStoreAddress')->name('profile.store.address');
+            Route::get('choose_address','ProfileController@chooseAddress')->name('choose.address');
         });
         ########################## end profile
     });

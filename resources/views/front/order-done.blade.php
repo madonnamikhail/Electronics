@@ -46,7 +46,7 @@
                                             {{ $product->price }}
                                             <input type="hidden" name="price[]" value="{{ $product->price }}">
                                         @endif
-                                      
+
                                     </span></td>
 
                                     <td class="product-quantity">
@@ -69,6 +69,27 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <section class="">
+                        <h3>Order will be deliverd to :</h3>
+                        <p><span style="font-weight:800">Flat number: </span> {{ $address->flat }} , <span style="font-weight:800"> Building number:</span>{{ $address->building }} ,
+                            <span  style="font-weight:800"> Floor Number: </span>{{ $address->floor }} , <span style="font-weight:800">Street Name: </span> {{ $address->street_en }} ,
+                            @foreach ($regions as $region)
+                                @if($region->id == $address->region_id)
+                                  <span style="font-weight:800">Region:</span>   {{ $region->name_en }}
+                                    @php
+                                        $region_city_id = $region->city_id;
+                                    @endphp
+                                @endif
+                            @endforeach
+                        ,
+                                @foreach ($cities as $city)
+                                    @if($city->id == $region_city_id)
+                                    <span style="font-weight:800">  City:</span>  {{ $city->name_en }}
+                                    @endif
+                                @endforeach
+                        </p>
+
+                    </section>
                     <h5>{{ __('message.Net Total Price') }} <span>
                         {{-- @php
                            $sum= array_sum($productPrice);
@@ -84,9 +105,14 @@
                         <div class="discount-code-wrapper">
                             <div class="title-wrap">
                                <h4 class="cart-bottom-title section-bg-gray">Promo Code :
-                                @if ($promoCode)
+                                @if ($promoCode and $usage)
                                     {{ $promoCode->name }}
-                                    @if($rangValue != 1 and $out_of_date != 1)
+
+                                    @if($usage != 1)
+                                        <div class="alert alert-danger">
+                                            {{ $usage }}
+                                        </div>
+                                    @elseif($rangValue != 1 and $out_of_date != 1)
                                         <div class="alert alert-danger">
                                             {{ $rangValue }} and {{ $out_of_date }}
                                         </div>
@@ -98,6 +124,7 @@
                                         <div class="alert alert-danger">
                                             {{ $out_of_date }}
                                         </div>
+
                                     @endif
                                 @else
                                     No Promo Code Entered !
@@ -109,14 +136,18 @@
                         </div>
                     </div>
                         <h4 class="grand-totall-title">Grand Total  <span>
-
+                            @if($promocode_type)
+                                {{ "type:percentage" }}
+                            @else
+                                {{ "type:fixed" }}
+                            @endif
                             {{-- @php
-                                if($discount != 1){
+                                if($discountOfPromocode != 1){
                                     if($paymentMethod == "Master Card ( 10% Discount )")
-                                        $grand_total= $sum * (0.9) * $discount;
+                                        $grand_total= $sum * (0.9) * $discountOfPromocode;
 
                                     elseif ($paymentMethod == "Cash On Delivery ( +5 EGP )")
-                                        $grand_total= ($sum + (5)) * $discount;
+                                        $grand_total= ($sum + (5)) * $discountOfPromocode;
                                     echo $grand_total . "EGP";
                                 }else{
                                     if($paymentMethod == "Master Card ( 10% Discount )")
