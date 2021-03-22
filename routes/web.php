@@ -26,6 +26,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::get('/hot_deals/{id}', 'IndexController@hotDeals')->name('hot.deals');
 
 
+
         Route::get('/cart-edit/{product_id}','IndexController@cartProductEdit')->name('cart.product.edit');
         Route::post('/cart-update/{product_id}','IndexController@cartProductUpdate')->name('cart.product.update');
         //delete product from cart
@@ -54,6 +55,20 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('choose_address','ProfileController@chooseAddress')->name('choose.address');
         });
         ########################## end profile
+
+        #################### start Shop
+        Route::group(['namespace'=>'shop'], function(){
+            Route::get('shop','ShopController@getShop')->name('get.shop');
+            Route::post('shop-load-more','ShopController@loadMore')->name('load.more');
+            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category');
+        });
+
+        ################# end shop
+
+        ############### start product single page
+        Route::group(['namespace'=>'singlePage'],function(){
+            Route::get('single-page/{id}', 'SinglePageController@getProoductSinglePage')->name('get-product-single-page');
+        });
     });
 
     ###################### end front

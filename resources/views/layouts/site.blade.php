@@ -8,6 +8,8 @@
         <meta name="description" content="">
         <meta name="robots" content="noindex, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{-- <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}"> --}}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logoo.png') }}">
 		<!-- all css here -->
@@ -23,6 +25,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/meanmenu.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+        <link rel="stylesheet" href="css/baseTheme/style.css" type="text/css" media="all" />
         <script src="{{ asset('assets/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     </head>
     <body>
@@ -50,7 +53,7 @@
                                                 </ul>
                                             </li>
                                             <li><a href="about-us.html">about</a></li>
-                                            <li class="mega-menu-position top-hover"><a href="shop.html">shop</a>
+                                            <li class="mega-menu-position top-hover"><a href="{{ route('get.shop') }}">shop</a>
                                                 <ul class="mega-menu">
                                                     @foreach (App\Models\Category::get() as $category)
                                                     <li>
@@ -402,6 +405,7 @@
 
 		<!-- all js here -->
         <script src="{{ asset('assets/js/vendor/jquery-1.12.0.min.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script src="{{ asset('assets/js/popper.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/imagesloaded.pkgd.min.js') }}"></script>

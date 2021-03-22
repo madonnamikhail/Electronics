@@ -25,7 +25,7 @@ class IndexController extends Controller
                     ->select('products.id as products_id','products.photo as product_photo','products.*','offers.*',DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
                     ->orderBy('products.id', 'asc')
                     ->take(5)->get();
-
+        // return $products;
         //newest products
         $newest_products=Product::with('offers')->orderBy('id', 'desc')->limit(4)->get();
 

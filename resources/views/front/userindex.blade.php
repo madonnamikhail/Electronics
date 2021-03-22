@@ -96,7 +96,7 @@
             @foreach($products as $product)
             <div class="product-wrapper">
                 <div class="product-img">
-                    <a href="product-details.html">
+                    <a href="{{ route('get-product-single-page', $product->products_id) }}">
                         <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                     </a>
                         @if($product->discount )
@@ -129,7 +129,7 @@
                                 <input type="hidden" name="product_id" value="{{ $product->products_id }}">
                                 <button type="submit">
                                     <a class="action-cart" title="Add To Cart">
-                                        + Add to cartttt
+                                        + Add to cart
                                         <i class="ion-ios-shuffle-strong"></i>
                                     </a>
                                 </button>
@@ -150,6 +150,7 @@
             @endforeach
         </div>
     </div>
+    <a href="{{ route('get.shop') }}">Load More</a>
 </div>
 <!-- Product Area End -->
 <!-- Banner Start -->
@@ -199,7 +200,7 @@
                 <div class="product-wrapper-single">
                                 <div class="product-wrapper mb-30">
                                     <div class="product-img">
-                                        <a href="product-details.html">
+                                        <a href="{{ route('get-product-single-page', $product->products_id) }}">
                                             <img alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
                                         </a>
                                         @foreach ($newest_product->offers as $offer)
@@ -223,7 +224,7 @@
                                         <div class="product-hover-style">
                                             <div class="product-title">
                                                 <h4>
-                                                    <a href="product-details.html">{{ $newest_product->name_en }}</a>
+                                                    <a href="{{ route('get-product-single-page', $product->products_id) }}">{{ $newest_product->name_en }}</a>
                                                 </h4>
                                             </div>
                                             <div class="cart-hover">
