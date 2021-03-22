@@ -130,27 +130,27 @@
                                             <div class="billing-information-wrapper">
                                                 <div class="account-info-wrapper">
                                                     <h4>Change Password</h4>
-                                                    <h5>Your Password</h5>
+                                                    {{-- <h5>Your Password</h5> --}}
                                                 </div>
                                                 <div class="row">
                                                     <form action="{{ route('profile.change.password') }}" method="post">
                                                         @csrf
                                                         <div class="col-lg-12 col-md-12">
                                                             <div class="billing-info">
-                                                                <label>Old Password</label>
-                                                                <input type="password" name="old_password" placeholder="Enter your password">
+                                                                <label>Current Password</label>
+                                                                <input  class ="form-control" type="password" name="old_password" placeholder="Enter your password">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12">
                                                             <div class="billing-info">
-                                                                <label>Password</label>
-                                                                <input type="password" name="password" placeholder="Enter new password">
+                                                                <label>New Password</label>
+                                                                <input class ="form-control" type="password" name="password" placeholder="Enter new password">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12">
                                                             <div class="billing-info">
-                                                                <label>Password Confirm</label>
-                                                                <input type="password" name="confirm_password" placeholder="Confirm password">
+                                                                <label>Confirm New Password</label>
+                                                                <input class ="form-control" type="password" name="confirm_password" placeholder="Confirm password">
                                                             </div>
                                                         </div>
                                                         <div class="billing-back-btn">

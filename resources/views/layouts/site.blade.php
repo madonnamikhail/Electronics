@@ -26,7 +26,16 @@
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
         <link rel="stylesheet" href="css/baseTheme/style.css" type="text/css" media="all" />
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+           <!-- jQuery library -->
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+           <!-- Popper JS -->
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+           <!-- Latest compiled JavaScript -->
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{{ asset('assets/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        @yield('css')
     </head>
     <body>
         <!-- header start -->
@@ -45,6 +54,28 @@
                             <div class="header-bottom-right">
                                 <div class="main-menu">
                                     <nav>
+
+                                        <div class="col-md-12 mx-auto bg-light rounded p-4">
+                                            <form action="{{ route('search.box') }}" method="post" class="p-3">
+                                                @csrf
+                                              <div class="input-group">
+                                                <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
+                                                 placeholder="Search..." autocomplete="on" required style="width:80%" >
+                                                {{-- <div class="input-group-append"> --}}
+                                                  <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0" style="width:20%">
+                                                {{-- </div> --}}
+                                              </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-12" style="position: relative;margin-top: -38px;margin-left: 215px;">
+                                            <div class="list-group" id="show-list">
+                                              <!-- Here autocomplete list will be display -->
+                                              {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
+
+
+                                            </div>
+                                        </div>
+
                                         <ul>
                                             <li class="top-hover"><a href="index.html">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
@@ -110,6 +141,9 @@
                                                             </li>
                                                             <li>
                                                                 <a class="dropdown-item" href="{{ route('get.cart') }}">cart</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('get.rating') }}">My Orders</a>
                                                             </li>
                                                         </ul>
                                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -201,7 +235,7 @@
                                                                 <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
                                                             @endif
                                                         @endforeach
-                                                    </ul>   
+                                                    </ul>
                                             @endforeach
                                             </li>
                                         </ul>
@@ -405,8 +439,10 @@
 
 		<!-- all js here -->
         <script src="{{ asset('assets/js/vendor/jquery-1.12.0.min.js') }}"></script>
+
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script src="{{ asset('assets/js/popper.js') }}"></script>
+
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/imagesloaded.pkgd.min.js') }}"></script>
         <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
@@ -414,6 +450,36 @@
         <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('assets/js/plugins.js') }}"></script>
         <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script type="text/javascript">
+                $(document).ready(function () {
+                    // Send Search Text to the server
+                    $("#search").keyup(function () {
+                        let searchText = $(this).val();
+                        var token = $('meta[name="csrf-token"]').attr('content');
+
+                        if (searchText != "") {
+                        $.ajax({
+                            url: '{{ route('search.box') }}',
+                            type: 'post',
+                            data: {
+                            _token : token ,
+                            query: searchText,
+                            },
+                            success: function (response) {
+                            $("#show-list").html(response);
+                            },
+                        });
+                        } else {
+                        $("#show-list").html("");
+                        }
+                    });
+                    // Set searched text in input field on click of search button
+                    $(document).on("click", "#product_search", function () {
+                        $("#search").val($(this).text());
+                        $("#show-list").html("");
+                    });
+                    });
+        </script>
         @yield('script')
     </body>
 

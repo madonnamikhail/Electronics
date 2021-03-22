@@ -12,6 +12,7 @@ use App\Models\Supplier;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -38,19 +39,20 @@ class ProfileController extends Controller
         // print_r($orders);die;
         // $orders = Order::find('user_id',$user_id);
         // return $orders;
-        $products=[];
-        $i=0;
-        if($orders && count($orders)>0){
-            foreach($orders as $order){
-                $products[$i] =  $order->products;
-                // return $products[$i];
-                $i++;
-            }
-        }else{
-            $products[$i] =1;
-        }
+
+        // $products=[];
+        // $i=0;
+        // if($orders && count($orders)>0){
+        //     foreach($orders as $order){
+        //         $products[$i] =  $order->products;
+        //         // return $products[$i];
+        //         $i++;
+        //     }
+        // }else{
+        //     $products[$i] =1;
+        // }
         // return $products;
-        return view('front.rating', compact('orders','products','suppliers'));
+        return view('front.rating', compact('orders'/*,'products',*/,'suppliers'));
     }
     public function ProductRating(Request $request)
     {
@@ -126,7 +128,30 @@ class ProfileController extends Controller
     public function profileChangePassword(Request $request)
     {
         //bycrpt
+        $user_pass=Auth::user()->password;
+        if (Hash::check($request->old_password, $user_pass))
+        {
+            if($request->password == $request->confirm_password){
+                //update in user table
+                $hashed_pass=Hash::make($request->confirm_password);
+                // return $hashed_pass;
+                $update=User::where('id','=', Auth::user()->id)->update(['password' => $hashed_pass]);
+                    if($update){
+                        return "updated";
+                    }
+                    else{
+                        return "not updated";
+                    }
+
+            }
+            else{
+                return "pass doesnot match";
+            }
+        }else{
+            return "wrong old password";
+        }
         return $request;
+
     }
     public function profileDeleteAddress(Request $request)
     {
@@ -196,6 +221,6 @@ class ProfileController extends Controller
     }
     public function chooseAddress()
     {
-        
+
     }
 }

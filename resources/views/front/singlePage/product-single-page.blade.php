@@ -2,7 +2,7 @@
 @section('title','product single page')
 @section('content')
     <div class="col-lg-12">
-        
+
         <!-- Breadcrumb Area Start -->
         <div class="breadcrumb-area bg-image-3 ptb-150">
             <div class="container">
@@ -23,26 +23,7 @@
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-img">
                             <img class="zoompro" src="{{ asset('images\product\\'. $product->product_photo ) }}" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg" alt="zoom"/>
-                            {{-- <div id="gallery" class="mt-20 product-dec-slider owl-carousel">
-                                <a data-image="assets/img/product-details/product-detalis-l1.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s1.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l2.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl2.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s2.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l3.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl3.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s3.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l4.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl4.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s4.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l5.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl5.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s5.jpg" alt="">
-                                </a>
-                                <a data-image="assets/img/product-details/product-detalis-l2.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl2.jpg">
-                                    <img src="assets/img/product-details/product-detalis-s2.jpg" alt="">
-                                </a>
-                            </div> --}}
+                        
                             @if($product->discount )
                                 <span>{{$product->discount}}%</span>
                             @endif
@@ -62,7 +43,7 @@
                                 </div>
                                 <div class="pro-dec-review">
                                     <ul>
-                                        <li>{{  }} Reviews </li>
+                                        <li>32 Reviews </li>
                                         <li> Add Your Reviews</li>
                                     </ul>
                                 </div>

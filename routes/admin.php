@@ -154,13 +154,14 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         });
         Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
             Route::get('show-order','OrderCrudController@show')->name('show.order');
+            
             // add order (Ajax):
             // 1)
             Route::get('add-order','OrderCrudController@add')->name('add.order');
-            // 2) 
+            // 2)
             Route::get('get-subcategories', 'OrderCrudController@getSubcategoriesByCategoryId')->name('get.subcategory.by.category_id');
-            
-            //3) 
+
+            //3)
             Route::get('get-products', 'OrderCrudController@getProductsBySubcategoryId');
 
 
@@ -172,7 +173,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('admin-add-cart','OrderCrudController@adminAddToCart')->name('admin.add.to.cart');
 
             // 5) add fl orders && order-product
-            Route::get('admin-proceed-checkout/{user_id}','OrderCrudController@adminProceedToCheckout')->name('admin.proceed.checkout'); 
+            Route::get('admin-proceed-checkout/{user_id}','OrderCrudController@adminProceedToCheckout')->name('admin.proceed.checkout');
 
             Route::post('admin-place-order','OrderCrudController@adminPlaceOrder')->name('admin.place.order');
 

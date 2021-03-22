@@ -18,6 +18,27 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
+    public function searchBox(Request $request)
+    {
+        // return $request->search;
+        $search_data='H';
+        // $products=Product::where('id', '=', '1')->get();
+        $products=Product::where('name_en', 'LIKE', '%'.$request->search.'%')->get();
+
+        // return $products;
+
+        if(count($products)>0){
+            foreach($products as $product){
+                echo "<a href ='".route('get-product-single-page',$product->id)."' class='list-group-item list-group-item-action border-1' id='product_search'>".$product->name_en."</a>";
+            }
+        }else
+        {
+            echo "<p class='list-group-item border-1'>No Records</p>";
+        }
+
+
+    }
+
     public function index()
     {
         $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
@@ -148,4 +169,5 @@ class IndexController extends Controller
         $discount_value=$offers->discount;
         return view('front.hot_deals',compact('products_offers','discount_value'));
     }
+
 }

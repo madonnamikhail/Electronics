@@ -2,7 +2,7 @@
 @section('title','Shop')
 @section('content')
     <div class="col-lg-12">
-        
+
         <!-- Breadcrumb Area Start -->
         <div class="breadcrumb-area bg-image-3 ptb-150">
             <div class="container">
@@ -133,7 +133,7 @@
                                             $id = $product->product_id;
                                         @endphp
                                     @empty
-                                        
+
                                     @endforelse
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
                                         <div class="label-input">
                                             <input type="text" id="amount" name="price"  placeholder="Add Your Price" />
                                         </div>
-                                        <button type="button">Filter</button> 
+                                        <button type="button">Filter</button>
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +295,7 @@
             </div>
         </div>
 		<!-- Shop Page Area End -->
-        
+
     </div>
 @endsection
 @section('script')
@@ -306,16 +306,33 @@
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
                 event.preventDefault();
+                
                 var id = $('#load_more').data('id');
+                var token = $('meta[name="csrf-token"]').attr('content');
                 console.log(id);
+                // $.ajax({
+                //     url: '{{ route('load.more') }}',
+                //     type: 'post',
+                //     data: {
+                //         _token : token ,
+                //         id: id}
+                //     success: function(response) {
+                //         console.log("mmmm");
+                //     }
+                // });
                 $.ajax({
-                    url: '{{ route('load.more') }}',
-                    type: 'post',
-                    data: { id: id}
-                    success: function(response) {
-                        console.log("mmmm");
-                    }
-                });
+                            url: '{{ route('load.more') }}',
+                            type: 'post',
+                            data: {
+                            _token : token ,
+                            id: id,
+                            },
+                            success: function (response) {
+                                 console.log("mmmm");
+                                $('#remove_row').remove();
+                                $('#products_container').append(response);
+                            },
+                        });
             });
         });
     </script>
@@ -356,21 +373,21 @@ function fetchCauseAgainstCategory(id) {
         success: function (response) {
             var response = JSON.parse(response);
             console.log(response);
-            
+
             if (response.length == 0) {
                 $('.causes_div').append('No Data Found');
             } else {
                 response.forEach(element => {
                     $('.causes_div').append(`<div href="#" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 r_Causes IMGsize">
-                      
+
                             <div class="img_thumb">
                             <div class="h-causeIMG">
                                 <img src="${element.photo}" alt="" />
                                 </div>
-                           
+
                             </div>
                             <h3>${element.name_en}</h3>
-                      
+
                     </div>`);
                     // $('.causes_div').append(``);
                 });

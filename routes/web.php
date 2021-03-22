@@ -19,6 +19,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
 
     ###################### front
     Route::group(['namespace'=>'Front'], function(){
+        //search box
+        Route::post('/search-box','IndexController@searchBox')->name('search.box');
+
         Route::get('/index', 'IndexController@index')->name('index.page');
         Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
         Route::get('/cart', 'IndexController@getCart')->name('get.cart');
@@ -35,11 +38,13 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::post('cart-total','IndexController@cartTotal')->name('get.cart.total');
 
         ########################## Profile
-        Route::group(['namespace'=>'profile'], function(){
+        Route::group(['namespace'=>'profile' , 'middleware'=>'auth'], function(){
             Route::get('/profile', 'ProfileController@getProfile')->name('get.profile');
             Route::get('/rating','ProfileController@getRating')->name('get.rating');
             Route::post('/rating/product','ProfileController@ProductRating')->name('product.rating');
             Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
+            // Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
+
 
             ####### changing user data
             Route::post('/profile/changing-info', 'ProfileController@profileChangeInfo')->name('profile.change.info');

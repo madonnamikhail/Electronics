@@ -48,7 +48,10 @@
                                                     $i=0;
                                                 @endphp
 
-                                                    @foreach ($products[$i] as $product)
+                                                    @foreach ($order->products as $product)
+                                                        {{-- @foreach ($products as $product)
+                                                                {{ $product->id }}
+                                                        @endforeach --}}
                                                         <tr>
                                                             <td class="product-thumbnail">
                                                                 <input type="hidden" name="id[]" value="{{ $product->id }}">
@@ -94,7 +97,7 @@
                                 </div>
                             </form>
                             <br><br>
-                            @empty
+                        @empty
                             <div class="alert alert-danger"> there are no orders yet !</div>
                         @endforelse
                         {{-- @else

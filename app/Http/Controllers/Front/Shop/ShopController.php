@@ -21,13 +21,13 @@ class ShopController extends Controller
                     ->limit(6)->get();
 
         $categories = Category::get();
-        
+
         // return $products;
         return view('front.shop.shop-page', compact('products','categories'));
     }
 
     public function get_causes_against_category($id){
-     
+
         $data = Subcategory::where('category_id','=',$id)
                 ->join('products','products.subCategory_id','=','subcategories.id' ,'left outer')
                 ->get();
@@ -40,11 +40,14 @@ class ShopController extends Controller
         $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
                     ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                     ->select('products.id as product_id','products.photo as product_photo','products.*',
-                    'products.details_en as product_details_en','products.details_ar as product_details_ar','offers.*',DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))->where('products.id','>',$request->id)
+                    'products.details_en as product_details_en','products.details_ar as product_details_ar','offers.*',
+                    DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+                    ->where('products.id','>',$request->id)
                     ->orderBy('products.id', 'asc')
                     ->take(6)->get();
         // return response()->json($data);
         // return $products;
+        // <img alt='' src='{{ asset('images\product\\'. $product->product_photo ) }}'>
         $output = "";
         foreach($products as $product){
             $output .= "
@@ -52,9 +55,9 @@ class ShopController extends Controller
             <div class='product-wrapper'>
                 <div class='product-img'>
                     <a href='product-details.html'>
-                        <img alt='' src='{{ asset('images\product\\'. $product->product_photo ) }}'>
+
                     </a>";
-                    
+
                     if($product->discount ){
                         $output .= "<span>{{$product->discount}}%</span>";
                     }
