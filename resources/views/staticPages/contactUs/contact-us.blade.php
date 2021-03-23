@@ -8,7 +8,7 @@
                 <div class="breadcrumb-content text-center">
 					<h3>CONTACT US</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('index.page') }}">Home</a></li>
                         <li class="active">Contact us </li>
                     </ul>
                 </div>

@@ -22,7 +22,7 @@ class ShopController extends Controller
                     ->select('products.id as product_id','products.photo as product_photo','products.*',
                     'products.details_en as product_details_en','products.details_ar as product_details_ar','offers.*',DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
                     ->orderBy('products.id', 'asc')
-                    /*->limit(6)*/->get();
+                    ->limit(6)->get();
 
         $categories = Category::get();
 

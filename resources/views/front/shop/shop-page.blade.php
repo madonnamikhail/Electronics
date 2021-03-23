@@ -9,7 +9,7 @@
                 <div class="breadcrumb-content text-center">
 					<h3>SHOP PAGE</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('index.page') }}">Home</a></li>
                         <li class="active">SHOP PAGE</li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
                                         <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                             <div class="product-wrapper">
                                                 <div class="product-img">
-                                                    <a href="product-details.html">
+                                                    <a href="{{ route('get-product-single-page', $product->product_id) }}">
                                                         <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                                                     </a>
                                                     @if($product->discount )
@@ -328,7 +328,7 @@
 {{-- <script src="jslibs/jquery.js" type="text/javascript"></script>
 <script src="jslibs/ajaxupload-min.js" type="text/javascript"></script> --}}
 
-    {{-- <script>
+    <script>
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
                 event.preventDefault();
@@ -358,9 +358,9 @@
                     },
                     // dataType:"text",
                     success: function (response) {
-                        if(response != '')  
-                        { 
+                        if(response != ''){ 
                             console.log("mmmm");
+                            console.log(response);
                             $('#remove_row').remove();
                             $('#products_container').append(response);
                         }else{
@@ -370,7 +370,7 @@
                 });
             });
         });
-    </script> --}}
+    </script>
     <script>
         $(document).ready(function() {
             $(document).on('click', '.category_checkbox', function () {

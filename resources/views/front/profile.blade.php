@@ -7,7 +7,7 @@
                 <div class="breadcrumb-content text-center">
 					<h3>MY ACCOUNT</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('index.page') }}">Home</a></li>
                         <li class="active">My Account</li>
                     </ul>
                 </div>

@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-6">
                             <div class="logo">
-                                <a href="index.html">
+                                <a href="{{ route('index.page') }}">
                                     <img alt="" src="{{ asset('assets/img/logo/logo.png') }}">
                                 </a>
                             </div>
@@ -77,9 +77,9 @@
                                         </div>
 
                                         <ul>
-                                            <li class="top-hover"><a href="index.html">{{ __('message.HOME') }}</a>
+                                            <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
-                                                    <li><a href="index.html">home version 1</a></li>
+                                                    <li><a href="{{ route('index.page') }}">home version 1</a></li>
                                                     <li><a href="index-2.html">home version 2</a></li>
                                                 </ul>
                                             </li>
@@ -219,9 +219,9 @@
                         <div class="mobile-menu">
                             <nav id="mobile-menu-active">
                                 <ul class="menu-overflow">
-                                    <li><a href="#">HOME</a>
+                                    <li><a href="{{ route('index.page') }}">HOME</a>
                                         <ul>
-                                            <li><a href="index.html">home version 1</a></li>
+                                            <li><a href="{{ route('index.page') }}">home version 1</a></li>
                                             <li><a href="index-2.html">home version 2</a></li>
                                         </ul>
                                     </li>
