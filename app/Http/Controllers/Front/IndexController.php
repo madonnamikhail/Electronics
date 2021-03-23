@@ -20,13 +20,14 @@ class IndexController extends Controller
 {
     public function searchBox(Request $request)
     {
-        // return $request->search;
-        $search_data='H';
+        // return $request->all();
+        $search_data= $request->searchText;
         // $products=Product::where('id', '=', '1')->get();
-        $products=Product::where('name_en', 'LIKE', '%'.$request->search.'%')->get();
+        $products=Product::where('name_en', 'LIKE', '%'.$search_data.'%')->get();
 
         // return $products;
 
+        // return count($products);
         if(count($products)>0){
             foreach($products as $product){
                 echo "<a href ='".route('get-product-single-page',$product->id)."' class='list-group-item list-group-item-action border-1' id='product_search'>".$product->name_en."</a>";
@@ -35,8 +36,6 @@ class IndexController extends Controller
         {
             echo "<p class='list-group-item border-1'>No Records</p>";
         }
-
-
     }
 
     public function index()

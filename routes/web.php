@@ -65,7 +65,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::group(['namespace'=>'shop'], function(){
             Route::get('shop','ShopController@getShop')->name('get.shop');
             Route::post('shop-load-more','ShopController@loadMore')->name('load.more');
-            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category');
+            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
+            // price slider filter
+            Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
         });
 
         ################# end shop

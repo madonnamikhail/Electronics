@@ -454,7 +454,7 @@
                 $(document).ready(function () {
                     // Send Search Text to the server
                     $("#search").keyup(function () {
-                        let searchText = $(this).val();
+                        var searchText = $(this).val();
                         var token = $('meta[name="csrf-token"]').attr('content');
 
                         if (searchText != "") {
@@ -463,10 +463,11 @@
                             type: 'post',
                             data: {
                             _token : token ,
-                            query: searchText,
+                            searchText: searchText,
                             },
                             success: function (response) {
-                            $("#show-list").html(response);
+                                console.log(response);
+                                $("#show-list").html(response);
                             },
                         });
                         } else {

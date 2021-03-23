@@ -53,7 +53,20 @@
                         </div>
                         <div class="grid-list-product-wrapper">
                             <div class="product-grid product-view pb-20">
-                                <div class="row" id="products_container">
+                                <div class="row filter_data causes_div" id="products_container ">
+                                    @if(Session()->has('Success'))
+                                        <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+                                        @php
+                                        Session()->forget('Success');
+                                        @endphp
+                                    @endif
+                                    @if(Session()->has('Error'))
+                                        <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+                                        @php
+                                        Session()->forget('Error');
+                                        @endphp
+                                    @endif
+
                                     @forelse ($products as $product)
                                         <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                             <div class="product-wrapper">
@@ -198,10 +211,10 @@
                                     </ul>
                                 </div> --}}
                                 <div class="card leftNav cate-sect mb-30">
-                                    <p>Refine By:<span class="">(0 items)</span></p>
+                                    <p>Refine By:<span class="_t-item">(0 items)</span></p>
                                     <div class="" id="catFilters"></div>
                                 </div>
-                                <div class="sidebar-list-style mt-20 ">
+                                <div id="collapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
                                     <ul>
                                         @php
                                             $counter =0;
@@ -226,7 +239,7 @@
                             </div>
                             <div class="shop-price-filter mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">Price Filter</h4>
-                                <div class="price_filter mt-25">
+                                {{-- <div class="price_filter mt-25">
                                     <span>Range:  $100.00 - 1.300.00 </span>
                                     <div id="slider-range"></div>
                                     <div class="price_slider_amount">
@@ -235,8 +248,21 @@
                                         </div>
                                         <button type="button">Filter</button>
                                     </div>
+                                </div> --}}
+                                <div class="col-lg-12">                                
+                                    <div class="list-group">
+                                        <h3>Price</h3>
+                                        <input type="hidden" id="hidden_minimum_price" value="0" />
+                                        <input type="hidden" id="hidden_maximum_price" value="65000" />
+                                        <p id="price_show">10 - 5000</p>
+                                        <div id="price_range"></div>
+                                    </div>                
                                 </div>
-                            </div>
+                                <div class="col-md-9">
+                                    <br />
+                                   <div class="row ">
+                                    </div>
+                                </div>
                             <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">By Brand</h4>
                                 <div class="sidebar-list-style mt-20">
@@ -302,7 +328,7 @@
 {{-- <script src="jslibs/jquery.js" type="text/javascript"></script>
 <script src="jslibs/ajaxupload-min.js" type="text/javascript"></script> --}}
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
                 event.preventDefault();
@@ -320,80 +346,133 @@
                 //         console.log("mmmm");
                 //     }
                 // });
+                // $.when.on('click','#load_more').done(function () {
+                    
+                // });
                 $.ajax({
-                            url: '{{ route('load.more') }}',
-                            type: 'post',
-                            data: {
-                            _token : token ,
-                            id: id,
-                            },
-                            success: function (response) {
-                                 console.log("mmmm");
-                                $('#remove_row').remove();
-                                $('#products_container').append(response);
-                            },
-                        });
+                    url: '{{ route('load.more') }}',
+                    type: 'post',
+                    data: {
+                    _token : token ,
+                    id: id,
+                    },
+                    // dataType:"text",
+                    success: function (response) {
+                        if(response != '')  
+                        { 
+                            console.log("mmmm");
+                            $('#remove_row').remove();
+                            $('#products_container').append(response);
+                        }else{
+                            $('#load_more').html("No Data");
+                        }
+                    },
+                });
             });
         });
-    </script>
+    </script> --}}
     <script>
         $(document).ready(function() {
-    $(document).on('click', '.category_checkbox', function () {
+            $(document).on('click', '.category_checkbox', function () {
+                var ids = [];
+                var counter = 0;
+                $('#catFilters').empty();
+                $('.category_checkbox').each(function () {
+                    if ($(this).is(":checked")) {
+                        ids.push($(this).attr('id'));
+                        $('#catFilters').
+                        append(`<div class="alert fade show alert-color _add-secon" role="alert"> ${$(this).attr('attr-name')}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button> </div>`);
+                        counter++;
+                    }
+                });
 
-        var ids = [];
+                $('._t-item').text('(' + ids.length + ' items)');
 
-        var counter = 0;
-        $('#catFilters').empty();
-        $('.category_checkbox').each(function () {
-            if ($(this).is(":checked")) {
-                ids.push($(this).attr('id'));
-                $('#catFilters').append(`<div class="alert fade show alert-color _add-secon" role="alert"> ${$(this).attr('attr-name')}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> </div>`);
-                counter++;
-            }
+                // if (counter == 0) {
+                //     $('.causes_div').empty();
+                //     $('.causes_div').append('No Data Found');
+                // } else {
+                    fetchCauseAgainstCategory(ids);
+                // }
+            });
         });
 
-        $('._t-item').text('(' + ids.length + ' items)');
+        function fetchCauseAgainstCategory(id) {
 
-        if (counter == 0) {
             $('.causes_div').empty();
-            $('.causes_div').append('No Data Found');
-        } else {
-            fetchCauseAgainstCategory(ids);
+
+            $.ajax({
+                type: 'GET',
+                url: 'get_causes_against_category/' + id,
+                success: function (response) {
+                    var response = response;
+                    // console.log("l response: ");
+                    // console.log(response);
+                    var t = "looping";
+                    // $('.causes_div').append(response);
+                    $('.causes_div').append('lpllpllplplpl');
+
+                    // if (response.length == 0) {
+                    //     $('.causes_div').append('No Data Found');
+                    // } else {
+                    //     response.forEach(element => {
+                    //         $('.causes_div').append(`<div href="#" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 r_Causes IMGsize">
+
+                    //                 <div class="img_thumb">
+                    //                 <div class="h-causeIMG">
+                    //                     <img src="${element.photo}" alt="" />
+                    //                     </div>
+
+                    //                 </div>
+                    //                 <h3>${element.name_en}</h3>
+
+                    //         </div>`);
+                    //         $('.causes_div').append(response);
+                    //     });
+                    // }
+                }
+            });
         }
-    });
-});
-
-function fetchCauseAgainstCategory(id) {
-
-    $('.causes_div').empty();
-
-    $.ajax({
-        type: 'GET',
-        url: 'get_causes_against_category/' + id,
-        success: function (response) {
-            var response = JSON.parse(response);
-            console.log(response);
-
-            if (response.length == 0) {
-                $('.causes_div').append('No Data Found');
-            } else {
-                response.forEach(element => {
-                    $('.causes_div').append(`<div href="#" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 r_Causes IMGsize">
-
-                            <div class="img_thumb">
-                            <div class="h-causeIMG">
-                                <img src="${element.photo}" alt="" />
-                                </div>
-
-                            </div>
-                            <h3>${element.name_en}</h3>
-
-                    </div>`);
-                    // $('.causes_div').append(``);
-                });
-            }
-        }
-    });
-}
     </script>
+
+    {{-- <script>
+        $(document).ready(function(){
+        filter_data();
+        function filter_data()
+        {
+            $('.filter_data').html('<div id="loading" style="" ></div>');
+            var action = 'fetch_data';
+            var minimum_price = $('#hidden_minimum_price').val();
+            var maximum_price = $('#hidden_maximum_price').val();
+            var token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url:'{{route('price.filter')}}',
+                type:"POST",
+                // data:JSON.stringify({_token : token ,action:action, minimum_price:minimum_price, maximum_price:maximum_price}),
+                data:{_token : token ,action:action, minimum_price:minimum_price, maximum_price:maximum_price},
+                success:function(data){
+                    $('.filter_data').html(data);
+                    // console.log("huhuuh");
+                    // console.log(data);
+                }
+            });
+        }
+        $('#price_range').slider({
+            range:true,
+            min:50,
+            max:5000,
+            values:[50, 5000],
+            step:50,
+            stop:function(event, ui)
+            {
+                $('#price_show').html(ui.values[0] + ' - ' + ui.values[1]);
+                $('#hidden_minimum_price').val(ui.values[0]);
+                $('#hidden_maximum_price').val(ui.values[1]);
+                filter_data();
+            }
+        });
+    });
+    </script> --}}
 @endsection
