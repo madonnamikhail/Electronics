@@ -9,7 +9,7 @@
                 <div class="breadcrumb-content text-center">
 					<h3>SHOP PAGE</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('index.page') }}">Home</a></li>
                         <li class="active">SHOP PAGE</li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
                                         <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                             <div class="product-wrapper">
                                                 <div class="product-img">
-                                                    <a href="product-details.html">
+                                                    <a href="{{ route('get-product-single-page', $product->product_id) }}">
                                                         <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                                                     </a>
                                                     @if($product->discount )
@@ -93,7 +93,7 @@
                                                     <div class="product-hover-style">
                                                         <div class="product-title">
                                                             <h4>
-                                                                </h4><a href="#">{{ $product->name_en }}</a>
+                                                                </h4><a href="{{ route('get-product-single-page', $product->product_id) }}">{{ $product->name_en }}</a>
                                                             </h4>
                                                         </div>
                                                         <div class="cart-hover">
@@ -168,8 +168,8 @@
                                 <div class="total-pages">
                                     <p>Showing 1 - 20 of 30 results  </p>
                                 </div> --}}
-                                    <button class="alert alert-success ml-auto mr-auto w-100 h-100vh" 
-                                    style="outline: none; border:none" id="load_more" 
+                                    <button class="alert alert-success ml-auto mr-auto w-100 h-100vh"
+                                    style="outline: none; border:none" id="load_more"
                                     data-id="{{ $id }}" type="button" {{--onclick="loadingMore()"--}}>Load More</button>
                             </div>
                         </div>
@@ -229,7 +229,7 @@
                                                 <label class="custom-control-label"
                                                     for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
                                             </li> --}}
-                                            <li><input id="{{$category->id}}" type="checkbox" {{($counter == 0 ? 'checked':'')}} 
+                                            <li><input id="{{$category->id}}" type="checkbox" {{($counter == 0 ? 'checked':'')}}
                                                 attr-name="{{$category->name_en }}" class="category_checkbox">
                                                 <label for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
                                             @php
@@ -253,14 +253,14 @@
                                         <button type="button">Filter</button>
                                     </div>
                                 </div> --}}
-                                <div class="col-lg-12">                                
+                                <div class="col-lg-12">
                                     <div class="list-group">
                                         <h3>Price</h3>
                                         <input type="hidden" id="hidden_minimum_price" value="0" />
                                         <input type="hidden" id="hidden_maximum_price" value="65000" />
                                         <p id="price_show">10 - 5000</p>
                                         <div id="price_range"></div>
-                                    </div>                
+                                    </div>
                                 </div>
                                 <div class="col-md-9">
                                     <br />
@@ -269,30 +269,50 @@
                                 </div>
                             <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">By Brand</h4>
-                                <div class="sidebar-list-style mt-20">
+
+                                <div class="card leftNav cate-sect mb-30">
+                                    <p>Refine By:<span class="_t-item_brand">(0 items)</span></p>
+                                    <div class="" id="brandFilters"></div>
+                                </div>
+                                <div id="brandcollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
                                     <ul>
-                                        <li><input type="checkbox"><a href="#">Green </a>
-                                        <li><input type="checkbox"><a href="#">Herbal </a></li>
-                                        <li><input type="checkbox"><a href="#">Loose </a></li>
-                                        <li><input type="checkbox"><a href="#">Mate </a></li>
-                                        <li><input type="checkbox"><a href="#">Organic </a></li>
-                                        <li><input type="checkbox"><a href="#">White  </a></li>
-                                        <li><input type="checkbox"><a href="#">Yellow Tea </a></li>
-                                        <li><input type="checkbox"><a href="#">Puer Tea </a></li>
+                                        @php
+                                            $counterb =0;
+                                        @endphp
+                                        @forelse ($brands as $brand)
+                                            <li><input id="{{$brand->id}}" type="checkbox" {{($counterb == 0 ? 'checked':'')}}
+                                                brand-attr-name="{{$brand->name_en }}" class="brand_checkbox">
+                                                <label for="{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
+                                            @php
+                                                $counterb ++;
+                                            @endphp
+                                        @empty
+                                            <li><input type="checkbox"><a href="#">There are no cats</a>
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
                             <div class="shop-widget mt-40 shop-sidebar-border pt-35">
-                                <h4 class="shop-sidebar-title">By Color</h4>
-                                <div class="sidebar-list-style mt-20">
+                                <h4 class="shop-sidebar-title">By Subcategory</h4>
+                                <div class="card leftNav cate-sect mb-30">
+                                    <p>Refine By:<span class="_t-item_subcategory">(0 items)</span></p>
+                                    <div class="" id="subcategoryFilters"></div>
+                                </div>
+                                <div id="subcategorycollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
                                     <ul>
-                                        <li><input type="checkbox"><a href="#">Black </a></li>
-                                        <li><input type="checkbox"><a href="#">Blue </a></li>
-                                        <li><input type="checkbox"><a href="#">Green </a></li>
-                                        <li><input type="checkbox"><a href="#">Grey </a></li>
-                                        <li><input type="checkbox"><a href="#">Red</a></li>
-                                        <li><input type="checkbox"><a href="#">White  </a></li>
-                                        <li><input type="checkbox"><a href="#">Yellow   </a></li>
+                                        @php
+                                            $countersubcategory =0;
+                                        @endphp
+                                        @forelse ($subCategories as $subCategory)
+                                            <li><input id="{{$subCategory->id}}" type="checkbox" {{($countersubcategory == 0 ? 'checked':'')}}
+                                                subcategory-attr-name="{{$subCategory->name_en }}" class="subcategory_checkbox">
+                                                <label for="{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
+                                            @php
+                                                $countersubcategory ++;
+                                            @endphp
+                                        @empty
+                                            <li><input type="checkbox"><a href="#">There are no cats</a>
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
@@ -332,12 +352,12 @@
 {{-- <script src="jslibs/jquery.js" type="text/javascript"></script>
 <script src="jslibs/ajaxupload-min.js" type="text/javascript"></script> --}}
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
             // function loadingMore() {
                event.preventDefault();
-                
+
                 var id = $('#load_more').data('id');
                 var token = $('meta[name="csrf-token"]').attr('content');
                 console.log(id);
@@ -350,7 +370,7 @@
                     },
                     // dataType:"text",
                     success: function (response) {
-                        if(response != ''){ 
+                        if(response != ''){
                             console.log("mmmm");
                             $('#remove_row').remove();
                             $('#products_container').append(response);
@@ -358,13 +378,47 @@
                             $('#load_more').html("No Data");
                         }
                     },
-                }); 
+                });
             // }
-                
+
             });
         });
-    </script>
-    <script>
+    </script> --}}
+    {{-- loadmore --}}
+    {{-- <script>
+        $(document).ready(function(){
+            $(document).on('click','#load_more', function(event){
+            // function loadingMore() {
+               event.preventDefault();
+
+                var id = $('#load_more').data('id');
+                var token = $('meta[name="csrf-token"]').attr('content');
+                console.log(id);
+                $.ajax({
+                    url: '{{ route('load.more') }}',
+                    type: 'post',
+                    data: {
+                    _token : token ,
+                    id: id,
+                    },
+                    // dataType:"text",
+                    success: function (response) {
+                        if(response != ''){
+                            console.log("mmmm");
+                            $('#remove_row').remove();
+                            $('#products_container').append(response);
+                        }else{
+                            $('#load_more').html("No Data");
+                        }
+                    },
+                });
+            // }
+
+            });
+        });
+    </script> --}}
+    {{-- category script --}}
+    {{-- <script>
         $(document).ready(function() {
             $(document).on('click', '.category_checkbox', function () {
                 var ids = [];
@@ -374,8 +428,10 @@
                     if ($(this).is(":checked")) {
                         ids.push($(this).attr('id'));
                         $('#catFilters').
-                        append(`<div class="alert fade show alert-color _add-secon" role="alert"> ${$(this).attr('attr-name')}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                        append(`<div class="alert fade show alert-color _add-secon"
+                        role="alert"> ${$(this).attr('attr-name')}
+                            <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close"><span aria-hidden="true">×</span>
                                 </button> </div>`);
                         counter++;
                     }
@@ -428,6 +484,92 @@
                 }
             });
         }
+    </script> --}}
+    {{-- brand script --}}
+    {{-- <script>
+        $(document).ready(function() {
+            $(document).on('click', '.brand_checkbox', function () {
+                var ids = [];
+                var counter = 0;
+                $('#brandFilters').empty();
+                $('.brand_checkbox').each(function () {
+                    if ($(this).is(":checked")) {
+                        ids.push($(this).attr('id'));
+                        $('#brandFilters').
+                        append(`<div class="alert fade show alert-color _add-secon" role="alert"> ${$(this).attr('brand-attr-name')}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button> </div>`);
+                        counter++;
+                    }
+                });
+
+                $('._t-item_brand').text('(' + ids.length + ' items)');
+
+                if (counter == 0) {
+                    $('.causes_div').empty();
+                    $('.causes_div').append('No Data Found');
+                } else {
+                    fetchCauseAgainstbrand(ids);
+                }
+            });
+        });
+
+        function fetchCauseAgainstbrand(id) {
+            $('.causes_div').empty();
+            $.ajax({
+                type: 'GET',
+                url: 'get-brand/' + id,
+                success: function (response) {
+                    var response = response;
+                    console.log(response);
+                    $('.causes_div').append(response);
+                }
+            });
+        }
+    </script> --}}
+     {{-- subcategory script --}}
+     <script>
+        $(document).ready(function() {
+            $(document).on('click', '.subcategory_checkbox', function () {
+                var Subids = [];
+                var countersubcategory = 0;
+                $('#subcategoryFilters').empty();
+                $('.subcategory_checkbox').each(function () {
+                    if ($(this).is(":checked")) {
+                        Subids.push($(this).attr('id'));
+                        $('#subcategoryFilters').
+                        append(`<div class="alert fade show alert-color _add-secon"
+                         role="alert"> ${$(this).attr('subcategory-attr-name')}
+                            <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close"><span aria-hidden="true">×</span>
+                                </button> </div>`);
+                        countersubcategory++;
+                    }
+                });
+
+                $('._t-item_subcategory').text('(' + Subids.length + ' items)');
+
+                // if (countersubcategory == 0) {
+                //     $('.causes_div').empty();
+                //     $('.causes_div').append('No Data Found');
+                // } else {
+                    fetchCauseAgainstSubcategory(Subids);
+                // }
+            });
+        });
+
+        function fetchCauseAgainstSubcategory(Subids) {
+            $('.causes_div').empty();
+            $.ajax({
+                type: 'GET',
+                url: 'get-subcategory/' + Subids,
+                success: function (response) {
+                    var response = response;
+                    console.log(response);
+                    $('.causes_div').append(response);
+                }
+            });
+        }
     </script>
 
     {{-- <script>
@@ -443,7 +585,6 @@
             $.ajax({
                 url:'{{route('price.filter')}}',
                 type:"POST",
-                // data:JSON.stringify({_token : token ,action:action, minimum_price:minimum_price, maximum_price:maximum_price}),
                 data:{_token : token ,action:action, minimum_price:minimum_price, maximum_price:maximum_price},
                 success:function(data){
                     $('.filter_data').html(data);

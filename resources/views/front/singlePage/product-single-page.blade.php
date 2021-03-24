@@ -23,7 +23,7 @@
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-img">
                             <img class="zoompro" src="{{ asset('images\product\\'. $product->product_photo ) }}" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg" alt="zoom"/>
-                        
+
                             @if($product->discount )
                                 <span>{{$product->discount}}%</span>
                             @endif
@@ -34,17 +34,17 @@
                             <h4>{{ $product->name_en }}</h4>
                             <div class="rating-review">
                                 <div class="pro-dec-rating">
-                                    @for($i=0;$i<$product->value;$i++)
+                                    @for($i=0;$i<$product->rating_average;$i++)
                                         <i class="ion-android-star-outline theme-star"></i>
                                     @endfor
-                                    @for($i=0;$i>5-($product->value);$i++)
+                                    @for($i=0;$i<5-($product->rating_average);$i++)
                                         <i class="ion-android-star-outline"></i>
                                     @endfor
                                 </div>
                                 <div class="pro-dec-review">
                                     <ul>
-                                        <li>32 Reviews </li>
-                                        <li> Add Your Reviews</li>
+                                        <li>{{ $product->user_rating_count }} Reviews </li>
+                                        {{-- <li><a>Add Your Reviews</a></li> --}}
                                     </ul>
                                 </div>
                             </div>
@@ -124,14 +124,15 @@
                     <div class="tab-content description-review-bottom">
                         <div id="des-details1" class="tab-pane active">
                             <div class="product-description-wrapper">
-                                <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam est usus legentis in iis qui facit eorum claritatem. </p>
+                                <p>{{ $product->product_details_en }}</p>
+                                {{-- <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam est usus legentis in iis qui facit eorum claritatem. </p>
                                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
                                 <ul>
                                     <li>-  Typi non habent claritatem insitam</li>
                                     <li>-  Est usus legentis in iis qui facit eorum claritatem. </li>
                                     <li>-  Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius.</li>
                                     <li>-  Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</li>
-                                </ul>
+                                </ul> --}}
                             </div>
                         </div>
                         <div id="des-details2" class="tab-pane">
@@ -149,42 +150,31 @@
                         </div>
                         <div id="des-details3" class="tab-pane">
                             <div class="rattings-wrapper">
-                                <div class="sin-rattings">
-                                    <div class="star-author-all">
-                                        <div class="ratting-star f-left">
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <span>(5)</span>
+                                @forelse ($ratings as $rating)
+                                    <div class="sin-rattings">
+                                        <div class="star-author-all">
+                                            <div class="ratting-star f-left">
+
+                                                @for($i=0;$i<$rating->pivot->value;$i++)
+                                                    <i class="ion-star theme-color"></i>
+                                                @endfor
+                                                @for($i=0;$i<5-($rating->pivot->value);$i++)
+                                                    <i class="ion-android-star-outline"></i>
+                                                @endfor
+                                                <span>({{ $rating->pivot->value }})</span>
+                                            </div>
+                                            <div class="ratting-author f-right">
+                                                <h3>{{ $rating->name }}</h3>
+                                                <span>12:24</span>
+                                                <span>{{ $rating->pivot->updated_at }}</span>
+                                            </div>
                                         </div>
-                                        <div class="ratting-author f-right">
-                                            <h3>Potanu Leos</h3>
-                                            <span>12:24</span>
-                                            <span>9 March 2018</span>
-                                        </div>
+                                        <p>{{ $rating->pivot->comment }}</p>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost rud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost.</p>
-                                </div>
-                                <div class="sin-rattings">
-                                    <div class="star-author-all">
-                                        <div class="ratting-star f-left">
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <i class="ion-star theme-color"></i>
-                                            <span>(5)</span>
-                                        </div>
-                                        <div class="ratting-author f-right">
-                                            <h3>Kahipo Khila</h3>
-                                            <span>12:24</span>
-                                            <span>9 March 2018</span>
-                                        </div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost rud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nost.</p>
-                                </div>
+                                @empty
+
+                                @endforelse
+
                             </div>
                             <div class="ratting-form-wrapper">
                                 <h3>Add your Comments :</h3>
@@ -214,7 +204,7 @@
                                             <div class="col-md-12">
                                                 <div class="rating-form-style form-submit">
                                                     <textarea name="message" placeholder="Message"></textarea>
-                                                    <input type="submit" value="add review">
+                                                    <button type="button"  value="add review"><a href="{{ route('get.rating') }}">Add Review</a></button>
                                                 </div>
                                             </div>
                                         </div>

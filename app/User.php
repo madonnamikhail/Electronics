@@ -47,7 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function productRate()
     {
-        return $this->belongsToMany('App\Models\Product', 'ratings')->withPivot('product_id', 'user_id', 'value','comment');
+        return $this->belongsToMany('App\Models\Product', 'ratings')->withPivot('product_id', 'user_id', 'value','comment','updated_at');
     }
     // public function sendEmailVerificationNotification()
     // {

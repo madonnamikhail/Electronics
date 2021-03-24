@@ -1,7 +1,7 @@
 @extends('layouts.site')
 @section('title','Index')
 @section('content')
-<div class="slider-area">
+{{-- <div class="slider-area">
     <div class="slider-active owl-dot-style owl-carousel">
         <div class="single-slider ptb-240 bg-img" style="background-image:url({{ asset('assets/img/slider/slider-1.jpg') }});">
             <div class="container">
@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Slider End -->
 <!--  Hot Deals Banner Start -->
 <div class="banner-area pt-100 pb-70">
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="banner-wrap">
-            <div class="row">
+            <div class="row" >
                 @foreach ($offers as $offer)
                     @if ($offer->discount == 50 || $offer->discount > 50)
                         <div class="col-lg-6 col-md-6">
@@ -60,10 +60,10 @@
             </div>
         </div>
         <div class="banner-wrap">
-            <div class="row">
+            <div class="row" style="display:flex">
                 @foreach ($offers as $offer)
                     @if ($offer->discount < 50)
-                        <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-4 col-md-4">
                             <div class="single-banner img-zoom mb-30">
                                 <a href="{{ route('hot.deals',$offer->id) }}">
                                     <img style="width:50%;"src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">

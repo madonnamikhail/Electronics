@@ -42,7 +42,7 @@ class Product extends Model
     }
     public function userRate()
     {
-    return $this->belongsToMany('App\User', 'ratings')->withPivot('product_id', 'user_id', 'value','comment');
+    return $this->belongsToMany('App\User', 'ratings')->withPivot('product_id', 'user_id', 'value','comment','updated_at');
     }
 
 }

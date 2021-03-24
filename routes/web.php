@@ -68,6 +68,10 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
             // price slider filter
             Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
+            //brand filter
+            Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
+            Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
+
         });
 
         ################# end shop
