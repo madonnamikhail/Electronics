@@ -9,7 +9,7 @@
                 <div class="breadcrumb-content text-center">
 					<h3>SHOP PAGE</h3>
                     <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li class="active">SHOP PAGE</li>
                     </ul>
                 </div>
@@ -48,12 +48,12 @@
                                 </div>
                             </div> --}}
                         </div>
-                        <div class="causes_div">
+                        {{-- <div class="causes_div">
 
-                        </div>
+                        </div> --}}
                         <div class="grid-list-product-wrapper">
                             <div class="product-grid product-view pb-20">
-                                <div class="row filter_data causes_div" id="products_container ">
+                                <div class="row filter_data causes_div" id="products_container">
                                     @if(Session()->has('Success'))
                                         <div class="alert alert-success">{{ Session()->get('Success') }}</div>
                                         @php
@@ -71,7 +71,7 @@
                                         <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                             <div class="product-wrapper">
                                                 <div class="product-img">
-                                                    <a href="{{ route('get-product-single-page', $product->product_id) }}">
+                                                    <a href="product-details.html">
                                                         <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                                                     </a>
                                                     @if($product->discount )
@@ -150,9 +150,9 @@
                                     @endforelse
                                 </div>
                             </div>
-                            <div class="causes_div">
+                            {{-- <div class="causes_div">
 
-                            </div>
+                            </div> --}}
                             <div class="pagination-total-pages" id="remove_row">
                                 {{-- <div class="pagination-style">
                                     <ul>
@@ -168,7 +168,9 @@
                                 <div class="total-pages">
                                     <p>Showing 1 - 20 of 30 results  </p>
                                 </div> --}}
-                                    <button class="alert alert-success ml-auto mr-auto w-100 h-100vh" style="outline: none; border:none" id="load_more" data-id="{{ $id }}">Load More</button>
+                                    <button class="alert alert-success ml-auto mr-auto w-100 h-100vh" 
+                                    style="outline: none; border:none" id="load_more" 
+                                    data-id="{{ $id }}" type="button" {{--onclick="loadingMore()"--}}>Load More</button>
                             </div>
                         </div>
                     </div>
@@ -227,7 +229,9 @@
                                                 <label class="custom-control-label"
                                                     for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
                                             </li> --}}
-                                            <li><input id="{{$category->id}}" type="checkbox" {{($counter == 0 ? 'checked':'')}} attr-name="{{$category->name_en }}" class="category_checkbox"><label for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                            <li><input id="{{$category->id}}" type="checkbox" {{($counter == 0 ? 'checked':'')}} 
+                                                attr-name="{{$category->name_en }}" class="category_checkbox">
+                                                <label for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
                                             @php
                                                 $counter ++;
                                             @endphp
@@ -331,24 +335,12 @@
     <script>
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
-                event.preventDefault();
+            // function loadingMore() {
+               event.preventDefault();
                 
                 var id = $('#load_more').data('id');
                 var token = $('meta[name="csrf-token"]').attr('content');
                 console.log(id);
-                // $.ajax({
-                //     url: '{{ route('load.more') }}',
-                //     type: 'post',
-                //     data: {
-                //         _token : token ,
-                //         id: id}
-                //     success: function(response) {
-                //         console.log("mmmm");
-                //     }
-                // });
-                // $.when.on('click','#load_more').done(function () {
-                    
-                // });
                 $.ajax({
                     url: '{{ route('load.more') }}',
                     type: 'post',
@@ -360,14 +352,15 @@
                     success: function (response) {
                         if(response != ''){ 
                             console.log("mmmm");
-                            console.log(response);
                             $('#remove_row').remove();
                             $('#products_container').append(response);
                         }else{
                             $('#load_more').html("No Data");
                         }
                     },
-                });
+                }); 
+            // }
+                
             });
         });
     </script>
@@ -409,10 +402,10 @@
                 success: function (response) {
                     var response = response;
                     // console.log("l response: ");
-                    // console.log(response);
+                    console.log(response);
                     var t = "looping";
-                    // $('.causes_div').append(response);
-                    $('.causes_div').append('lpllpllplplpl');
+                    $('.causes_div').append(response);
+                    // $('.causes_div').append('lpllpllplplpl');
 
                     // if (response.length == 0) {
                     //     $('.causes_div').append('No Data Found');
