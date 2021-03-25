@@ -258,7 +258,7 @@
                                         <h3>Price</h3>
                                         <input type="hidden" id="hidden_minimum_price" value="0" />
                                         <input type="hidden" id="hidden_maximum_price" value="65000" />
-                                        <p id="price_show">10 - 5000</p>
+                                        <p id="price_show">0 - 65000</p>
                                         <div id="price_range"></div>
                                     </div>
                                 </div>
@@ -528,7 +528,7 @@
         }
     </script> --}}
      {{-- subcategory script --}}
-     <script>
+     {{-- <script>
         $(document).ready(function() {
             $(document).on('click', '.subcategory_checkbox', function () {
                 var Subids = [];
@@ -570,9 +570,9 @@
                 }
             });
         }
-    </script>
-
-    {{-- <script>
+    </script> --}}
+    {{-- price filter script --}}
+    <script>
         $(document).ready(function(){
         filter_data();
         function filter_data()
@@ -595,9 +595,9 @@
         }
         $('#price_range').slider({
             range:true,
-            min:50,
-            max:5000,
-            values:[50, 5000],
+            min:0,
+            max:65000,
+            values:[0, 65000],
             step:50,
             stop:function(event, ui)
             {
@@ -608,5 +608,5 @@
             }
         });
     });
-    </script> --}}
+    </script>
 @endsection

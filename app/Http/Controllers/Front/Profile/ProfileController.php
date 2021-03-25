@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ChangeMail;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\Order;
@@ -13,6 +14,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class ProfileController extends Controller
 {
@@ -115,7 +118,24 @@ class ProfileController extends Controller
         $rules=[
             'email' =>'email:rfc,dns',
         ];
+
         $request->validate($rules);
+        $new_mail=$request->email;
+        $data=[];
+        // $url=URL::temporarySignedRoute('check.url',now()->addMinute(30),['user-email'=>$request->email,'user-id'=>Auth::user()->id]);
+        $url=URL::temporarySignedRoute('check.url',now()->addMinute(30),['id'=>Auth::user()->id,'email'=>$request->email]);
+        $user_id=Auth::user()->id;
+        $user_email=$request->email;
+        $data['url']=$url;
+        // return $data['url'];
+        $sendmail = new ChangeMail($url,$user_email,$user_id);
+        Mail::to($new_mail)->send($sendmail);
+        // if ($request->hasValidSignature()) {
+        //             // abort(401);
+        //             return "update";
+        //         }
+        return $url;
+        // return $request;
         $user_id = Auth::user()->id;
         $data = $request->except('_token');
         User::where('id','=', $user_id)->update($data);
@@ -124,6 +144,12 @@ class ProfileController extends Controller
         // return redirect()->back()->with('Success', 'Your Email Has Been Updated Successfully');
         return $request;
     }
+    // public function checkUrl(Request $request)
+    // {
+    //     if(request()->hasValidSignature()){
+
+    //     }
+    // }
 
     public function profileChangePassword(Request $request)
     {

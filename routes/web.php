@@ -1,6 +1,13 @@
 <?php
 
+use App\Models\Address;
+use App\Models\City;
+use App\Models\Region;
+use App\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Middleware\ValidateSignature;
+ use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +56,25 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             ####### changing user data
             Route::post('/profile/changing-info', 'ProfileController@profileChangeInfo')->name('profile.change.info');
             Route::post('/profile/changing-email', 'ProfileController@profileChangeEmail')->name('profile.change.email');
+            // Route::get('check-url','ProfileController@checkUrl')->name('check.url');
+            // Route::get('/check-url', function (Request $request) {
+            //     if ($request->hasValidSignature()) {
+            //         // abort(401);
+            //         return "update";
+            //     }
+
+            //     // ...
+            // })->name('check.url');
+            Route::get('/check-url/{id}/{email}', function ($id,$email) {
+                $data=[];
+                $data['email']=$email;
+                User::where('id','=', $id)->update($data);
+                $user_info = User::find($id);
+                $regions = Region::get();
+                $cities = City::get();
+                $addresses = Address::where('user_id', '=', $id)->get();
+                return view('front.profile',compact('user_info','regions','cities','addresses'))->with('Success','your email has been updated successfully');
+            })->name('check.url')->middleware('signed');
             Route::post('/profile/changing-password', 'ProfileController@profileChangePassword')->name('profile.change.password');
 
             Route::get('/profile/editing-address/{id}','ProfileController@profileEditAddress')->name('profile.edit.address');
