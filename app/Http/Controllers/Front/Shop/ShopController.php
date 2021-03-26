@@ -232,14 +232,18 @@ class ShopController extends Controller
         // return $request->minimum_price .".". $request->maximum_price;
         $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
             ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-            ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+            ->select('products.id as products_id', 'products.photo as product_photo', 'products.*','products.price as products_price', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
             ->orderBy('products.id', 'asc')
-            ->where('price', '>=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
+            // ->where('price', '>=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
+            // ->where('price', '<=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
             // ->whereBetween('price', [$request->minimum_price, $request->maximum_price])
+            ->whereRaw('price BETWEEN ' . $request->minimum_price . ' AND ' . $request->maximum_price . '')
             ->get();
+            // min<=price<=max
+            // agefrom  <= age<=   ageto
 
         $total_row = count($products);
-        // return $total_row;
+        return $total_row;
         $output = '';
         if ($total_row > 0) {
             foreach ($products as $product) {
