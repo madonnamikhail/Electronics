@@ -154,18 +154,7 @@
 
                             </div> --}}
                             <div class="pagination-total-pages" id="remove_row">
-                                {{-- <div class="pagination-style">
-                                    <ul>
-                                        <li><a class="prev-next prev" href="#"><i class="ion-ios-arrow-left"></i> Prev</a></li>
-                                        <li><a class="active" href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">...</a></li>
-                                        <li><a href="#">10</a></li>
-                                        <li><a class="prev-next next" href="#">Next<i class="ion-ios-arrow-right"></i> </a></li>
-                                    </ul>
-                                </div>
-                                <div class="total-pages">
+                                {{-- <div class="total-pages">
                                     <p>Showing 1 - 20 of 30 results  </p>
                                 </div> --}}
                                     <button class="alert alert-success ml-auto mr-auto w-100 h-100vh"
@@ -176,83 +165,119 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="shop-sidebar-wrapper gray-bg-7 shop-sidebar-mrg">
-                            <div class="shop-widget">
-                                <h4 class="shop-sidebar-title">Shop By Categories</h4>
-                                {{-- <div class="shop-catigory">
-                                    <ul id="faq">
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-1">Morning Tea <i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-1" class="panel-collapse collapse show">
-                                                <li><a href="#">Green</a></li>
-                                                <li><a href="#">Herbal</a></li>
-                                                <li><a href="#">Loose </a></li>
-                                                <li><a href="#">Mate</a></li>
-                                                <li><a href="#">Organic</a></li>
-                                            </ul>
-                                        </li>
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-2">Tea Trends<i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-2" class="panel-collapse collapse">
-                                                <li><a href="#">Pu'Erh</a></li>
-                                                <li><a href="#">Black</a></li>
-                                                <li><a href="#">White</a></li>
-                                                <li><a href="#">Yellow Tea</a></li>
-                                                <li><a href="#">Puer Tea</a></li>
-                                            </ul>
-                                        </li>
-                                        <li> <a data-toggle="collapse" data-parent="#faq" href="#shop-catigory-3">Most Tea Map <i class="ion-ios-arrow-down"></i></a>
-                                            <ul id="shop-catigory-3" class="panel-collapse collapse">
-                                                <li><a href="#">Green Tea</a></li>
-                                                <li><a href="#">Oolong Tea</a></li>
-                                                <li><a href="#">Black Tea</a></li>
-                                                <li><a href="#">Pu'erh Tea </a></li>
-                                                <li><a href="#">Dark Tea</a></li>
-                                            </ul>
-                                        </li>
-                                        <li> <a href="#">Herbal Tea</a> </li>
-                                        <li> <a href="#">Rooibos Tea</a></li>
-                                        <li> <a href="#">Organic Tea</a></li>
-                                    </ul>
-                                </div> --}}
-                                <div class="card leftNav cate-sect mb-30">
-                                    <p>Refine By:<span class="_t-item">(0 items)</span></p>
-                                    <div class="" id="catFilters"></div>
+                            <form action="{{ route('filter') }}" method="get" id="filter_form">
+                                @csrf
+                                <div class="shop-widget">
+                                    <h4 class="shop-sidebar-title">Shop By Categories</h4>
+                                    <div id="collapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
+                                        <ul>
+                                            {{-- @php
+                                                $idd = [];
+                                                foreach($categories as $cate){
+                                                    $idd = array_push($cate->id);
+                                                }
+                                            @endphp --}}
+                                            @forelse ($categories as $category)
+                                                @forelse ($cats as $cat)
+                                                    {{-- @if (count($cats) == count($categories)) --}}
+                                                    @if ($cat == $category->id)
+                                                        <li><input id="cat_{{$category->id}}" type="checkbox" {{--{{($cat == $category->id ? 'checked':'')}}--}} checked
+                                                            attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
+                                                            <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                                    @else
+                                                        @php
+                                                            $cat_y = $cats;
+                                                            $cat_o = $idd;
+                                                            $diffs = array_diff($idd, $cats);
+                                                            $diff_values = array_values($diffs);
+                                                        @endphp
+                                                        @forelse ($diff_values as $diff)
+                                                            @if ($diff_values == $category->id)
+                                                                <li><input id="cat_{{$category->id}}" type="checkbox"
+                                                                    attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
+                                                                    <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                                            @endif
+                                                        @empty
+                                                            
+                                                        @endforelse
+                                                    @endif
+                                                    
+                                                    {{-- @php
+                                                        $cat_y = (array)[];
+                                                        $cat_o = (array)[];
+                                                        $diffs = (object)[];
+                                                    @endphp --}}
+                                                    {{-- <li><input id="cat_{{$category->id}}" type="checkbox" 
+                                                        attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
+                                                        <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label> --}}
+                                                    {{-- @else
+                                                        <li><input id="cat_{{$category->id}}" type="checkbox" 
+                                                            attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
+                                                            <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                                    @endif --}}
+                                                @empty
+                                                    <li><input id="cat_{{$category->id}}" type="checkbox" 
+                                                        attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
+                                                        <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                                @endforelse
+                                            @empty
+                                                <li><input type="checkbox"><a href="#">There are no categories to show</a>
+                                            @endforelse
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div id="collapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
-                                    <ul>
-                                        @php
-                                            $counter =0;
-                                        @endphp
-                                        @forelse ($categories as $category)
-                                            {{-- <li>
-                                                <input type="checkbox" {{($counter == 0 ? 'checked' : '')}}
-                                                    attr-name="{{$category->name_en}}"
-                                                    class="custom-control-input category_checkbox" id="{{$category->id}}">
-                                                <label class="custom-control-label"
-                                                    for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                            </li> --}}
-                                            <li><input id="{{$category->id}}" type="checkbox" {{($counter == 0 ? 'checked':'')}}
-                                                attr-name="{{$category->name_en }}" class="category_checkbox">
-                                                <label for="{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                <div class="shop-widget mt-40 shop-sidebar-border pt-35">
+                                    <h4 class="shop-sidebar-title">By Subcategory</h4>
+                                    {{-- <div class="card leftNav cate-sect mb-30">
+                                        <p>Refine By:<span class="_t-item_subcategory">(0 items)</span></p>
+                                        <div class="" id="subcategoryFilters"></div>
+                                    </div> --}}
+                                    <div id="subcategorycollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
+                                        <ul>
                                             @php
-                                                $counter ++;
+                                                $countersubcategory =0;
                                             @endphp
-                                        @empty
-                                            <li><input type="checkbox"><a href="#">There are no cats</a>
-                                        @endforelse
-                                    </ul>
+                                            @forelse ($subCategories as $subCategory)
+                                                <li><input id="sub_{{$subCategory->id}}" type="checkbox" 
+                                                    subcategory-attr-name="{{$subCategory->name_en }}" value="{{$subCategory->id}}" name="subs[]" class="filter_checkbox">
+                                                    <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
+                                                @php
+                                                    $countersubcategory ++;
+                                                @endphp
+                                            @empty
+                                                <li><input type="checkbox"><a href="#">There are no subcategories to show</a>
+                                            @endforelse
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="shop-widget mt-40 shop-sidebar-border pt-35">
+                                    <h4 class="shop-sidebar-title">By Brand</h4>
+
+                                    {{-- <div class="card leftNav cate-sect mb-30">
+                                        <p>Refine By:<span class="_t-item_brand">(0 items)</span></p>
+                                        <div class="" id="brandFilters"></div>
+                                    </div> --}}
+                                    <div id="brandcollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
+                                        <ul>
+                                            @php
+                                                $counterb =0;
+                                            @endphp
+                                            @forelse ($brands as $brand)
+                                                <li><input id="brand_{{$brand->id}}" type="checkbox"
+                                                    brand-attr-name="{{$brand->name_en }}" value="{{$brand->id}}" name="brands[]" class="filter_checkbox">
+                                                    <label for="brand_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
+                                                @php
+                                                    $counterb ++;
+                                                @endphp
+                                            @empty
+                                                <li><input type="checkbox"><a href="#">There are no brands to show</a>
+                                            @endforelse
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="shop-price-filter mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">Price Filter</h4>
-                                {{-- <div class="price_filter mt-25">
-                                    <span>Range:  $100.00 - 1.300.00 </span>
-                                    <div id="slider-range"></div>
-                                    <div class="price_slider_amount">
-                                        <div class="label-input">
-                                            <input type="text" id="amount" name="price"  placeholder="Add Your Price" />
-                                        </div>
-                                        <button type="button">Filter</button>
-                                    </div>
-                                </div> --}}
                                 <div class="col-lg-12">
                                     <div class="list-group">
                                         <h3>Price</h3>
@@ -267,7 +292,7 @@
                                    <div class="row ">
                                     </div>
                                 </div>
-                            <div class="shop-widget mt-40 shop-sidebar-border pt-35">
+                            {{-- <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">By Brand</h4>
 
                                 <div class="card leftNav cate-sect mb-30">
@@ -291,8 +316,8 @@
                                         @endforelse
                                     </ul>
                                 </div>
-                            </div>
-                            <div class="shop-widget mt-40 shop-sidebar-border pt-35">
+                            </div> --}}
+                            {{-- <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">By Subcategory</h4>
                                 <div class="card leftNav cate-sect mb-30">
                                     <p>Refine By:<span class="_t-item_subcategory">(0 items)</span></p>
@@ -315,7 +340,7 @@
                                         @endforelse
                                     </ul>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">Compare Products</h4>
                                 <div class="compare-product">
@@ -486,7 +511,7 @@
         }
     </script> --}}
     {{-- brand script --}}
-    {{-- <script>
+    <script>
         $(document).ready(function() {
             $(document).on('click', '.brand_checkbox', function () {
                 var ids = [];
@@ -526,7 +551,7 @@
                 }
             });
         }
-    </script> --}}
+    </script>
      {{-- subcategory script --}}
      {{-- <script>
         $(document).ready(function() {
@@ -572,7 +597,7 @@
         }
     </script> --}}
     {{-- price filter script --}}
-    <script>
+    {{-- <script>
         $(document).ready(function(){
         filter_data();
         function filter_data()
@@ -608,5 +633,35 @@
             }
         });
     });
+    </script> --}}
+
+    {{-- multiple filters --}}
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.filter_checkbox', function () {
+                fetchCauseAgainstCategory();
+            });
+        });
+
+        function fetchCauseAgainstCategory() {
+            $('.causes_div').empty();
+            $('#filter_form').submit();
+
+            // $('#filter_form').submit(function(){
+            //     alert('form submitted');
+            // });
+            // $.ajax({
+            //     type: 'GET',
+            //     url: 'filter',
+            //     data: $('#filter_form').serialize(),
+            //     success: function (response) {
+            //         var response = response;
+            //         // location.reload();
+            //         $('.causes_div').empty();
+            //         $('.causes_div').append(response);
+
+            //     }
+            // });
+        }
     </script>
 @endsection

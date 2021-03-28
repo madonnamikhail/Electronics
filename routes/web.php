@@ -98,6 +98,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
             Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
 
+            // multi filter
+            Route::get('filter','ShopController@filtering')->name('filter');///{cat_id}/{subs_id}
+
         });
 
         ################# end shop
