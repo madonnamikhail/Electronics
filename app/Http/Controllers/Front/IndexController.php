@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Offer;
 use App\Models\Product;
 use App\Models\Region;
+use App\Models\Subcategory;
 use App\User;
 use Facade\Ignition\Middleware\AddLogs;
 use Illuminate\Http\Request;
@@ -18,15 +20,13 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
-    public function searchBox(Request $request)
-    {
+    public function searchBox(Request $request){
         // return $request->all();
         $search_data= $request->searchText;
         // $products=Product::where('id', '=', '1')->get();
         $products=Product::where('name_en', 'LIKE', '%'.$search_data.'%')->get();
 
         // return $products;
-
         // return count($products);
         if(count($products)>0){
             foreach($products as $product){
@@ -37,11 +37,44 @@ class IndexController extends Controller
             echo "<p class='list-group-item border-1'>No Records</p>";
         }
     }
+    public function searchBoxbutton(Request $request)
+    { 
+        $products=Product::where('name_en', 'LIKE', '%'.$request->search.'%')
+        // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+        // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+        ->leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+        ->select(
+            'products.id as product_id',
+            'products.photo as product_photo',
+            'products.*',
+            'products.details_en as product_details_en',
+            'products.details_ar as product_details_ar',
+            'offers.*',
+            DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+        )
+        ->orderBy('products.id', 'asc')
+        ->get();
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;        
+        $cats = [];$subs = [] ; $brand_ids = [] ;
+        $idd = [];
+        $brand_idd=[];
+        $subcategory_idd=[];
+        $min=0;
+        $max=6500000;
+        // return $products;
+        return view('front.shop.shop-page',compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','idd','brand_idd','subcategory_idd','min','max','id'));
+    }
 
     public function index()
     {
-        $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
-                    ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
+        $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+                     ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+                    //     Join('offer_product','offer_product.product_id','=','products.id','left outer')
+                    // ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                     ->select('products.id as products_id','products.photo as product_photo','products.*','offers.*',DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
                     ->orderBy('products.id', 'asc')
                     ->take(5)->get();
@@ -79,8 +112,10 @@ class IndexController extends Controller
         $addresses = Address::where('user_id', '=', $user_id)->get();
         // return $addresses;
         $user = User::find($user_id);
-        $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
-                    ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
+        $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+                    // Join('offer_product','offer_product.product_id','=','products.id','left outer')
+                    // ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                     ->join('carts','carts.product_id','=','products.id')
                     ->select('carts.user_id as user_id','carts.quantity as quantity',
                         'products.id as product_id',
@@ -146,8 +181,10 @@ class IndexController extends Controller
         $cities = City::get();
         // return $address_id;
         $user_id = Auth::user()->id;
-        $products=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
-                    ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
+        $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+        // Join('offer_product','offer_product.product_id','=','products.id','left outer')
+        //             ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                     ->join('carts','carts.product_id','=','products.id')
                     ->select('carts.user_id as user_id','carts.quantity as quantity',
                         'products.id as product_id',

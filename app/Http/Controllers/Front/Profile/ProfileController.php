@@ -59,6 +59,8 @@ class ProfileController extends Controller
     }
     public function ProductRating(Request $request)
     {
+        // $orders=Order::with('products')->find($order_id);
+        // return $orders;
         $order_id=$request->order_id;
         $products=Product::get();
         $suppliers=Supplier::get();

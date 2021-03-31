@@ -85,9 +85,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $i=0;
-                                            @endphp
                                                 @foreach ($products as $product)
                                                     @foreach ($product_data as $id)
                                                         @if ($product->id == $id)
@@ -110,31 +107,29 @@
                                                                     @csrf
                                                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                                     <input type="hidden" name="user_id" value="{{ $user_id }}">
-                                                                    {{-- <input type="number" name="value" placeholder="Rate this product from 1:5"> --}}
                                                                     <div class="rate">
-                                                                        <input type="radio" id="star5" name="value" value="5" />
-                                                                        <label for="star5" title="text">5 stars</label>
-                                                                        <input type="radio" id="star4" name="value" value="4" />
-                                                                        <label for="star4" title="text">4 stars</label>
-                                                                        <input type="radio" id="star3" name="value" value="3" />
-                                                                        <label for="star3" title="text">3 stars</label>
-                                                                        <input type="radio" id="star2" name="value" value="2" />
-                                                                        <label for="star2" title="text">2 stars</label>
-                                                                        <input type="radio" id="star1" name="value" value="1" />
-                                                                        <label for="star1" title="text">1 star</label>
+                                                                        <input type="radio" id="star5_{{ $product->id }}" name="value" value="5" />
+                                                                        <label for="star5_{{ $product->id }}" title="text">5 stars</label>
+                                                                        <input type="radio" id="star4_{{ $product->id }}" name="value" value="4" />
+                                                                        <label for="star4_{{ $product->id }}" title="text">4 stars</label>
+                                                                        <input type="radio" id="star3_{{ $product->id }}" name="value" value="3" />
+                                                                        <label for="star3_{{ $product->id }}" title="text">3 stars</label>
+                                                                        <input type="radio" id="star2_{{ $product->id }}" name="value" value="2" />
+                                                                        <label for="star2_{{ $product->id }}" title="text">2 stars</label>
+                                                                        <input type="radio" id="star1_{{ $product->id }}" name="value" value="1" />
+                                                                        <label for="star1_{{ $product->id }}" title="text">1 star</label>
                                                                       </div>
                                                                     <textarea row="2" col="4" name="comment" placeholder="Enter your comment"></textarea>
-                                                                    <button type="submit">Review This Product</button>
-                                                                </form>
+                                                                    {{-- <button type="submit">Review This Product</button>
+                                                                </form> --}}
                                                             </td>
                                                         </tr>
                                                         @endif
                                                     @endforeach
                                             @endforeach
-                                            @php
-                                                $i++;
-                                            @endphp
                                     </tbody>
+                                    <button type="submit">Review This Product</button>
+                                </form>
                                 </table>
                             </div>
                         <br><br>

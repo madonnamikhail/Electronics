@@ -23,7 +23,6 @@
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-img">
                             <img class="zoompro" src="{{ asset('images\product\\'. $product->product_photo ) }}" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg" alt="zoom"/>
-
                             @if($product->discount )
                                 <span>{{$product->discount}}%</span>
                             @endif
@@ -125,14 +124,6 @@
                         <div id="des-details1" class="tab-pane active">
                             <div class="product-description-wrapper">
                                 <p>{{ $product->product_details_en }}</p>
-                                {{-- <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam est usus legentis in iis qui facit eorum claritatem. </p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-                                <ul>
-                                    <li>-  Typi non habent claritatem insitam</li>
-                                    <li>-  Est usus legentis in iis qui facit eorum claritatem. </li>
-                                    <li>-  Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius.</li>
-                                    <li>-  Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</li>
-                                </ul> --}}
                             </div>
                         </div>
                         <div id="des-details2" class="tab-pane">
@@ -154,7 +145,6 @@
                                     <div class="sin-rattings">
                                         <div class="star-author-all">
                                             <div class="ratting-star f-left">
-
                                                 @for($i=0;$i<$rating->pivot->value;$i++)
                                                     <i class="ion-star theme-color"></i>
                                                 @endfor
@@ -172,7 +162,7 @@
                                         <p>{{ $rating->pivot->comment }}</p>
                                     </div>
                                 @empty
-
+                                    <p>No Reviews yet</p>
                                 @endforelse
 
                             </div>

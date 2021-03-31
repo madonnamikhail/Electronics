@@ -56,7 +56,7 @@
                                     <nav>
 
                                         <div class="col-md-12 mx-auto bg-light rounded p-4">
-                                            <form action="{{ route('search.box') }}" method="post" class="p-3">
+                                            <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                                                 @csrf
                                               <div class="input-group">
                                                 <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
@@ -106,7 +106,7 @@
                                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                     Account
                                                 </a>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> --}}
                                                     <ul class="submenu">
                                                         <li class="top-hover">
                                                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -117,7 +117,7 @@
                                                             </li>
                                                         @endif
                                                     </ul>
-                                            </div>
+                                            {{-- </div> --}}
                                         </li>
                                     @else
                                         <li class="top-hover">

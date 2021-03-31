@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use RecursiveDirectoryIterator;
 
 class ShopController extends Controller
@@ -475,57 +476,53 @@ class ShopController extends Controller
     }
     // multi filter
     public function filtering(Request $request) {
-        // return $request;
+        $rules=[
+            "cats"=>"exists:categories,id",
+            "subs"=>"exists:subcategories,id",
+            "brands"=>"exists:brands,id",
+            "min_price"=>"required|integer|min:0",
+            "max_price"=>"required|integer|max:6500000",
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+        
         $min=$request->min_price;
         $max=$request->max_price;
         $cats = [];$subs = [] ; $brand_ids = [] ;
-        $query = Product::select('products.*');
+        $query = Product::join('Subcategories','products.subCategory_id', '=', 'subcategories.id')
+        ->join('categories','categories.id', '=', 'subcategories.category_id')
+        // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+        ->leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+        // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+        ->select('products.id as product_id', 'products.photo as product_photo', 'products.*', 'offers.*',
+        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+        ->orderBy('products.id', 'asc');
+
         if($request->has('cats')){
-            // $cat_ids = $request->cats;
-            // $cat_ids = array_map('intval', $cat_ids);
-            // $cat_ids =implode(",", $cat_ids);
-            // $cat_ids = str_replace(',','',$cat_ids);
-            // $cat_ids = str_split($cat_ids);
             $cats = $request->cats;
-            // print_r($request->cats);die;
-            // return Product::whereIn('id',$ids)->get();
-            $query = Subcategory::whereIn('category_id',$request->cats)
-                        ->join('products', 'products.subCategory_id', '=', 'subcategories.id');
-            // $query = $query->whereIn('subCategory_id', $sub_ids);
+            $query = $query->orWhereIn('category_id', $cats);
 
         }
         if($request->has('subs')){
-            $sub_ids = $request->subs;
-            $sub_ids = array_map('intval', $sub_ids);
-            $sub_ids =implode(",", $sub_ids);
-            $sub_ids = str_replace(',','',$sub_ids);
-            $sub_ids = str_split($sub_ids);
-            $subs = $sub_ids ;
+            $subs = $request->subs ;
             // return Product::whereIn('id',$ids)->get();
-            $query = $query->whereIn('subCategory_id', $sub_ids);
+            $query = $query->orWhereIn('subCategory_id', $subs);
         }
         if($request->has('brands')){
             $brand_ids = $request->brands;
-            $brand_ids = array_map('intval', $brand_ids);
-            $brand_ids =implode(",", $brand_ids);
-            $brand_ids = str_replace(',','',$brand_ids);
-            $brand_ids = str_split($brand_ids);
-            $brand_ids = $brand_ids ;
-            // return Product::whereIn('id',$ids)->get();
-            $query = $query->whereIn('brand_id', $brand_ids);
+            $query = $query->orWhereIn('brand_id', $brand_ids);
         }
         if($request->has('min_price') && $request->has('max_price')){
-            $query = $query->whereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
+            $query = $query->orWhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
         }
-        $query = $query->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-        ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-        ->select('products.id as product_id', 'products.photo as product_photo', 'products.*', 'offers.*',
-        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-        ->orderBy('products.id', 'asc')
-        ->toSql();
-        return $query;
-        // ->get();
-        // $total_row = count($query);
+        $query = $query
+        // ->toSql();
+        // return $query;
+        ->get();
+        $total_row = count($query);
         // return $total_row;
         $output = '';
         if ($total_row > 0) {
@@ -560,7 +557,9 @@ class ShopController extends Controller
                                     <a href="#">' . $product->name_en . '</a>
                                 </h4>
                             </div>
-                            <div class="cart-hover">
+                            <div class="cart-hover">';
+                            if(Auth::user()){
+                                $output.='
                                 <form action="' . route('add.to.cart') . '" method="post">
                                 <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
                                     <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
@@ -571,7 +570,10 @@ class ShopController extends Controller
                                             <i class="ion-ios-shuffle-strong"></i>
                                         </a>
                                     </button>
-                                </form>
+                                </form>';
+                            }
+                       
+                            $output.='    
                             </div>
                         </div>
                         <div class="product-price-wrapper">

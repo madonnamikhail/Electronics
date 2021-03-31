@@ -123,7 +123,20 @@
                         </div>
                         <div class="cart-hover">
                             {{-- <h4><a href="product-details.html">+ Add to cart</a></h4> --}}
-                            <form action="{{ route('add.to.cart') }}" method="post">
+                            @auth('web')
+                                <form action="{{ route('add.to.cart') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="product_id" value="{{ $product->products_id }}">
+                                    <button type="submit">
+                                        <a class="action-cart" title="Add To Cart">
+                                            + Add to cart
+                                            <i class="ion-ios-shuffle-strong"></i>
+                                        </a>
+                                    </button>
+                                </form>
+                            @endauth
+                            {{-- <form action="{{ route('add.to.cart') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <input type="hidden" name="product_id" value="{{ $product->products_id }}">
@@ -133,7 +146,7 @@
                                         <i class="ion-ios-shuffle-strong"></i>
                                     </a>
                                 </button>
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
                     <div class="product-price-wrapper">

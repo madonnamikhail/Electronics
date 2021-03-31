@@ -22,18 +22,51 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
+    Route::group(['namespace'=>'Front'], function(){
+        Route::post('/search-box','IndexController@searchBox')->name('search.box');
+        Route::post('/search-button','IndexController@searchBoxbutton')->name('search.box.button');
+        Route::get('/index', 'IndexController@index')->name('index.page');
+        Route::get('/hot_deals/{id}', 'IndexController@hotDeals')->name('hot.deals');
+           #################### start Shop
+        Route::group(['namespace'=>'shop'], function(){
+            Route::get('shop','ShopController@getShop')->name('get.shop');
+            Route::post('shop-load-more','ShopController@loadMore')->name('load.more');
+            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
+            // price slider filter
+            Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
+            //brand filter
+            Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
+            Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
+
+            // multi filter
+            Route::get('filter','ShopController@filtering')->name('filter');///{cat_id}/{subs_id}
+
+        });
+
+            ################# end shop
+
+        ############### start product single page
+        Route::group(['namespace'=>'singlePage'],function(){
+            Route::get('single-page/{id}', 'SinglePageController@getProoductSinglePage')->name('get-product-single-page');
+        });
+
+    });
+    Route::group(['namespace'=>'staticPage'], function(){
+        Route::get('/contactUs','ContactUsMessageController@message')->name('contact-us.message');
+        Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
+    });
+
+    
+});
+
 Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
 
     ###################### front
     Route::group(['namespace'=>'Front'], function(){
-        //search box
-        Route::post('/search-box','IndexController@searchBox')->name('search.box');
-
-        Route::get('/index', 'IndexController@index')->name('index.page');
         Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
         Route::get('/cart', 'IndexController@getCart')->name('get.cart');
         Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
-        Route::get('/hot_deals/{id}', 'IndexController@hotDeals')->name('hot.deals');
 
 
 
@@ -50,21 +83,11 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('/rating','ProfileController@getRating')->name('get.rating');
             Route::post('/rating/product','ProfileController@ProductRating')->name('product.rating');
             Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
-            // Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
 
 
             ####### changing user data
             Route::post('/profile/changing-info', 'ProfileController@profileChangeInfo')->name('profile.change.info');
             Route::post('/profile/changing-email', 'ProfileController@profileChangeEmail')->name('profile.change.email');
-            // Route::get('check-url','ProfileController@checkUrl')->name('check.url');
-            // Route::get('/check-url', function (Request $request) {
-            //     if ($request->hasValidSignature()) {
-            //         // abort(401);
-            //         return "update";
-            //     }
-
-            //     // ...
-            // })->name('check.url');
             Route::get('/check-url/{id}/{email}', function ($id,$email) {
                 $data=[];
                 $data['email']=$email;
@@ -87,41 +110,16 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         });
         ########################## end profile
 
-        #################### start Shop
-        Route::group(['namespace'=>'shop'], function(){
-            Route::get('shop','ShopController@getShop')->name('get.shop');
-            Route::post('shop-load-more','ShopController@loadMore')->name('load.more');
-            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
-            // price slider filter
-            Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
-            //brand filter
-            Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
-            Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
-
-            // multi filter
-            Route::get('filter','ShopController@filtering')->name('filter');///{cat_id}/{subs_id}
-
-        });
-
-        ################# end shop
-
-        ############### start product single page
-        Route::group(['namespace'=>'singlePage'],function(){
-            Route::get('single-page/{id}', 'SinglePageController@getProoductSinglePage')->name('get-product-single-page');
-        });
+     
     });
 
-    ###################### end front
+        ###################### end front
 
     Route::group(['namespace'=>'Order'],function(){
         Route::post('place-order','OrderController@placeOrder')->name('place.order');
     });
 
-    Route::group(['namespace'=>'staticPage'], function(){
-        Route::get('/contactUs','ContactUsMessageController@message')->name('contact-us.message');
-        Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
-    });
-
+    
 
 });
 

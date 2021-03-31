@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class SinglePageController extends Controller
 {
-    public function getProoductSinglePage($id)
-    {
+    public function getProoductSinglePage($id){
+        // return $id;
         $product=Product::Join('offer_product','offer_product.product_id','=','products.id','left outer')
                 ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                 ->join('ratings', 'ratings.product_id','=','products.id')

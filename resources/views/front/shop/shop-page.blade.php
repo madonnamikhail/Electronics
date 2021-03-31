@@ -97,6 +97,7 @@
                                                             </h4>
                                                         </div>
                                                         <div class="cart-hover">
+                                                            @auth
                                                             <form action="{{ route('add.to.cart') }}" method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -108,6 +109,8 @@
                                                                     </a>
                                                                 </button>
                                                             </form>
+                                                            @endauth
+                                                         
                                                         </div>
                                                     </div>
                                                     <div class="product-price-wrapper">
@@ -171,120 +174,28 @@
                                     <h4 class="shop-sidebar-title">Shop By Categories</h4>
                                     <div id="collapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
                                         <ul> 
-                                            @php
-                                                $diffs = array_diff($idd, $cats);
-                                                $diff_values = array_values($diffs);//3
-                                                $flag=0;
-                                            @endphp
                                             @forelse ($categories as $category)
-                                                {{-- @forelse ($cats as $cat) --}}
-                                                    {{-- @if($cat == $category->id) --}}
                                                         <li><input id="cat_{{$category->id}}" type="checkbox" {{(in_array($category->id,$cats)? 'checked':'')}}
                                                             attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
                                                             <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                                            {{-- {{ "one" }} --}}
-                                                    {{-- @else --}}
-                                                        {{-- @forelse ($diff_values as $diff)
-                                                            @if ($diff == $category->id ) --}}
-                                                                {{-- @if (count($diff_values)==2) --}}
-                                                                    {{-- @if($flag==0 OR $flag==1)  --}}
-                                                                            {{-- <li><input id="cat_{{$category->id}}" type="checkbox"
-                                                                                    attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
-                                                                                <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label> --}}
-                                                                                {{-- {{ "two" }}  --}}
-                                                                                {{-- @php
-                                                                                $flag++;
-                                                                            @endphp         --}}
-                                                                    {{-- @endif --}}
-                                                                {{-- @else
-                                                                    <li><input id="cat_{{$category->id}}" type="checkbox"
-                                                                        attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
-                                                                    <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                                                @endif --}}
-                                                              
-                                                           {{-- @endif 
-                                                        @empty
-                                                        @endforelse --}}
-                                                    {{-- @endif      --}}
-                                                {{-- @empty
-                                                    <li><input id="cat_{{$category->id}}" type="checkbox" 
-                                                        attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
-                                                        <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                                @endforelse --}}
+
                                             @empty
                                                 <li><input type="checkbox"><a href="#">There are no categories to show</a>
                                             @endforelse
-                                          
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                     <h4 class="shop-sidebar-title">By Subcategory</h4>
-                                    {{-- <div class="card leftNav cate-sect mb-30">
-                                        <p>Refine By:<span class="_t-item_subcategory">(0 items)</span></p>
-                                        <div class="" id="subcategoryFilters"></div>
-                                    </div> --}}
+                                  
                                     <div id="subcategorycollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
-                                        {{-- <ul>
-                                            @php
-                                                $countersubcategory =0;
-                                            @endphp
+                                        <ul>
                                             @forelse ($subCategories as $subCategory)
-                                                <li><input id="sub_{{$subCategory->id}}" type="checkbox" 
-                                                    subcategory-attr-name="{{$subCategory->name_en }}" value="{{$subCategory->id}}" name="subs[]" class="filter_checkbox">
-                                                    <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
-                                                @php
-                                                    $countersubcategory ++;
-                                                @endphp
+                                            <li><input id="sub_{{$subCategory->id}}" type="checkbox" {{(in_array($subCategory->id,$subs)? 'checked':'')}}
+                                                attr-name="{{$subCategory->name_en }}" name="subs[]" value="{{$subCategory->id}}" class="filter_checkbox">
+                                                <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
                                             @empty
-                                                <li><input type="checkbox"><a href="#">There are no subcategories to show</a>
-                                            @endforelse
-                                        </ul> --}}
-                                        <ul> 
-                                            @php
-                                                $diffs = array_diff($subcategory_idd, $subs);
-                                                $diff_values = array_values($diffs);//3
-                                                $flag=0;
-                                            @endphp
-                                            @forelse ($subCategories as $subCategory)
-                                                @forelse ($subs as $sub)
-                                                    @if($sub == $subCategory->id)
-                                                        <li><input id="sub_{{$subCategory->id}}" type="checkbox" {{--{{($cat == $category->id ? 'checked':'')}}--}}  checked 
-                                                            attr-name="{{$subCategory->name_en }}" name="subs[]" value="{{$subCategory->id}}" class="filter_checkbox">
-                                                            <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
-                                                            {{-- {{ "one" }} --}}
-                                                    @else
-                                                        @forelse ($diff_values as $diff)
-                                                            @if ($diff == $subCategory->id )
-                                                                @if (count($diff_values)==2)
-                                                                    @if($flag==0 OR $flag==1) 
-                                                                            <li><input id="sub_{{$subCategory->id}}" type="checkbox"
-                                                                                    attr-name="{{$subCategory->name_en }}" name="sub[]" value="{{$subCategory->id}}" class="filter_checkbox">
-                                                                                <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
-                                                                                {{-- {{ "two" }}  --}}
-                                                                                @php
-                                                                                $flag++;
-                                                                            @endphp        
-                                                                    @endif
-                                                                @else
-                                                                    <li><input id="sub_{{$subCategory->id}}" type="checkbox"
-                                                                        attr-name="{{$subCategory->name_en }}" name="subs[]" value="{{$subCategory->id}}" class="filter_checkbox">
-                                                                    <label for="sub{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
-                                                                    {{-- {{ "two" }}  --}}
-                                                                @endif
-                                                              
-                                                           @endif 
-                                                        @empty
-                                                        @endforelse
-                                                    @endif     
-                                                @empty
-                                                    <li><input id="sub_{{$subCategory->id}}" type="checkbox" 
-                                                        attr-name="{{$subCategory->name_en }}" name="subs[]" value="{{$subCategory->id}}" class="filter_checkbox">
-                                                        <label for="sub_{{$subCategory->id}}">{{ucfirst($subCategory->name_en)}}</label>
-                                                        {{-- {{ "three" }} --}}
-                                                @endforelse
-                                            @empty
-                                                <li><input type="checkbox"><a href="#">There are no subcategories to show</a>
+                                                <li><input type="checkbox"><a href="#">There are no Subcategories to show</a>
                                             @endforelse
                                           
                                         </ul>
@@ -292,72 +203,14 @@
                                 </div>
                                 <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                     <h4 class="shop-sidebar-title">By Brand</h4>
-
-                                    {{-- <div class="card leftNav cate-sect mb-30">
-                                        <p>Refine By:<span class="_t-item_brand">(0 items)</span></p>
-                                        <div class="" id="brandFilters"></div>
-                                    </div> --}}
                                     <div id="brandcollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
-                                        {{-- <ul>
-                                            @php
-                                                $counterb =0;
-                                            @endphp
-                                            @forelse ($brands as $brand)
-                                                <li><input id="brand_{{$brand->id}}" type="checkbox"
-                                                    brand-attr-name="{{$brand->name_en }}" value="{{$brand->id}}" name="brands[]" class="filter_checkbox">
-                                                    <label for="brand_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
-                                                @php
-                                                    $counterb ++;
-                                                @endphp
-                                            @empty
-                                                <li><input type="checkbox"><a href="#">There are no brands to show</a>
-                                            @endforelse
-                                        </ul> --}}
                                         <ul> 
-                                            @php
-                                                $diffs = array_diff($brand_idd, $brand_ids);
-                                                $diff_values = array_values($diffs);//3
-                                                $flag=0;
-                                            @endphp
                                             @forelse ($brands as $brand)
-                                                @forelse ($brand_ids as $brand_id)
-                                                    @if($brand_id == $brand->id)
-                                                        <li><input id="brand_{{$brand->id}}" type="checkbox" {{--{{($cat == $category->id ? 'checked':'')}}--}}  checked 
-                                                            attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
-                                                            <label for="brnad_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
-                                                            {{-- {{ "one" }} --}}
-                                                    @else
-                                                        @forelse ($diff_values as $diff)
-                                                            @if ($diff == $brand->id )
-                                                                @if (count($diff_values)==1)
-                                                                    @if($flag==0) 
-                                                                    <li><input id="brand_{{$brand->id}}" type="checkbox"  
-                                                                        attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
-                                                                        <label for="brnad_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
-                                                                                {{-- {{ "two" }}  --}}
-                                                                                @php
-                                                                                $flag = 1;
-                                                                            @endphp        
-                                                                    @endif
-                                                                @else
-                                                                <li><input id="brand_{{$brand->id}}" type="checkbox" 
-                                                                    attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
-                                                                    <label for="brnad_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
-                                                                    {{-- {{ "two" }}  --}}
-                                                                @endif
-                                                              
-                                                           @endif 
-                                                        @empty
-                                                        @endforelse
-                                                    @endif     
-                                                @empty
-                                                <li><input id="brand_{{$brand->id}}" type="checkbox" 
-                                                    attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
-                                                    <label for="brnad_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
-                                                        {{-- {{ "three" }} --}}
-                                                @endforelse
+                                            <li><input id="brands_{{$brand->id}}" type="checkbox" {{(in_array($brand->id,$brand_ids)? 'checked':'')}}
+                                                attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
+                                                <label for="brands_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
                                             @empty
-                                                <li><input type="checkbox"><a href="#">There are no brands to show</a>
+                                                <li><input type="checkbox"><a href="#">There are no Brands to show</a>
                                             @endforelse
                                           
                                         </ul>
@@ -744,22 +597,6 @@
         function fetchCauseAgainstCategory() {
             $('.causes_div').empty();
             $('#filter_form').submit();
-
-            // $('#filter_form').submit(function(){
-            //     alert('form submitted');
-            // });
-            // $.ajax({
-            //     type: 'GET',
-            //     url: 'filter',
-            //     data: $('#filter_form').serialize(),
-            //     success: function (response) {
-            //         var response = response;
-            //         // location.reload();
-            //         $('.causes_div').empty();
-            //         $('.causes_div').append(response);
-
-            //     }
-            // });
         }
         $('#price_range').slider({
             range:true,
