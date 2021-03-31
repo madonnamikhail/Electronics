@@ -481,15 +481,18 @@ class ShopController extends Controller
         $cats = [];$subs = [] ; $brand_ids = [] ;
         $query = Product::select('products.*');
         if($request->has('cats')){
-            $cat_ids = $request->cats;
-            $cat_ids = array_map('intval', $cat_ids);
-            $cat_ids =implode(",", $cat_ids);
-            $cat_ids = str_replace(',','',$cat_ids);
-            $cat_ids = str_split($cat_ids);
-            $cats = $cat_ids;
+            // $cat_ids = $request->cats;
+            // $cat_ids = array_map('intval', $cat_ids);
+            // $cat_ids =implode(",", $cat_ids);
+            // $cat_ids = str_replace(',','',$cat_ids);
+            // $cat_ids = str_split($cat_ids);
+            $cats = $request->cats;
+            // print_r($request->cats);die;
             // return Product::whereIn('id',$ids)->get();
-            $query = Subcategory::whereIn('category_id', $cat_ids)
+            $query = Subcategory::whereIn('category_id',$request->cats)
                         ->join('products', 'products.subCategory_id', '=', 'subcategories.id');
+            // $query = $query->whereIn('subCategory_id', $sub_ids);
+
         }
         if($request->has('subs')){
             $sub_ids = $request->subs;
@@ -519,10 +522,10 @@ class ShopController extends Controller
         ->select('products.id as product_id', 'products.photo as product_photo', 'products.*', 'offers.*',
         DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
         ->orderBy('products.id', 'asc')
-        // ->toSql();
-        // return $query;
-        ->get();
-        $total_row = count($query);
+        ->toSql();
+        return $query;
+        // ->get();
+        // $total_row = count($query);
         // return $total_row;
         $output = '';
         if ($total_row > 0) {

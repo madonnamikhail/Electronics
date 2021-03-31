@@ -177,42 +177,40 @@
                                                 $flag=0;
                                             @endphp
                                             @forelse ($categories as $category)
-                                                @forelse ($cats as $cat)
-                                                    @if($cat == $category->id)
-                                                        <li><input id="cat_{{$category->id}}" type="checkbox" {{--{{($cat == $category->id ? 'checked':'')}}--}}  checked 
+                                                {{-- @forelse ($cats as $cat) --}}
+                                                    {{-- @if($cat == $category->id) --}}
+                                                        <li><input id="cat_{{$category->id}}" type="checkbox" {{(in_array($category->id,$cats)? 'checked':'')}}
                                                             attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
                                                             <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
                                                             {{-- {{ "one" }} --}}
-                                                    @else
-                                                        @forelse ($diff_values as $diff)
-                                                            @if ($diff == $category->id )
-                                                                @if (count($diff_values)==2)
-                                                                    @if($flag==0 OR $flag==1) 
-                                                                            <li><input id="cat_{{$category->id}}" type="checkbox"
+                                                    {{-- @else --}}
+                                                        {{-- @forelse ($diff_values as $diff)
+                                                            @if ($diff == $category->id ) --}}
+                                                                {{-- @if (count($diff_values)==2) --}}
+                                                                    {{-- @if($flag==0 OR $flag==1)  --}}
+                                                                            {{-- <li><input id="cat_{{$category->id}}" type="checkbox"
                                                                                     attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
-                                                                                <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
+                                                                                <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label> --}}
                                                                                 {{-- {{ "two" }}  --}}
-                                                                                @php
+                                                                                {{-- @php
                                                                                 $flag++;
-                                                                            @endphp        
-                                                                    @endif
-                                                                @else
+                                                                            @endphp         --}}
+                                                                    {{-- @endif --}}
+                                                                {{-- @else
                                                                     <li><input id="cat_{{$category->id}}" type="checkbox"
                                                                         attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
                                                                     <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                                                    {{-- {{ "two" }}  --}}
-                                                                @endif
+                                                                @endif --}}
                                                               
-                                                           @endif 
+                                                           {{-- @endif 
                                                         @empty
-                                                        @endforelse
-                                                    @endif     
-                                                @empty
+                                                        @endforelse --}}
+                                                    {{-- @endif      --}}
+                                                {{-- @empty
                                                     <li><input id="cat_{{$category->id}}" type="checkbox" 
                                                         attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
                                                         <label for="cat_{{$category->id}}">{{ucfirst($category->name_en)}}</label>
-                                                        {{-- {{ "three" }} --}}
-                                                @endforelse
+                                                @endforelse --}}
                                             @empty
                                                 <li><input type="checkbox"><a href="#">There are no categories to show</a>
                                             @endforelse
@@ -331,14 +329,14 @@
                                                     @else
                                                         @forelse ($diff_values as $diff)
                                                             @if ($diff == $brand->id )
-                                                                @if (count($diff_values)==2)
-                                                                    @if($flag==0 OR $flag==1) 
+                                                                @if (count($diff_values)==1)
+                                                                    @if($flag==0) 
                                                                     <li><input id="brand_{{$brand->id}}" type="checkbox"  
                                                                         attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
                                                                         <label for="brnad_{{$brand->id}}">{{ucfirst($brand->name_en)}}</label>
                                                                                 {{-- {{ "two" }}  --}}
                                                                                 @php
-                                                                                $flag++;
+                                                                                $flag = 1;
                                                                             @endphp        
                                                                     @endif
                                                                 @else
@@ -510,7 +508,7 @@
         });
     </script> --}}
     {{-- loadmore --}}
-    {{-- <script>
+    <script>
         $(document).ready(function(){
             $(document).on('click','#load_more', function(event){
             // function loadingMore() {
@@ -541,7 +539,7 @@
 
             });
         });
-    </script> --}}
+    </script>
     {{-- category script --}}
     {{-- <script>
         $(document).ready(function() {
