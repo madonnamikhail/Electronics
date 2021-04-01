@@ -89,10 +89,10 @@
                                                     @foreach (App\Models\Category::get() as $category)
                                                     <li>
                                                         <ul>
-                                                            <li class="mega-menu-title">{{ $category->name_en }}</li>
+                                                            <li class="mega-menu-title"><a style="font-weight: 600" href="{{route('get.products.by.category.id',$category->id)}}">{{ $category->name_en }}</a></li>
                                                             @foreach(App\Models\Subcategory::get() as $subcategory)
                                                                  @if ($category->id == $subcategory->category_id )
-                                                                    <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
+                                                                    <li><a href="{{route('get.products.by.subcategory.id',$subcategory->id)}}">{{ $subcategory->name_en }}</a></li>
                                                                  @endif
                                                             @endforeach
                                                         </ul>

@@ -1,5 +1,50 @@
 @extends('layouts.site')
 @section('title','product single page')
+@section('css')
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+}
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+</style>
+
+@endsection
 @section('content')
     <div class="col-lg-12">
 
@@ -17,6 +62,18 @@
         </div>
 		<!-- Breadcrumb Area End -->
 		<!-- Product Deatils Area Start -->
+        @if(Session()->has('Success'))
+            <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+                @php
+                Session()->forget('Success');
+                @endphp
+        @endif
+        @if(Session()->has('Error'))
+            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+                @php
+                Session()->forget('Error');
+                @endphp
+        @endif
         <div class="product-details pt-100 pb-95">
             <div class="container">
                 <div class="row">
@@ -54,56 +111,51 @@
                                 <span >EGP {{ $product->price}} </span>
                             @endif
                             <div class="in-stock">
-                                <p>Available: <span>In stock</span></p>
+                                @if ($product->status == 1)
+                                    <p>Available: <span>In stock</span></p>  
+                                @else
+                                    <p>Not available: <span style="color: red">Out of stock</span></p>
+                                @endif
+                                
                             </div>
                             <p>{{ $product->product_details_en }}</p>
                             <div class="pro-dec-feature">
                                 <ul>
-                                    <li><input type="checkbox"> Protection Plan: <span> 2 year  $4.99</span></li>
-                                    <li><input type="checkbox"> Remote Holder: <span> $9.99</span></li>
-                                    <li><input type="checkbox"> Koral Alexa Voice Remote Case: <span> Red  $16.99</span></li>
-                                    <li><input type="checkbox"> Amazon Basics HD Antenna: <span>25 Mile  $14.99</span></li>
+                                    @forelse ($specs->specs as $spec)
+                                        <li><span style="font-weight: 600">{{ $spec->name }}: </span> {{ $spec->pivot->value }}</li>
+                                        {{-- <li> Protection Plan: <span> 2 year  $4.99</span></li> --}}
+                                    @empty
+                                        <p class="alert alert-danger">There are no specs for this prduct.</p>
+                                    @endforelse
                                 </ul>
                             </div>
                             <div class="quality-add-to-cart">
-                                <div class="quality">
-                                    <label>Qty:</label>
-                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="02">
-                                </div>
-                                <div class="shop-list-cart-wishlist">
-                                    <a title="Add To Cart" href="#">
-                                        <i class="icon-handbag"></i>
-                                    </a>
-                                    <a title="Wishlist" href="#">
-                                        <i class="icon-heart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="pro-dec-categories">
-                                <ul>
-                                    <li class="categories-title">Categories:</li>
-                                    <li><a href="#">Green,</a></li>
-                                    <li><a href="#">Herbal, </a></li>
-                                    <li><a href="#">Loose,</a></li>
-                                    <li><a href="#">Mate,</a></li>
-                                    <li><a href="#">Organic </a></li>
-                                </ul>
+                                @auth
+                                    @if ($product->status == 1)
+                                    <form action="{{ route('single.page.add.to.cart') }}" method="post">
+                                        @csrf
+                                            <div class="quality">
+                                                <label>Qty:</label>
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="product_id" value="{{ $product->products_id }}">
+                                                <input class="cart-plus-minus-box" type="text" name="quantity" value="1">
+                                            </div>
+                                            <div class="shop-list-cart-wishlist">
+                                                <button type="submit" title="Add To Cart">Add To Cart
+                                                    <i class="icon-handbag"></i>
+                                                </button>
+                                            </div>
+                                        </form> 
+                                    @endif
+                                @endauth
+                                
                             </div>
                             <div class="pro-dec-categories">
                                 <ul>
                                     <li class="categories-title">Tags: </li>
-                                    <li><a href="#"> Oolong, </a></li>
-                                    <li><a href="#"> Pu'erh,</a></li>
-                                    <li><a href="#"> Dark,</a></li>
-                                    <li><a href="#"> Special </a></li>
-                                </ul>
-                            </div>
-                            <div class="pro-dec-social">
-                                <ul>
-                                    <li><a class="tweet" href="#"><i class="ion-social-twitter"></i> Tweet</a></li>
-                                    <li><a class="share" href="#"><i class="ion-social-facebook"></i> Share</a></li>
-                                    <li><a class="google" href="#"><i class="ion-social-googleplus-outline"></i> Google+</a></li>
-                                    <li><a class="pinterest" href="#"><i class="ion-social-pinterest"></i> Pinterest</a></li>
+                                    <li><a href="{{ route('get.products.by.category.id',$product->product_category_id) }}"> {{ $product->product_category }}, </a></li>
+                                    <li><a href="{{ route('get.products.by.subcategory.id',$product->product_subcategory_id) }}"> {{ $product->product_subcategory }},</a></li>
+                                    <li><a href="{{ route('get.products.by.brand.id',$product->product_brand_id) }}"> {{ $product->product_brand }}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -119,6 +171,7 @@
                         <a class="active" data-toggle="tab" href="#des-details1">Description</a>
                         <a data-toggle="tab" href="#des-details2">Tags</a>
                         <a data-toggle="tab" href="#des-details3">Review</a>
+                        <a data-toggle="tab" href="#des-details4">Specs</a>
                     </div>
                     <div class="tab-content description-review-bottom">
                         <div id="des-details1" class="tab-pane active">
@@ -129,13 +182,10 @@
                         <div id="des-details2" class="tab-pane">
                             <div class="product-anotherinfo-wrapper">
                                 <ul>
-                                    <li><span>Tags:</span></li>
-                                    <li><a href="#"> Green,</a></li>
-                                    <li><a href="#"> Herbal,</a></li>
-                                    <li><a href="#"> Loose,</a></li>
-                                    <li><a href="#"> Mate,</a></li>
-                                    <li><a href="#"> Organic ,</a></li>
-                                    <li><a href="#"> special</a></li>
+                                    <li class="categories-title">Tags: </li>
+                                    <li><a href="{{ route('get.products.by.category.id',$product->product_category_id) }}"> {{ $product->product_category }}, </a></li>
+                                    <li><a href="{{ route('get.products.by.subcategory.id',$product->product_subcategory_id) }}"> {{ $product->product_subcategory }},</a></li>
+                                    <li><a href="{{ route('get.products.by.brand.id',$product->product_brand_id) }}"> {{ $product->product_brand }}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -166,40 +216,79 @@
                                 @endforelse
 
                             </div>
-                            <div class="ratting-form-wrapper">
-                                <h3>Add your Comments :</h3>
-                                <div class="ratting-form">
-                                    <form action="#">
-                                        <div class="star-box">
-                                            <h2>Rating:</h2>
-                                            <div class="ratting-star">
-                                                <i class="ion-star theme-color"></i>
-                                                <i class="ion-star theme-color"></i>
-                                                <i class="ion-star theme-color"></i>
-                                                <i class="ion-star theme-color"></i>
-                                                <i class="ion-star"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="rating-form-style mb-20">
-                                                    <input placeholder="Name" type="text">
+                            @auth
+                            @forelse ($orders as $order)
+                                @if ($order->status==2)
+                                    @forelse ($order->products as $productt)
+                                        @if ($productt->id == $product->products_id)
+                                            <div class="ratting-form-wrapper">
+                                                <form method="post" action="{{ route('insert') }}" name="rating">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->products_id }}">
+                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                <h3>Add your Comments :</h3> 
+                                                    <textarea row="2" col="4" name="comment" placeholder="Enter your comment"></textarea>
+                                                <div class="ratting-form">
+                                                    <form action="#">
+                                                        <div class="star-box"><br>
+                                                            <h3>Rating:</h3>
+                                                            <div class="rate">
+                                                                <input type="radio" id="star5_{{ $product->id }}" name="value" value="5" />
+                                                                <label for="star5_{{ $product->id }}" title="text">5 stars</label>
+                                                                <input type="radio" id="star4_{{ $product->id }}" name="value" value="4" />
+                                                                <label for="star4_{{ $product->id }}" title="text">4 stars</label>
+                                                                <input type="radio" id="star3_{{ $product->id }}" name="value" value="3" />
+                                                                <label for="star3_{{ $product->id }}" title="text">3 stars</label>
+                                                                <input type="radio" id="star2_{{ $product->id }}" name="value" value="2" />
+                                                                <label for="star2_{{ $product->id }}" title="text">2 stars</label>
+                                                                <input type="radio" id="star1_{{ $product->id }}" name="value" value="1" />
+                                                                <label for="star1_{{ $product->id }}" title="text">1 star</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            {{-- <div class="col-md-6">
+                                                                <div class="rating-form-style mb-20">
+                                                                    <input placeholder="Name" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="rating-form-style mb-20">
+                                                                    <input placeholder="Email" type="text">
+                                                                </div>
+                                                            </div> --}}
+                                                            <div class="col-md-12">
+                                                                <div class="rating-form-style form-submit"><br><br><br>
+                                                                    {{-- <textarea name="message" placeholder="Message"></textarea> --}}
+                                                                    <button type="submit" value="add review">Add Review</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="rating-form-style mb-20">
-                                                    <input placeholder="Email" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style form-submit">
-                                                    <textarea name="message" placeholder="Message"></textarea>
-                                                    <button type="button"  value="add review"><a href="{{ route('get.rating') }}">Add Review</a></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                        @endif
+                                    @empty
+                                        
+                                    @endforelse
+                                {{-- @else --}}
+                                    {{-- <p style="color :red">Your order hasnot been derliverd yet ! </p> --}}
+                                @endif
+                            @empty
+                                {{-- <p style="color :red">No orders have been placed yet ! </p> --}}
+                            @endforelse
+                            
+                               
+                            @endauth
+                            
+                        </div>
+                        <div id="des-details4" class="tab-pane">
+                            <div class="product-description-wrapper">
+                                @forelse ($specs->specs as $spec)
+                                    <p><span style="font-weight: 600">{{ $spec->name }}: </span> {{ $spec->pivot->value }}</p>
+                                @empty
+                                     <p class="alert alert-danger">There are no specs for this prduct.</p>
+                                @endforelse
+                                
                             </div>
                         </div>
                     </div>

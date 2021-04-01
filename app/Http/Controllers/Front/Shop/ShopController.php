@@ -37,13 +37,10 @@ class ShopController extends Controller
         $subCategories=Subcategory::get();
         $id=0;        
         $cats = [];$subs = [] ; $brand_ids = [] ;
-        $idd = [];
-        $brand_idd=[];
-        $subcategory_idd=[];
         $min=0;
         $max=6500000;
         // return $products;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','idd','brand_idd','subcategory_idd','min','max','id'));
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
     }
     public function get_causes_against_category($id) {
         $id = explode(',', $id);
@@ -601,40 +598,95 @@ class ShopController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-
-        $catego = Category::select('categories.id')->get();
-        $subcatego=Subcategory::select('subcategories.id')->get();
-        $bran=Brand::select('brands.id')->get();
-        $t =(array)[];
-        foreach ($catego->toArray() as $key => $value) {
-            foreach($value as $k => $v){
-                array_push($t, $v);
-           }
-        }
-        $z =(array)[];
-        foreach ($bran->toArray() as $key => $value) {
-            foreach($value as $k => $v){
-                array_push($z, $v);
-           }
-        }
-        $y =(array)[];
-        foreach ($subcatego->toArray() as $key => $value) {
-            foreach($value as $k => $v){
-                array_push($y, $v);
-           }
-        }
-        
-        $idd = $t;
-        $brand_idd=$z;
-        $subcategory_idd=$y;
         $id=0;
-        // return count($cats); 
-        
-        // $c = [1,2];
-        // $diffs = array_diff($idd, $c);
-        // return $diff_values = array_values($diffs);
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','idd','brand_idd','subcategory_idd','min','max','id'));
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+    }
 
+    public function getProductsByCategoryId($id)
+    {
+        $products = Subcategory::where('category_id','=',$id)
+            ->join('products','subCategory_id','=','subcategories.id')
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+        // return count($products);
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;        
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        // return $products;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+    
+    }
 
+    public function getProductsBySubcategoryId($id)
+    {
+        $products = Product::where('subCategory_id','=',$id)
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;        
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        // return $products;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+    
+    }
+
+    public function getProductsByBrandId($id)
+    {
+        $products = Product::where('brand_id','=',$id)
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+            // return count($products);
+            // ->toSql();
+            // return $products;
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;        
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+    
     }
 }

@@ -32,15 +32,24 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::group(['namespace'=>'shop'], function(){
             Route::get('shop','ShopController@getShop')->name('get.shop');
             Route::post('shop-load-more','ShopController@loadMore')->name('load.more');
-            Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
+            // Route::get('get_causes_against_category/{id}','ShopController@get_causes_against_category')->name('category.filter');
             // price slider filter
-            Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
+            // Route::post('price-filter', 'ShopController@priceFilter')->name('price.filter');
             //brand filter
-            Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
-            Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
+            // Route::get('get-brand/{id}','ShopController@getbrand')->name('get.brand');
+            // Route::get('get-subcategory/{id}','ShopController@getSubcategory')->name('get.subcategory');
 
             // multi filter
             Route::get('filter','ShopController@filtering')->name('filter');///{cat_id}/{subs_id}
+
+            //shop of a specific category
+            Route::get('category/{id}','ShopController@getProductsByCategoryId')->name('get.products.by.category.id');
+
+            //shop of a specific subcategory
+            Route::get('subcategory/{id}','ShopController@getProductsBySubcategoryId')->name('get.products.by.subcategory.id');
+
+            //shop of a specific brand
+            Route::get('brand/{id}','ShopController@getProductsByBrandId')->name('get.products.by.brand.id');
 
         });
 
@@ -64,7 +73,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
 
     ###################### front
     Route::group(['namespace'=>'Front'], function(){
-        Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
+        Route::post('/user-cart','IndexController@addCart')->name('add.to.cart'); 
         Route::get('/cart', 'IndexController@getCart')->name('get.cart');
         Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
 
@@ -110,6 +119,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         });
         ########################## end profile
 
+        Route::group(['namespace'=>'singlePage'],function(){
+            Route::post('/user-cart-single-page','SinglePageController@singlePageAddCart')->name('single.page.add.to.cart'); 
+        });
      
     });
 

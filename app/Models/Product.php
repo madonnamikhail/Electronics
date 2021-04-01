@@ -45,4 +45,9 @@ class Product extends Model
     return $this->belongsToMany('App\User', 'ratings')->withPivot('product_id', 'user_id', 'value','comment','updated_at');
     }
 
+    public function specs()
+    {
+        return $this->belongsToMany('App\Models\Spec', 'spec_product')->withPivot('product_id', 'spec_id', 'value');
+    }
+
 }
