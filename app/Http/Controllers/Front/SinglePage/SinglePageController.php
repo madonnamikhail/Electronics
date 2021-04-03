@@ -37,7 +37,7 @@ class SinglePageController extends Controller
                     DB::raw('count(`ratings`.`user_id`) as user_rating_count'),'ratings.updated_at as rating_updated_at',
                     DB::raw('avg(`ratings`.`value`) as rating_average'),
                     )
-                ->groupBy('ratings.product_id')
+                // ->groupBy('ratings.product_id')
                 ->orderBy('products.id', 'asc')
                 ->where('products.id','=',$id)
                 ->first();
@@ -46,11 +46,11 @@ class SinglePageController extends Controller
         // return $specs->specs;
          $ratings_review=Product::find($id);
          $ratings= $ratings_review->userRate;
+        //  return $product;
          $orders = [];
         if(Auth::user()){
-         $orders = Order::with('products')->where('user_id','=', Auth::user()->id)->get();   
+         $orders = Order::with('products')->where('user_id','=', Auth::user()->id)->get();
         }
-         
         // return $orders;
         return view('front.singlePage.product-single-page', compact('product','ratings','specs','orders'));
     }
@@ -67,10 +67,16 @@ class SinglePageController extends Controller
         $request->validate($rules);
         // return $request;
         $user = User::find($request->user_id);
+        // return $user->product;
         $data=$request->only('quantity');
         // add record in pivot "cart"
+        // return $data;
         // $user->product()->syncWithoutDetaching($data);
-        $user->product()->attach($request->product_id, $data);
+        // $user->product()->attach($request->product_id, $data);
+        if (! $user->product->contains($request->product_id)) {
+           $user->product()->attach($request->product_id, $data);
+        }
+
         // $product->user()->attach($data);
         return redirect()->back()->with('Success', 'Added Successfully to Cart');
     }

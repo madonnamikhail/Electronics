@@ -25,8 +25,8 @@ class MainCategoryRequest extends FormRequest
     {
         return [
             //
-            'name_en'=>'required|string|max:100',
-            'name_ar'=>'required|string|max:100',
+            'name_en'=>'required|string|max:100|unique:categories,name_en',
+            'name_ar'=>'required|string|max:100|unique:categories,name_ar',
             'photo'=>'required|mimes:png,jpg,jpeg'
         ];
     }

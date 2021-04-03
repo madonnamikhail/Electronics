@@ -38,7 +38,7 @@ class IndexController extends Controller
         }
     }
     public function searchBoxbutton(Request $request)
-    { 
+    {
         $products=Product::where('name_en', 'LIKE', '%'.$request->search.'%')
         // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
         // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
@@ -58,7 +58,7 @@ class IndexController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-        $id=0;        
+        $id=0;
         $cats = [];$subs = [] ; $brand_ids = [] ;
         $idd = [];
         $brand_idd=[];
@@ -183,18 +183,17 @@ class IndexController extends Controller
         $user_id = Auth::user()->id;
         $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
         ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
-        // Join('offer_product','offer_product.product_id','=','products.id','left outer')
-        //             ->join('offers','offer_product.offer_id','=','offers.id' ,'left outer')
                     ->join('carts','carts.product_id','=','products.id')
                     ->select('carts.user_id as user_id','carts.quantity as quantity',
                         'products.id as product_id',
                         'products.photo as product_photo',
                         'products.*',
                         'offers.*',
-                        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'),
+                        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount') ,
                         DB::raw('(products.price *((100-offers.discount)/100)) * carts.quantity as total_price_after_discount'),
                         DB::raw('products.price * carts.quantity as total_price'))
                     ->orderBy('products.id', 'asc')->get();
+        // return $products;
         return view('front.cart-total',compact('products','user_id','address','address_id','regions','cities'));
     }
     public function hotDeals($id)

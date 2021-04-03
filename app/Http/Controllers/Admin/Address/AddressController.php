@@ -13,14 +13,10 @@ class AddressController extends Controller
 {
     public function allRegionsAddress($id)
     {
-        // $regions = Region::get();
-        // $regions = City::with('regions')->find($id);
-        // return $regions;
         $region = Region::find($id);
         $addresses = $region->address;
         $regions = Region::get();
         $users = User::get();
-        // return $regions;
         return view('admin.address.show-address', compact('addresses','regions','users'));
     }
 
@@ -29,7 +25,6 @@ class AddressController extends Controller
         $addresses = Address::get();
         $regions = Region::get();
         $users = User::get();
-        // return $users;
         return view('admin.address.show-all-address', compact('regions','addresses','users'));
     }
 
@@ -41,15 +36,22 @@ class AddressController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
+        $rules=[
+            "flat"=>"numeric|required",
+            "building"=>"numeric|required",
+            "floor"=>"numeric|required",
+            "street_en"=>"alpha_num|required|max:255",
+            "street_ar"=>"alpha_num|required|max:255",
+            "region_id"=>"required|exists:regions,id",
+            "user_id"=>"required|exists:users,id"
+        ];
+        $request->validate($rules);
         $data = $request->except('_token');
         Address::insert($data);
-        //  return $this->returnSuccessMessage('the category has been successfully saved');
         return redirect('admin/address/all-address')->with('Success', 'Address Has Been Added Successfully');
     }
 
     public function edit($id){
-        //make sure that this id is exist if not return this item is not found
         $address=Address::find($id);
         $regions = Region::get();
         $users = User::get();
@@ -59,9 +61,13 @@ class AddressController extends Controller
 
     public function update(Request $request , $id){
         $rules=[
-            // "name_en"=>'string|max:100',
-            // "name_ar"=>'string|max:100',
-            // "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            "flat"=>"numeric|required",
+            "building"=>"numeric|required",
+            "floor"=>"numeric|required",
+            "street_en"=>"alpha_num|required|max:255",
+            "street_ar"=>"alpha_num|required|max:255",
+            "region_id"=>"required|exists:regions,id",
+            "user_id"=>"required|exists:users,id"
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');

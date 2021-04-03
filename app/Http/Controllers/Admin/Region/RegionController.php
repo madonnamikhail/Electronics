@@ -11,12 +11,8 @@ class RegionController extends Controller
 {
     public function allCityRegions($id)
     {
-        // $regions = Region::get();
-        // $regions = City::with('regions')->find($id);
-        // return $regions;
         $city = City::find($id);
         $regions = $city->regions;
-        // return $regions;
         return view('admin.region.show-regions', compact('regions'));
     }
 
@@ -34,7 +30,14 @@ class RegionController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
+        $rules=[
+            "name_en"=>"string|required|unique:regions,name_en",
+            "name_ar"=>"string|required|unique:regions,name_ar",
+            "lat"=>"string|required|unique:regions,lat",
+            "longg"=>"string|required|unique:regions,longg",
+            "city_id"=>"numeric|required|exists:citys,id",
+        ];
+        $request->validate($rules);
         $data = $request->except('_token');
         Region::insert($data);
         //  return $this->returnSuccessMessage('the category has been successfully saved');
@@ -50,9 +53,11 @@ class RegionController extends Controller
 
     public function update(Request $request , $id){
         $rules=[
-            // "name_en"=>'string|max:100',
-            // "name_ar"=>'string|max:100',
-            // "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            "name_en"=>"string|required",
+            "name_ar"=>"string|required",
+            "lat"=>"string|required",
+            "longg"=>"string|required",
+            "city_id"=>"numeric|required|exists:citys,id",
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');

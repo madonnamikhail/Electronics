@@ -21,6 +21,13 @@ class StaticPageController extends Controller
     public function store(Request $request)
     {
         // return $request;
+        $rules=[
+            "title_en"=>"unique:static_pages,title_en|string|required",
+            "title_ar"=>"unique:static_pages,title_ar|string|required",
+            "details_en"=>"unique:static_pages,details_en|string|required",
+            "details_ar"=>"unique:static_pages,details_ar|string|required",
+        ];
+        $request->validate($rules);
          $data=$request->except('_token');
          StaticPage::insert($data);
         //  return $this->returnSuccessMessage('the category has been successfully saved');
@@ -34,16 +41,16 @@ class StaticPageController extends Controller
     }
 
     public function update(Request $request , $id){
-        // return $request;
         $rules=[
-            // "name_en"=>'string|max:100',
-            // "name_ar"=>'string|max:100',
+            "title_en"=>"string|required",
+            "title_ar"=>"string|required",
+            "details_en"=>"string|required",
+            "details_ar"=>"string|required",
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');
         $update=StaticPage::where('id','=', $id)->update($data);
         if($update){
-            // return redirect()->back()->with('Success','the category has been updated ');
             return redirect('admin/staticPages/show')->with('Success', 'staticPage Has Been Edited Successfully');
         }
         return redirect()->back()->with('Error','failed ');

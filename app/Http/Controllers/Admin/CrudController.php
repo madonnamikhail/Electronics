@@ -14,8 +14,8 @@ use LaravelLocalization;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 
-use Auth;
 
 class CrudController extends Controller
 {
@@ -39,7 +39,6 @@ class CrudController extends Controller
     }
 
     public function store(MainCategoryRequest $request){
-
         $imageName= $this->UploadPhoto($request->photo , 'photo');
          $data=$request->except('photo','_token');
          $data['photo']=$imageName;

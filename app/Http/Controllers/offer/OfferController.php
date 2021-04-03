@@ -27,6 +27,18 @@ class OfferController extends Controller
 
     public function store(Request $request){
         // return $request;
+        $rules=[
+            "title_en"=>'required|string|max:100|unique:offers,title_en',
+            "title_ar"=>'required|string|max:100|unique:offers,title_ar',
+            "discount"=>"numeric|digits:2|required|unique:offers,discount",
+            "details_en"=>'required|string',
+            "details_ar"=>'required|string',
+            "start_date"=>"required",
+            "expire_date"=>"required",
+            "photo"=>'mimes:png,jpg,jpeg|max:1024',
+        ];
+        $request->validate($rules);
+
         $imageName= $this->UploadPhoto($request->photo , 'offers');
         $data=$request->except('photo','_token');
         $data['photo']=$imageName;
@@ -42,12 +54,12 @@ class OfferController extends Controller
 
     public function update(Request $request , $id){
         $rules=[
-            "title_en"=>'string|max:100',
-            "title_ar"=>'string|max:100',
-            "discount"=>'string|max:10',
-            "details_en"=>'string|max:100',
-            "details_ar"=>'string|max:100',
-            "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            "title_en"=>'required|string|max:100',
+            "title_ar"=>'required|string|max:100',
+            "discount"=>'required|string|max:10',
+            "details_en"=>'required|string|max:100',
+            "details_ar"=>'required|string|max:100',
+            "photo"=>'mimes:png,jpg,jepg|max:1024',
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');
@@ -79,6 +91,12 @@ class OfferController extends Controller
     }
     public function addProductstoOffer(Request $request)
     {
+        // return $request;
+        $rules=[
+            "products.*"=>"required|numeric|exists:products,id",
+            "offers"=>"required|numeric|exists:offers,id"
+        ];
+        $request->validate($rules);
         $offer=Offer::find($request->offers);
         if(!$offer)
             return abort('404');

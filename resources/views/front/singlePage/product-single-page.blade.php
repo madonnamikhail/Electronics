@@ -2,45 +2,45 @@
 @section('title','product single page')
 @section('css')
 <style>
-    *{
-    margin: 0;
-    padding: 0;
-}
-.rate {
-    float: left;
-    height: 46px;
-    padding: 0 10px;
-}
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc;
-}
-.rate:not(:checked) > label:before {
-    content: '★ ';
-}
-.rate > input:checked ~ label {
-    color: #ffc700;
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
-}
+            *{
+            margin: 0;
+            padding: 0;
+        }
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
 
 </style>
 
@@ -112,11 +112,11 @@
                             @endif
                             <div class="in-stock">
                                 @if ($product->status == 1)
-                                    <p>Available: <span>In stock</span></p>  
+                                    <p>Available: <span>In stock</span></p>
                                 @else
                                     <p>Not available: <span style="color: red">Out of stock</span></p>
                                 @endif
-                                
+
                             </div>
                             <p>{{ $product->product_details_en }}</p>
                             <div class="pro-dec-feature">
@@ -145,10 +145,10 @@
                                                     <i class="icon-handbag"></i>
                                                 </button>
                                             </div>
-                                        </form> 
+                                        </form>
                                     @endif
                                 @endauth
-                                
+
                             </div>
                             <div class="pro-dec-categories">
                                 <ul>
@@ -226,7 +226,7 @@
                                                     @csrf
                                                     <input type="hidden" name="product_id" value="{{ $product->products_id }}">
                                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                                <h3>Add your Comments :</h3> 
+                                                <h3>Add your Comments :</h3>
                                                     <textarea row="2" col="4" name="comment" placeholder="Enter your comment"></textarea>
                                                 <div class="ratting-form">
                                                     <form action="#">
@@ -268,7 +268,7 @@
                                             </div>
                                         @endif
                                     @empty
-                                        
+
                                     @endforelse
                                 {{-- @else --}}
                                     {{-- <p style="color :red">Your order hasnot been derliverd yet ! </p> --}}
@@ -276,10 +276,10 @@
                             @empty
                                 {{-- <p style="color :red">No orders have been placed yet ! </p> --}}
                             @endforelse
-                            
-                               
+
+
                             @endauth
-                            
+
                         </div>
                         <div id="des-details4" class="tab-pane">
                             <div class="product-description-wrapper">
@@ -288,7 +288,7 @@
                                 @empty
                                      <p class="alert alert-danger">There are no specs for this prduct.</p>
                                 @endforelse
-                                
+
                             </div>
                         </div>
                     </div>

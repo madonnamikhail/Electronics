@@ -21,9 +21,17 @@ class BrandController extends Controller
     }
 
     public function store(Request $request){
+        $rules=[
+            "name_en"=>'required|string|max:100|unique:brands,name_en',
+            "name_ar"=>'required|string|max:100|unique:brands,name_ar',
+            "photo"=>'image|mimes:png,jpg,jpeg|max:1024',
+        ];
+        $request->validate($rules);
         $imageName= $this->UploadPhoto($request->photo , 'brands');
         $data=$request->except('photo','_token');
         $data['photo']=$imageName;
+        // return $data;
+
         Brand::insert($data);
         return redirect('admin/brand/show-all');
      }
@@ -40,7 +48,7 @@ class BrandController extends Controller
         $rules=[
             "name_en"=>'string|max:100',
             "name_ar"=>'string|max:100',
-            "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            "photo"=>'image|mimes:png,jpg,jpeg|max:1024',
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');

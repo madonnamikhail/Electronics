@@ -20,6 +20,7 @@ class StaticPageController extends Controller
 
     public function store(Request $request)
     {
+        // return $request;
          $data=$request->except('_token');
          StaticPage::insert($data);
         //  return $this->returnSuccessMessage('the category has been successfully saved');

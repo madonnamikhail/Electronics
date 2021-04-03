@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Admin\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Promocode;
 use App\Models\Subcategory;
+use App\Models\Supplier;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
 
 class OrderCrudController extends Controller
 {
-    public function getUser()
-    {
+    public function getUser(){
         $users = User::get();
         return view('admin.order.select-user', compact('users'));
     }
 
-    public function selectUserAndAddToCart(Request $request)
-    {
+    public function selectUserAndAddToCart(Request $request){
         $rules=[
             'user_id' => 'required|exists:users,id',
         ];
@@ -29,8 +29,7 @@ class OrderCrudController extends Controller
         $user_id = $request->user_id;
         return redirect('admin/order/admin-show-cart/'.$user_id);
     }
-    public function AdminShowCart($user_id)
-    {
+    public function AdminShowCart($user_id){
         // 2) get cart
         // return $user_id;
         $user = User::find($user_id);
@@ -58,9 +57,7 @@ class OrderCrudController extends Controller
         return view('admin.order.create-order',compact('products','price','categories','promocodes','user_id'));
     }
     //
-    public function show()
-    {
-
+    public function show(){
         // return $price;
         // return $products;
         // return redirect('admin/order/admin-add-cart')->back()->with('products','price');
@@ -170,5 +167,15 @@ class OrderCrudController extends Controller
     public function adminPlaceOrder(Request $request)
     {
         return $request;
+    }
+    public function orderProducts($id)
+    {
+
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
+        $suppliers=Supplier::get();
+        $order_Products=Order::with('products')->find($id);
+        // return $order_Products->products;
+        return view('admin.order.show-order-products',compact('order_Products','brand','subcategorys','suppliers'));
     }
 }

@@ -12,14 +12,9 @@ class CartController extends Controller
 {
     public function allCarts()
     {
-        // $products = Product::with('user')->first();
-        // return $products;
-        // $user_carts = User::with('product')->get();
-        // return $user_carts;
         $user_carts = User::whereHas('product', function($q){
             $q->where('product_id','!=' ,Null);
         })->get();
-        // return $user_carts;
         return view('admin.cart.all-user-cart', compact('user_carts'));
     }
 

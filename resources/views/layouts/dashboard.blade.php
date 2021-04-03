@@ -582,6 +582,60 @@
     </li>
 
 
+      {{-- Users --}}
+    <li class="nav-item ">
+        <a href="#" class="nav-link active">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+            {{ __('message.Users') }}
+            <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\User::count() }}</span>
+            <i class="right fas fa-angle-left"></i>
+
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+              <a href="{{ route('all.users') }}" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>{{ __('message.Show All users') }}</p>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('add.user') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.Add User') }}</p>
+            </a>
+          </li>
+        </ul>
+    </li>
+
+
+      {{-- specs --}}
+    {{-- <li class="nav-item ">
+        <a href="#" class="nav-link active">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+            {{ __('message.Specs') }}
+            <span class="badge badge badge-danger badge=pill float-right mr-2"> {{ App\Models\Spec::count() }}</span>
+            <i class="right fas fa-angle-left"></i>
+
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+              <a href="#" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>{{ __('message.Show All Specs') }}</p>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.Add Spec') }}</p>
+            </a>
+          </li>
+        </ul>
+    </li> --}}
 
         </ul>
       </nav>

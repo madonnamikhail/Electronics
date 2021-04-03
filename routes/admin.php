@@ -154,7 +154,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         });
         Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
             Route::get('show-order','OrderCrudController@show')->name('show.order');
-            
+            Route::get('order-products/{id}','OrderCrudController@orderProducts')->name('order.product');
             // add order (Ajax):
             // 1)
             Route::get('add-order','OrderCrudController@add')->name('add.order');
@@ -257,6 +257,20 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         //delete staticPage
         Route::delete('delete','StaticPageController@delete')->name('delete.staticPage');
     });
+
+    ########################users###############################
+        Route::group(['prefix'=>'admin/user' ,'namespace'=>'Admin\User'], function(){
+            Route::get('show','UserController@show')->name('all.users');
+            //add new user
+            Route::get('create','UserController@create')->name('add.user');
+            Route::post('store','UserController@store')->name('create.user');
+            // //edit user
+            Route::get('edit/{id}','UserController@edit')->name('edit.user');
+            Route::post('update/{id}','UserController@update')->name('update.user');
+            // //delete user
+            Route::delete('delete','UserController@delete')->name('delete.user');
+
+        });
 });
 
 

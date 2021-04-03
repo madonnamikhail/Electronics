@@ -20,6 +20,14 @@ class CityControler extends Controller
 
     public function store(Request $request)
     {
+        // return $request;
+        $rules=[
+            "name_en"=>"unique:citys,name_en|alpha_num|required",
+            "name_ar"=>"unique:citys,name_ar|alpha_num|required",
+            "lat"=>"unique:citys,lat|alpha_num|required",
+            "longg"=>"unique:citys,longg|alpha_num|required",
+        ];
+        $request->validate($rules);
         $data = $request->except('_token');
         City::insert($data);
         //  return $this->returnSuccessMessage('the category has been successfully saved');
@@ -34,20 +42,18 @@ class CityControler extends Controller
 
     public function update(Request $request , $id){
         $rules=[
-            // "name_en"=>'string|max:100',
-            // "name_ar"=>'string|max:100',
-            // "photo"=>'image|mimes:png,jpg,jepg|max:1024',
-
+            "name_en"=>"alpha_num|required",
+            "name_ar"=>"alpha_num|required",
+            "lat"=>"alpha_num|required",
+            "longg"=>"alpha_num|required",
         ];
         $request->validate($rules);
         $data=$request->except('_token','_method');
         $update=City::where('id','=', $id)->update($data);
         if($update){
-            // return redirect()->back()->with('Success','the category has been updated ');
             return redirect('admin/city/all-cities')->with('Success', 'City Has Been Edited Successfully');
         }
         return redirect()->back()->with('Error','failed ');
-
     }
 
     public function delete(Request $request)

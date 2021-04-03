@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','all Orders')
+@section('title','User Orders')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css') }}">
 @endsection
 @section('content')
+{{-- <a href="{{ asset('admin/product/create') }}" class="btn btn-success">Add</a> --}}
     <div class="col-12">
         <div class="col-12">
             @if(Session()->has('Success'))
@@ -28,60 +29,42 @@
 
             <tr>
               <th>{{ __('message.ID') }}</th>
+              <th>{{ __('message.status') }}</th>
+              <th>{{ __('message.amount') }}</th>
+              <th>{{ __('message.total Price') }}</th>
+              <th>{{ __('message.Code') }}</th>
               <th>{{ __('message.Status') }}</th>
-              <th>{{ __('message.Amount') }}</th>
-              <th>{{ __('message.Total Price') }}</th>
-              <th>{{ __('message.User Name') }}</th>
-              <th>{{ __('message.Promocode') }}</th>
+              <th>{{ __('message.Phone') }}</th>
+              <th>{{ __('message.Email-Verified-at') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($orders as $order)
+                @foreach ($users as $user)
                 <tr>
-                    <td>{{ $order->id }}</td>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
                     <td>
-                        @if ($order->status == 0)
-                             {{ "Order Created"}}
-                        @elseif($order->status == 1)
-                                {{ "Order is In Progress"}}
-                        @elseif($order->status == 2)
-                            {{ "Deliverd"}}
-                        @endif
-                    </td>
+                        <img src="{{ asset('images/user/'.$user->photo) }}" style="width:30%;">
 
-                    <td>{{ $order->amount }}</td>
-                    <td>{{ $order->total_price }}</td>
-                    <td>
-                        @foreach ($user as $users)
-                        @if ($order->user_id == $users->id)
-                                {{ $users->name}}
-                        @endif
-                    @endforeach
                     </td>
+                    <td>{{ $user->code }}</td>
+                    <td>{{ $user->status }}</td>
+                    <td>{{ $user->phone }}</td>
+                    <td>{{ $user->email_verified_at }}</td>
                     <td>
-                        @if ($order->promoCodes_id == 0)
-                        {{ "There is no promocode"}}
-                        @else
-                            {{ $order->promoCodes_id  }}
-                        @endif
-                    </td>
-                    <td>
-                        @php
-                            $x=1;
-                            $y=2;
-                        @endphp
+
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">show products</a>
-
-                            <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">In Progress</a>
+                            <a href="{{ route('user.order',$user->id) }}" class="btn btn-success">{{ __('message.Show orders') }}</a>
+                            <a href="{{ route('edit.user',$user->id) }}" class="btn btn-warning">{{ __('message.Edit') }}</a>
                             <br>
-                            <a  href="{{ route('update.order',['id'=>$order->id,'action'=>$y]) }}" class="btn btn-success">Done</a>
                             <br>
-                                <form method="post" action="{{route('delete.order')}}">
+                                <form method="post" action="{{ route('delete.user',$user->id) }}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $order->id }}">
+                                    <input type="hidden" name="id" value="{{ $user->id }}">
+                                    <input type="hidden" name="photo" value="{{ $user->photo }}">
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
