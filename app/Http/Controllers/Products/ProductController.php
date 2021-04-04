@@ -11,6 +11,7 @@ use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Environment\Runtime;
 use LaravelLocalization;
 
@@ -31,6 +32,15 @@ class ProductController extends Controller
     {
         // $products=Product::select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','details_'.LaravelLocalization::getCurrentLocale().' as details','price','code','brand_id ','subCategory_id')->where('subCategory_id','=',$id)->get();
         // return $products;
+        $rules = [
+            'id' => 'required|exists:subcategories,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $subcategory=Subcategory::find($id);
         $products=$subcategory->product;
         $brand=Brand::get();
@@ -58,8 +68,9 @@ class ProductController extends Controller
             "code"=>'required',
             "details_en"=>'required',
             "details_ar"=>'required',
-            // "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+            "photo"=>'required|mimes:png,jpg,jpeg|max:1024',
             "brand_id"=>'required|integer|exists:brands,id',
+            "supplier_id"=>'required|integer|exists:suppliers,id',
             "subcategory_id"=>'required|exists:subcategories,id',
         ];
         $request->validate($rules);
@@ -68,9 +79,18 @@ class ProductController extends Controller
         $data=$request->except('photo','_token');
         $data['photo']=$imageName;
         Product::insert($data);
-         return redirect('admin/product/show-all');
+        return redirect('admin/product/show-all')->with('Success','The product has been added successfully');
     }
     public function edit($id){
+        $rules = [
+            'id' => 'required|exists:products,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $product=Product::find($id);
         $category=Category::get();
         $supplier=Supplier::get();
@@ -84,14 +104,27 @@ class ProductController extends Controller
     public function update(Request $request , $id)
     {
         $rules=[
-            "name_en"=>'string|max:100',
-            "name_ar"=>'string|max:100',
-            "price"=>'integer',
-            "code"=>'integer',
-            "brand_id"=>'integer|exists:brands,id',
-            "subcategory_id"=>'exists:subcategories,id',
+            "name_en"=>'required|max:100',
+            "name_ar"=>'required|max:100',
+            "price"=>'required',
+            "code"=>'required',
+            "details_en"=>'required',
+            "details_ar"=>'required',
+            "photo"=>'mimes:png,jpg,jpeg|max:1024',
+            "brand_id"=>'required|integer|exists:brands,id',
+            "supplier_id"=>'required|integer|exists:suppliers,id',
+            "subcategory_id"=>'required|exists:subcategories,id',
         ];
         $request->validate($rules);
+        $ruless = [
+            'id' => 'required|exists:products,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $data=$request->except('_token','_method');
         if($request->has('photo')){
             $imageName= $this->UploadPhoto($request->photo , 'product');
@@ -100,7 +133,7 @@ class ProductController extends Controller
         }
         $update=Product::where('id','=', $id)->update($data);
         if($update){
-            return redirect('admin/product/show-all');
+            return redirect('admin/product/show-all')->with('Success','The product has been updated successfully');
         }
         return redirect()->back()->with('Error','failed ');
     }
@@ -117,10 +150,7 @@ class ProductController extends Controller
            unlink($photoPath);
         }
         Product::destroy($request->id);
-        return redirect('admin/product/show-all');
-
-
-
+        return redirect('admin/product/show-all')->with('Success','The product has been deleted successfully');
     }
 
 }

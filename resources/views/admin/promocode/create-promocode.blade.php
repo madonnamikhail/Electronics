@@ -24,7 +24,7 @@
               @enderror
           <div class="form-group">
             <label for="exampleInputEmail1">{{ __('message.Discount Value') }} </label>
-            <input type="text" name="discountValue" value="{{ old('discountValue') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter discount ">
+            <input type="number" name="discountValue" value="{{ old('discountValue') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter discount ">
           </div>
           @error('discountValue')
                 <span class="text-danger">{{ $message }}</span>
@@ -45,6 +45,48 @@
                       @error('maxOrderValue')
                             <span class="text-danger">{{ $message }}</span>
                           @enderror
+
+                          {{-- <div class="form-group"> --}}
+                            <label for="exampleInputEmail1">{{ __('message.Promocode Type') }}</label>
+                                <div class="form-group">
+                                    <select  name="type" id="type" class="form-control">
+                                        <option value="0" class="form-group">
+                                            Fixed
+                                        </option>
+                                        <option value="1" class="form-group">
+                                            Percentage
+                                        </option>
+                                      </select>
+                                </div>
+
+                          {{-- </div> --}}
+                          @error('type')
+                                <span class="text-danger">{{ $message }}</span>
+                              @enderror
+
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">{{ __('message.Max Usage') }}</label>
+                            <div>
+                                <input type="number" name="max_usage">
+                            </div>
+    
+                        </div>
+                          @error('max_usage')
+                                <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">{{ __('message.Max Usage Per User') }}</label>
+                          <div>
+                              <input type="number" name="max_usage_per_user">
+                          </div>
+  
+                      </div>
+                        @error('	max_usage_per_user')
+                              <span class="text-danger">{{ $message }}</span>
+                      @enderror
+                          
 
                       <div class="form-group">
                         <label for="exampleInputEmail1">{{ __('message.Start Date') }}</label>

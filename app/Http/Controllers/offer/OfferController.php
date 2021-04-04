@@ -11,6 +11,7 @@ use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use Illuminate\Support\Facades\Validator;
 
 class OfferController extends Controller
 {
@@ -33,9 +34,9 @@ class OfferController extends Controller
             "discount"=>"numeric|digits:2|required|unique:offers,discount",
             "details_en"=>'required|string',
             "details_ar"=>'required|string',
-            "start_date"=>"required",
-            "expire_date"=>"required",
-            "photo"=>'mimes:png,jpg,jpeg|max:1024',
+            "start_date"=>'required|date|before:expire_date',
+            "expire_date"=>'required|date|after:start_date',
+            "photo"=>'required|mimes:png,jpg,jpeg|max:1024',
         ];
         $request->validate($rules);
 
@@ -59,9 +60,20 @@ class OfferController extends Controller
             "discount"=>'required|string|max:10',
             "details_en"=>'required|string|max:100',
             "details_ar"=>'required|string|max:100',
+            "start_date"=>'required|date|before:expire_date',
+            "expire_date"=>'required|date|after:start_date',
             "photo"=>'mimes:png,jpg,jepg|max:1024',
         ];
         $request->validate($rules);
+        $ruless = [
+            'id' => 'required|exists:offers,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $data=$request->except('_token','_method');
         if($request->has('photo')){
             $imageName= $this->UploadPhoto($request->photo , 'offers');
@@ -76,7 +88,15 @@ class OfferController extends Controller
     }
 #################################################Trying#######################################################################3
     public function showOffersProduct($id){
-
+        $rules = [
+            'id' => 'required|exists:offers,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $offers=Offer::find($id);
         $products= $offers->products;
         //to get offer id fro delete from pivot
@@ -125,33 +145,25 @@ class OfferController extends Controller
         // }
         // Product::destroy($request->id);
         // return redirect('admin/product/show-all');
-
-
         $product_id = $request->id;
+        $rules = [
+            'id' => 'required|exists:products,id'
+        ];
+        $idd = [];
+        $idd['id'] = $product_id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $offer = Offer::find($request->offer_id)->products()->detach($product_id);
         return redirect()->back()->with('Success','Product has been removed from this offer');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function delete(Request $request){
         // return $request;
-        $rule=[
+        $rules=[
             "id"=>'required|exists:offers,id|integer'
         ];
-        $request->validate($rule);
+        $request->validate($rules);
         $photoPath=public_path("images\offers\\" . $request->photo);
         // return $photoPath;
         if(file_exists($photoPath)){

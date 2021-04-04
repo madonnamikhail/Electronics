@@ -57,7 +57,7 @@ return [
     'Name'=>'Name',
     'Discount Value'=>'Discount Value',
     'Min Order value'=>'Min Order value',
-    'Max Order Value'=>'Min Order value',
+    'Max Order Value'=>'Max Order value',
     'ACTION'=>'ACTION',
     'New Promo Code'=>'New Promo Code',
     'Submit'=>'Submit',

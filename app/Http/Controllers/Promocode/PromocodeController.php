@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Promocode;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use Illuminate\Support\Facades\Validator;
 
 class PromocodeController extends Controller
 {
@@ -21,26 +22,39 @@ class PromocodeController extends Controller
     }
 
     public function store(Request $request){
-        // return $request;
         $rules=[
             "name"=>'required|max:100',
-            "discountValue"=>'required|max:100',
-            "minOrderValue"=>'required|integer',
-            "maxOrderValue"=>'required|integer',
-            "start_date"=>'required',
-            "expire_date"=>'required',
+            "discountValue"=>'required|numeric',
+            "minOrderValue"=>'required|string|min:1',
+            "maxOrderValue"=>'required|string|gt:minOrderValue',
+            "type"=>'required|integer|min:0|max:1',
+            "max_usage"=>'required|integer|gt:max_usage_per_user',
+            "max_usage_per_user"=>'required|integer|min:1',
+            "start_date"=>'required|date|before:expire_date',
+            "expire_date"=>'required|date|after:start_date'
         ];
         $request->validate($rules);
         $data=$request->except('_token');
-    //     $imageName= $this->UploadPhoto($request->photo , 'promocode');
-    //  $data=$request->except('photo','_token');
-    //  $data['photo']=$imageName;
 
-     Promocode::insert($data);
-     return redirect('admin/promocode/all-promocodes');
+        if($request->type){
+            $data=$request->except('_token','discountValue');
+            $data['discountValue'] = $request->discountValue . '%';
+        }
+
+        Promocode::insert($data);
+        return redirect('admin/promocode/all-promocodes')->with('Success','The promocode has been added successfully');
     }
 
     public function edit($id){
+        $rules = [
+            'id' => 'required|exists:promocodes,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $promo=Promocode::find($id);
         return view ('admin.promocode.edit-promocode',compact('promo'));
     }
@@ -48,22 +62,35 @@ class PromocodeController extends Controller
     public function update(Request $request , $id){
         $rules=[
             "name"=>'required|max:100',
-            "discountValue"=>'required|max:100',
-            "minOrderValue"=>'required|integer',
-            "maxOrderValue"=>'required|integer',
-            "start_date"=>'required',
-            "expire_date"=>'required',
+            "discountValue"=>'required|numeric',
+            "minOrderValue"=>'required|string|min:1',
+            "maxOrderValue"=>'required|string|gt:minOrderValue',
+            "type"=>'required|integer|min:0|max:1',
+            "max_usage"=>'required|integer|gt:max_usage_per_user',
+            "max_usage_per_user"=>'required|integer|min:1',
+            "start_date"=>'required|date|before:expire_date',
+            "expire_date"=>'required|date|after:start_date'
         ];
         $request->validate($rules);
-        $data=$request->except('_token','_method');
-        if($request->has('photo')){
-            $imageName= $this->UploadPhoto($request->photo , 'promocode');
-            $data=$request->except('photo','_token','_method');
-            $data['photo']=$imageName;
+        $ruless = [
+            'id' => 'required|exists:products,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
         }
+        // return $request;
+        $data=$request->except('_token','_method');
+        if($request->type){
+            $data=$request->except('_token','discountValue','_method');
+            $data['discountValue'] = $request->discountValue . '%';
+        }
+        // return $data;
         $update=Promocode::where('id','=', $id)->update($data);
         if($update){
-            return redirect('admin/promocode/all-promocodes');
+            return redirect('admin/promocode/all-promocodes')->with('Success','The promocode has been updated successfully');
         }
         return redirect()->back()->with('Error','failed ');
 
@@ -75,13 +102,13 @@ class PromocodeController extends Controller
             "id"=>'required|exists:promocodes,id|integer'
         ];
         $request->validate($rule);
-        // $photoPath=public_path("images\promocode\\" . $request->photo);
-        // // return $photoPath;
-        // if(file_exists($photoPath)){
-        //    unlink($photoPath);
-        // }
+        $photoPath=public_path("images\promocode\\" . $request->photo);
+        // return $photoPath;
+        if(file_exists($photoPath)){
+           unlink($photoPath);
+        }
         Promocode::destroy($request->id);
-        return redirect('admin/promocode/all-promocodes');
+        return redirect('admin/promocode/all-promocodes')->with('Success','The promocode has been deleted successfully');
 
 
 

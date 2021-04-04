@@ -611,7 +611,7 @@
 
 
       {{-- specs --}}
-    {{-- <li class="nav-item ">
+    <li class="nav-item ">
         <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
@@ -623,19 +623,25 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-              <a href="#" class="nav-link active">
+              <a href="{{ route('all.speccs') }}" class="nav-link active">
               <i class="far fa-circle nav-icon"></i>
               <p>{{ __('message.Show All Specs') }}</p>
               </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('add.specc') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>{{ __('message.Add Spec') }}</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('add.specc.product') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.Add Spec to Product') }}</p>
+            </a>
+          </li>
         </ul>
-    </li> --}}
+    </li>
 
         </ul>
       </nav>

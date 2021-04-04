@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','All Promocodes')
+@section('title','Show Specs')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css') }}">
 @endsection
 @section('content')
-
+{{-- <a href="{{ asset('admin/product/create') }}" class="btn btn-success">Add</a> --}}
     <div class="col-12">
         <div class="col-12">
             @if(Session()->has('Success'))
@@ -30,56 +30,26 @@
             <tr>
               <th>{{ __('message.ID') }}</th>
               <th>{{ __('message.Name') }}</th>
-              <th>{{ __('message.Discount Value') }}</th>
-              <th>{{ __('message.Min Order value') }}</th>
-              <th>{{ __('message.Max Order Value') }}</th>
-              <th>{{ __('message.Type') }}</th>
-              <th>{{ __('message.Max Usage') }}</th>
-              <th>{{ __('message.Max Usage Per User') }}</th>
-              <th>{{ __('message.Start Date') }}</th>
-              <th>{{ __('message.Expire Date') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($promo as $promo)
+                @foreach ($speccs as $specc)
                 <tr>
-                    <td>{{ $promo->id }}</td>
-                    <td>{{ $promo->name }}</td>
-                    <td>{{ $promo->discountValue }}</td>
-                    <td>{{ $promo->minOrderValue }}</td>
-                    <td>{{ $promo->maxOrderValue }}</td>
-                    <td>
-                      @if ($promo->type)
-                        Percentage 
-                      @else
-                        Fixed
-                      @endif
-                    </td>
-                    <td>{{ $promo->max_usage }}</td>
-                    <td>{{ $promo->max_usage_per_user }}</td>
-                    <td>{{ $promo->start_date }}</td>
-                    <td>{{ $promo->expire_date }}</td>
-
-
-                    {{-- <td>
-                        <img src="{{ asset('images/offers/'.$offers->photo) }}" style="width:30%;">
-                    </td> --}}
+                    <td>{{ $specc->id }}</td>
+                    <td>{{ $specc->name }}</td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('edit.promocode',$promo->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                            <a href="{{ route('edit.specc', $specc->id) }}" class="btn btn-warning">{{ __('message.Edit') }}</a>
                             <br>
-                                <form method="post" action="{{route('delete.promocode')}}">
+                                <form method="post" action="{{route('delete.specc')}}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $promo->id }}">
-                                    <input type="hidden" name="photo" value="{{ $promo->photo }}">
+                                    <input type="hidden" name="id" value="{{ $specc->id }}">
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
-                            {{-- <a href="{{route('offers.product',$offers->id)}}" class="btn btn-warning">{{ __('message.show Products') }}</a> --}}
                         </div>
-
                     </td>
                   </tr>
                 @endforeach

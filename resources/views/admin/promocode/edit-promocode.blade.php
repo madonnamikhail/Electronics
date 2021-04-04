@@ -46,6 +46,49 @@
                             <span class="text-danger">{{ $message }}</span>
                           @enderror
 
+
+                          
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">{{ __('message.Promocode Type') }}</label>
+                              <select  name="type" id="type" class="form-control">
+                                  <option {{ (old('type')==0) || ($promo->type ==0)  ? 'selected' : '' }} value="0" class="form-group">
+                                      Fixed
+                                  </option>
+                                  <option {{ (old('type')==1) || ($promo->type ==1)  ? 'selected' : '' }} value="1" class="form-group">
+                                      Percentage
+                                  </option>
+                                </select>
+                          </div>
+
+                    {{-- </div> --}}
+                    @error('type')
+                          <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">{{ __('message.Max Usage') }}</label>
+                      <div>
+                          <input type="number" name="max_usage" value="{{ $promo->max_usage }}">
+                      </div>
+
+                  </div>
+                    @error('max_usage')
+                          <span class="text-danger">{{ $message }}</span>
+                  @enderror
+
+
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">{{ __('message.Max Usage Per User') }}</label>
+                    <div>
+                        <input type="number" name="max_usage_per_user" value="{{ $promo->max_usage_per_user }}">
+                    </div>
+
+                </div>
+                  @error('max_usage_per_user')
+                        <span class="text-danger">{{ $message }}</span>
+                @enderror
+
+
                       <div class="form-group">
                         <label for="exampleInputEmail1">{{ __('message.Start Date') }}</label>
                         <div>
@@ -64,7 +107,7 @@
                         </div>
 
                     </div>
-                      @error('start_date')
+                      @error('expire_date')
                             <span class="text-danger">{{ $message }}</span>
                     @enderror
 

@@ -9,6 +9,7 @@ use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -20,6 +21,15 @@ class SupplierController extends Controller
     }
 
     public function SupplierProducts($id){
+        $rules = [
+            'id' => 'required|exists:suppliers,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         //return products only
         $suppliers=Supplier::find($id);
         $products= $suppliers->products;
@@ -35,40 +45,58 @@ class SupplierController extends Controller
         return view('admin.supplier.create',compact('products'));
     }
     public function store(Request $request){
-        // $rules=[
-        //     "name_en"=>'required|max:100',
-        //     "name_ar"=>'required|max:100',
-        //     "email"=>'required|email',
-        //     "nationalID "=>'required|integer',
-        //     "phone"=>'required',
-        //     "photo"=>'image|mimes:png,jpg,jepg|max:1024',
-        //     "product_id"=>'required|exists:products,id',
-        // ];
-        // $request->validate($rules);
+        
+        $rules=[
+            "name_en"=>'required|max:100',
+            "name_ar"=>'required|max:100',
+            "email"=>'required|email|unique:suppliers,email',
+            "nationalID"=>'required|digits:14|unique:suppliers,nationalID',
+            "phone"=>'required|digits:11|unique:suppliers,phone',
+            "photo"=>'required|mimes:png,jpg,jpeg|max:1024',
+        ];
+        $request->validate($rules);
+        // return $request;
         $data=$request->except('_token');
         $imageName= $this->UploadPhoto($request->photo , 'supplier');
         $data=$request->except('photo','_token');
         $data['photo']=$imageName;
         Supplier::insert($data);
-        return redirect('admin/supplier/all-suppliers');
+        return redirect('admin/supplier/all-suppliers')->with('Success','The supplier has been added successfully');
     }
 
     public function edit($id){
+        $rules = [
+            'id' => 'required|exists:suppliers,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $supplier=Supplier::find($id);
         $product=Product::get();
         return view('admin.supplier.edit', compact('supplier','product'));
     }
     public function update(Request $request , $id){
-        // $rules=[
-        //     "name_en"=>'required|max:100',
-        //     "name_ar"=>'required|max:100',
-        //     "email"=>'required|email',
-        //     "nationalID "=>'required|integer',
-        //     "phone"=>'required',
-        //     "photo"=>'image|mimes:png,jpg,jepg|max:1024',
-        //     "product_id"=>'required|exists:products,id',
-        // ];
-        // $request->validate($rules);
+        $rules=[
+            "name_en"=>'required|max:100',
+            "name_ar"=>'required|max:100',
+            "email"=>'required|email',
+            "nationalID"=>'required|integer|digits:14',
+            "phone"=>'required|digits:11',
+            "photo"=>'mimes:png,jpg,jpeg|max:1024',
+        ];
+        $request->validate($rules);
+        $ruless = [
+            'id' => 'required|exists:suppliers,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
+        }
         $data=$request->except('_token','_method');
         // return $data;
         if($request->has('photo')){
@@ -78,7 +106,7 @@ class SupplierController extends Controller
         }
         $update=Supplier::where('id','=', $id)->update($data);
         if($update){
-            return redirect('admin/supplier/all-suppliers');
+            return redirect('admin/supplier/all-suppliers')->with('Success','The supplier has been updated successfully');
         }
         return redirect()->back()->with('Error','failed ');
 
@@ -96,7 +124,7 @@ class SupplierController extends Controller
            unlink($photoPath);
         }
         Supplier::destroy($request->id);
-        return redirect('admin/supplier/all-suppliers');
+        return redirect('admin/supplier/all-suppliers')->with('Success','The supplier has been deleted successfully');
     }
 
 

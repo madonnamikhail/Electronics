@@ -271,6 +271,24 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::delete('delete','UserController@delete')->name('delete.user');
 
         });
+
+
+    ########################## speccs ######################
+    Route::group(['prefix' => 'admin/specc','namespace'=>'Admin\specc'],function(){
+        //show-all
+        Route::get('all-speccs','SpeccController@allSpeccs')->name('all.speccs');
+        //add Supplier
+        Route::get('create','SpeccController@create')->name('add.specc');
+        Route::post('store','SpeccController@store')->name('store.specc');
+        // //edit
+        Route::get('edit/{id}','SpeccController@edit')->name('edit.specc');
+        Route::post('update/{id}','SpeccController@update')->name('update.specc');
+            //delete
+        Route::delete('delete','SpeccController@delete')->name('delete.specc');
+        Route::get('add-sepcc-to-product','SpeccController@addSpecToProduct')->name('add.specc.product');
+        Route::post('store-sepcc-to-product','SpeccController@storeSpecToProduct')->name('store.specc.product');
+    });
+    ########################### end citys #####################
 });
 
 
