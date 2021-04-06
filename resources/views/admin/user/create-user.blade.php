@@ -74,7 +74,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>
       </form>
     </div>

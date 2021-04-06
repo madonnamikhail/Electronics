@@ -1,13 +1,16 @@
 @extends('layouts.dashboard')
-@section('title','all Orders')
+@section('title','Spec products')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css') }}">
+{{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> --}}
+
 @endsection
 @section('content')
+{{-- <a href="{{ asset('admin/product/create') }}" class="btn btn-success">Add</a> --}}
     <div class="col-12">
         <div class="col-12">
             @if(Session()->has('Success'))
@@ -23,97 +26,82 @@
                 @endphp
         @endif
         </div>
+        <h2> Spec Name:  {{ $spec_products->name }}</h2>
         <table id="example2" class="table table-bordered table-hover">
             <thead>
 
             <tr>
               <th>{{ __('message.ID') }}</th>
-              <th>{{ __('message.Status') }}</th>
-              <th>{{ __('message.Amount') }}</th>
-              <th>{{ __('message.Total Price') }}</th>
-              <th>{{ __('message.User Name') }}</th>
-              <th>{{ __('message.Address') }}</th>
-              <th>{{ __('message.Promocode') }}</th>
+              <th>{{ __('message.English Name') }}</th>
+              <th>{{ __('message.Arabic Name') }}</th>
+              <th>{{ __('message.price') }}</th>
+              <th>{{ __('message.code') }}</th>
+              <th>{{ __('message.English details') }}</th>
+              <th>{{ __('message.Arabic details') }}</th>
+              <th>{{ __('message.Brand') }}</th>
+              <th>{{ __('message.sub Category') }}</th>
+              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.Specs') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($user_orders as $order)
+                @php
+                    $i=1;
+                @endphp
+                @foreach ($spec_products->products as $products)
                 <tr>
-                    <td>{{ $order->id }}</td>
-                    <td>
-                        @if ($order->status == 0)
-                             {{ "Order Created"}}
-                        @elseif($order->status == 1)
-                                {{ "Order is In Progress"}}
-                        @elseif($order->status == 2)
-                            {{ "Deliverd"}}
-                        @endif
+                    <td>{{ $i }} @php
+                        $i++;
+                    @endphp
                     </td>
+                    <td>{{ $products->name_en }}</td>
+                    <td>{{ $products->name_ar }}</td>
+                    <td>{{ $products->price }}</td>
+                    <td>{{ $products->code }}</td>
+                    <td>{{ $products->details_en }}</td>
+                    <td>{{ $products->details_ar }}</td>
+                    <td>
+                        @foreach ($brand as $brands)
+                        @if ($products->brand_id == $brands->id)
+                                {{ $brands->name_en }}
+                        @endif
+                     @endforeach
+                    </td>
+                    <td>
+                        @foreach ($subcategorys as $subcategory)
+                        @if ($products->subCategory_id == $subcategory->id)
+                                {{ $subcategory->name_en }}
+                        @endif
+                     @endforeach
 
-                    <td>{{ $order->amount }}</td>
-                    <td>{{ $order->total_price }}</td>
-                    <td>
-                        @foreach ($user as $users)
-                        @if ($order->user_id == $users->id)
-                                {{ $users->name}}
-                        @endif
-                    @endforeach
                     </td>
                     <td>
-                        @foreach ($user as $users)
-                            @foreach ($addresses as $address)
-                            @if ($address->user_id == $users->id)
-                                    <span style="font-weight: 600"> {{ __('message.flat:') }} </span>{{ $address->flat}}<br>
-                                    <span style="font-weight: 600"> {{ __('message.Building: ') }}</span>{{ $address->building}}<br>
-                                    <span style="font-weight: 600"> {{ __('message.Floor:') }} </span>{{ $address->floor}}<br>
-                                    <span style="font-weight: 600"> {{ __('message.Street English Name:') }} </span>{{ $address->street_en}}<br>
-                                    <span style="font-weight: 600"> {{ __('message.Street Arabic Name:') }} </span>{{ $address->street_ar}}<br>
-                                    <span style="font-weight: 600"> {{ __('message.Region:') }} </span>
-                                    @foreach ($regions as $region)
-                                        @if ($address->region_id == $region->id)
-                                                {{ $region->name_en}}
-                                        @endif
-                                @endforeach<br>
-                            @endif
-                        @endforeach
-                    @endforeach
+                        <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
+                    </td>
+                    <td>Spec name:{{ $spec_products->name }} {{ $products->pivot->value }} <br>
                     </td>
                     <td>
-                        @if ($order->promoCodes_id == 0)
-                        {{ "There is no promocode"}}
-                        @else
-                            {{ $order->promoCodes_id  }}
-                        @endif
-                    </td>
-                    <td>
-                        @php
-                            $x=1;
-                            $y=2;
-                        @endphp
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a>
-
-                            <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
-                            <br>
-                            <a  href="{{ route('update.order',['id'=>$order->id,'action'=>$y]) }}" class="btn btn-success">{{ __('message.Done') }}</a>
-                            <br>
-                                <form method="post" action="{{route('delete.order')}}">
+                                <form method="post" action="{{route('deattach.product.specc')}}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $order->id }}">
+                                    <input type="hidden" name="product_id" value="{{ $products->id }}">
+                                    <input type="hidden" name="spec_id" value="{{ $spec_products->id}}">
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>
                         </div>
 
                     </td>
+
                   </tr>
                 @endforeach
 
 
             </tbody>
-          </table>
+
+        </table>
     </div>
 
 

@@ -90,6 +90,8 @@
 
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
+                            <a href="{{ route('show.product.specs',$products->id) }}" class="btn btn-success">{{ __('message.Show Specs') }}</a>
+
                             <a href="{{ asset('admin/product/edit/'.$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
                             {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}

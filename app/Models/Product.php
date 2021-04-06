@@ -47,7 +47,9 @@ class Product extends Model
 
     public function specs()
     {
-        return $this->belongsToMany('App\Models\Spec', 'spec_product')->withPivot('product_id', 'spec_id', 'value');
+        // return $this->belongsToMany('App\Models\Spec', 'spec_product')->withPivot('product_id', 'spec_id', 'value');
+        return $this->belongsToMany('App\Models\Spec', 'spec_product')->withPivot('value');
+
     }
 
 }

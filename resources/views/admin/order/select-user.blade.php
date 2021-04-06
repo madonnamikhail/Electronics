@@ -8,7 +8,7 @@
                 <label>{{ __('message.Select User') }}</label>
                 <select class="user" id="user" name="user_id">
                   <option value="0" selected disabled>
-                    Select User
+                    {{ __('message.Select User') }}
                   </option>
                   @foreach ($users as $user)
                       <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -16,7 +16,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Select</button>
+                <button type="submit" class="btn btn-primary">{{ __('message.Select') }}</button>
               </div>
         </form>
     </div>

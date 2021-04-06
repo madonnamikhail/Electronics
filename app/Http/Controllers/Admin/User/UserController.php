@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Order;
+use App\Models\Region;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,8 +18,7 @@ class UserController extends Controller
     //
     use generalTrait;
 
-    public function show()
-    {
+    public function show(){
         $users = User::get();
         return view('admin.user.show-users', compact('users'));
     }
@@ -96,6 +97,14 @@ class UserController extends Controller
         User::destroy($request->id);
         return redirect()->back()->with('Success','the user has been deleted successfully');
 
+    }
+    public function userOrder($id)
+    {
+        $user_orders=Order::where('user_id','=',$id)->get();
+        $user=User::get();
+        $addresses=Address::get();
+        $regions=Region::get();
+        return view('admin.user.show-user-orders',compact('user_orders','user','addresses','regions'));
     }
 
 

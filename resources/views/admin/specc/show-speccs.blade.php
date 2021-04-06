@@ -40,6 +40,7 @@
                     <td>{{ $specc->name }}</td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
+                            <a href="{{ route('show.specc.product', $specc->id) }}" class="btn btn-warning">{{ __('message.Show Products') }}</a>
                             <a href="{{ route('edit.specc', $specc->id) }}" class="btn btn-warning">{{ __('message.Edit') }}</a>
                             <br>
                                 <form method="post" action="{{route('delete.specc')}}">

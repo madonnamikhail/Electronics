@@ -28,14 +28,14 @@
                     <span class="text-danger">{{ $message }}</span>
                   @enderror
           <div class="form-group">
-            <label for="exampleInputEmail1">{{ __('message.City Latitude') }}</label>
+            <label for="exampleInputEmail1">{{ __('message.Latitude') }}</label>
             <input type="text" name="lat" value="{{ old('lat') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter lat">
           </div>
           @error('lat')
                 <span class="text-danger">{{ $message }}</span>
               @enderror
           <div class="form-group">
-            <label for="exampleInputFile">{{ __('message.City longtude') }}</label>
+            <label for="exampleInputFile">{{ __('message.Logitude') }}</label>
             <input type="text" name="longg" value="{{ old('longg') }}" class="form-control" id="exampleInputEmail1" placeholder="Enter longg">
 
             @error('longg')
@@ -45,7 +45,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>
       </form>
     </div>

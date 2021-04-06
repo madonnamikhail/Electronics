@@ -103,9 +103,6 @@
                                                         @foreach ($subcategory as $subcategoryss)
                                                             @if ($subcategoryss->category_id == $category->id)
                                                                 <option value="{{ $subcategoryss->id }}" class="form-group">
-                                                                    {{-- @php
-                                                                        echo $subcategoryss->name_en;
-                                                                    @endphp --}}
                                                                     {{ $subcategoryss->name_en }}
                                                                 </option>
                                                             @endif

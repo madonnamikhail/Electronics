@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\Spec;
 use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -151,6 +152,63 @@ class ProductController extends Controller
         }
         Product::destroy($request->id);
         return redirect('admin/product/show-all')->with('Success','The product has been deleted successfully');
+    }
+    public function showProductSpec($id)
+    {
+        $ruless = [
+            'id' => 'required|exists:products,id'
+        ];
+        $idd = [];
+        $idd['id'] = $id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+        $product_specs=Product::with('specs')->find($id);
+        // return $product_specs;
+        return view('admin.products.product-speccs',compact('product_specs'));
+    }
+    public function editProductSpec($product_id,$spec_id)
+    {
+        $ruless = [
+            'product_id' => 'required|exists:products,id',
+
+            'spec_id' => 'required|exists:specs,id',
+
+        ];
+        $idd = [];
+        $idd['spec_id'] = $spec_id;
+        $idd['product_id'] = $product_id;
+        $validator = Validator::make($idd,$ruless);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+        $specs=Spec::with('products')->find($spec_id);
+        // return $specs;
+        return view('admin.products.specc-edit',compact('specs'));
+    }
+    public function updateProductSpec(Request $request)
+    {
+        $rule=[
+            "spec_id"=>'required|exists:specs,id|integer',
+            "product_id"=>'required|exists:products,id|integer',
+            "value"=>'required|string',
+        ];
+        $request->validate($rule);
+        $specs=Spec::find($request->spec_id);
+        $specs->products()->updateExistingPivot($request->product_id,['value'=>$request->value]);
+        return redirect('admin/product/show-product-spec/'.$request->product_id)->with('Success','The Spec has been updated successfully');
+    }
+    public function deleteSpecFromProduct( Request $request)
+    {
+        // return $request;
+        $rules=[
+            "product_id"=>"required|exists:products,id",
+            "spec_id"=>"required|exists:specs,id"
+        ];
+        $request->validate($rules);
+       $spec = Spec::find($request->spec_id)->products()->detach($request->product_id);
+       return redirect()->back()->with('Success','Spec has been removed from this Product');
     }
 
 }

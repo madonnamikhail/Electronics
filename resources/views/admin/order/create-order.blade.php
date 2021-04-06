@@ -20,12 +20,12 @@
         @endif
         <thead>
             <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Qty</th>
+                <th>{{ __('message.Photo') }}</th>
+                <th>{{ __('message.Product Name') }}</th>
+                <th>{{ __('message.Price') }}</th>
+                <th>{{ __('message.Qty') }}</th>
                 {{-- <th>Subtotal</th> --}}
-                <th>Actions</th>
+                <th>{{ __('message.ACTION') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -67,7 +67,7 @@
         </tbody>
     </table>
     <div class="cart-shiping-update">
-      <a href="{{ route('admin.proceed.checkout', $user_id) }}">proceed to checkout</a>
+      <a href="{{ route('admin.proceed.checkout', $user_id) }}">{{ __('message.proceed to checkout') }}</a>
   </div>
 </div>
     <!-- general form elements -->
@@ -82,7 +82,7 @@
         <label>{{ __('message.Select Category') }}</label>
         <select name="category_id" class="category" id="category">
           <option value="0" selected disabled>
-            Select Category
+            {{ __('message.Select Category') }}
           </option>
           @foreach ($categories as $category )
             <option {{ old('category_id')==$category->id ? 'selected' : '' }} value="{{ $category->id }}">
@@ -95,20 +95,20 @@
         <label>{{ __('message.Select Subcategory') }}</label>
         <select class="subcategory" id="subcategory">
           <option value="0" selected disabled>
-            Select Subcategory
+            {{ __('message.Select Subcategory') }}
           </option>
         </select>
       </div>
       <div class="col-lg-6 m-1">
         <form action="{{ route('admin.add.to.cart') }}" method="post">
           @csrf
-          <div class="card-body"> 
+          <div class="card-body">
             <input type="hidden" name="user_id" value="{{ $user_id }}">
           <div class="form-group">
             <label>{{ __('message.Select Product') }}</label>
             <select class="product" id="product" name="product_id">
               <option value="0" selected disabled>
-                Select Product
+                {{ __('message.Select Product') }}
               </option>
             </select>
           </div>
@@ -139,7 +139,7 @@
               <label for="master">{{ __('message.Master Card') }} <span>&nbsp; &nbsp;( 10% Discount ) </span></label><br>
               <input type="number" name="master_number">
             </li>
-            
+
             <li>
                 <input type="radio" id="cash" name="method_payment" value="5">
                 <label for="cash">{{ __('message.Cash on Delivery') }}<span>&nbsp; &nbsp; ( +5 EGP ) </span></label>
@@ -151,9 +151,9 @@
         </div>
       </div>
         </form>
-        
+
       </div>
-      
+
     </div>
 
 @endsection
@@ -179,7 +179,7 @@
               div.find('.subcategory').html(" ");
               div.find('.subcategory').append(op);
 
-              
+
             },
             error: function(){
               console.log('msh tmaaam');

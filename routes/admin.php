@@ -78,6 +78,18 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::post('update/{id}','ProductController@update')->name('update.product');
         //delete
         Route::delete('delete','ProductController@delete')->name('delete.product');
+        //show product specs
+        Route::get('show-product-spec/{product_id}','ProductController@showProductSpec')->name('show.product.specs');
+        //edit spec value
+        Route::get('edit-product-spec/{product_id}/{spec_id}','ProductController@editProductSpec')->name('edit.product.specs');
+        Route::post('update-product-spec','ProductController@updateProductSpec')->name('update.product.specs');
+        //delete spec from product
+        Route::delete('delete-spec-from-product','ProductController@deleteSpecFromProduct')->name('delete.spec.from.product');
+
+
+
+
+
 
         });
 
@@ -269,6 +281,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('update/{id}','UserController@update')->name('update.user');
             // //delete user
             Route::delete('delete','UserController@delete')->name('delete.user');
+            //show user-orders
+            Route::get('user-order/{user_id}','UserController@userOrder')->name('user.order');
 
         });
 
@@ -287,6 +301,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::delete('delete','SpeccController@delete')->name('delete.specc');
         Route::get('add-sepcc-to-product','SpeccController@addSpecToProduct')->name('add.specc.product');
         Route::post('store-sepcc-to-product','SpeccController@storeSpecToProduct')->name('store.specc.product');
+        Route::get('show-sepcc-products/{spec_id}','SpeccController@showSpecProducts')->name('show.specc.product');
+        Route::Delete('deattach-product-from-spec','SpeccController@deattachProductFromSpec')->name('deattach.product.specc');
+
     });
     ########################### end citys #####################
 });

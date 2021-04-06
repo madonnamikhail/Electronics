@@ -52,7 +52,7 @@
           @error('street_ar')
             <span class="text-danger">{{ $message }}</span>
           @enderror
-              
+
           <div class="form-group">
             <label for="exampleInputFile">{{ __('message.Choose Region') }}</label>
             <select name="region_id" class="form-control">
@@ -80,7 +80,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">{{ __('message.Submit') }}</button>
         </div>
       </form>
     </div>
