@@ -24,6 +24,9 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
     public const DASHBOARD = '/admin/admin';
     public const INDEX = '/index';
+    public const SUPPLIERDASHBOARD = '/supplier/supplier';
+    public const ADMINLOGIN = '/admin/login';
+    public const SUPPLIERLOGIN = '/supplier/login-form';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -50,6 +53,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapAdminRoutes();
 
+        $this->mapSupplierRoutes();
+
         $this->mapbreadcrumbsRoutes();
 
         //
@@ -74,6 +79,13 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapSupplierRoutes()
+    {
+        Route::middleware('web')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/supplier.php'));
     }
 
     protected function mapbreadcrumbsRoutes()

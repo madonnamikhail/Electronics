@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Supplier extends Model
+class Supplier extends Authenticatable
 {
-    //
+    use Notifiable;
     protected $fillable = [
-        'name_en','name_ar','email','nationalID', 'phone','photo','created_at','updated_at'
+        'name_en','name_ar','email','nationalID','password', 'phone','photo','created_at','updated_at'
     ];
 
     /**
@@ -17,7 +19,7 @@ class Supplier extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at','updated_at','pivot'
+        'created_at','updated_at','pivot','password',
     ];
 
     public function Products(){

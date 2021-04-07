@@ -25,7 +25,12 @@ class RedirectIfAuthenticated
             if($guard=='admin')
                  return redirect(RouteServiceProvider::DASHBOARD);
             else
-                return redirect(RouteServiceProvider::HOME);
+                return redirect(RouteServiceProvider::ADMINLOGIN);
+
+            if($guard=='supplier')
+                return redirect(RouteServiceProvider::SUPPLIERDASHBOARD);
+            else
+               return redirect(RouteServiceProvider::SUPPLIERLOGIN);
         }
 
         return $next($request);

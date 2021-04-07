@@ -205,7 +205,7 @@ class OrderController extends Controller
         $orderInsert['usage']=$usage;
         // detach l cart
         // $user_id = Auth::user()->id;
-        // $user = User::find($user_id)->product()->detach();
+        $user = User::find($user_id)->product()->detach();
         $Order_Product=[];
         $pivot_forgien=[];
         foreach ($products as $product){

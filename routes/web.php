@@ -4,6 +4,7 @@ use App\Models\Address;
 use App\Models\City;
 use App\Models\Region;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Middleware\ValidateSignature;

@@ -27,11 +27,11 @@ class Authenticate extends Middleware
 
             if(Request::is('admin/*'))
                  return route('admin.get.login');
-            else
-                return route('login');
+            // else
+            //     return route('login');
 
-            if(Request::is('supplier/*'))
-                return route('supplier.get.login');
+            elseif(Request::is('supplier/*'))
+                return route('supplier-login-form');
            else
                return route('login');
         }

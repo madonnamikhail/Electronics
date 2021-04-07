@@ -170,7 +170,6 @@ class OrderCrudController extends Controller
     }
     public function orderProducts($id)
     {
-
         $brand=Brand::get();
         $subcategorys=Subcategory::get();
         $suppliers=Supplier::get();

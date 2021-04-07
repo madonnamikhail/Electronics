@@ -80,7 +80,7 @@
 @else
   <li class="top-hover">
       <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-          {{ Auth::user()->name }}
+          {{ Auth::user()->name_en }}
       </a>
 
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -200,19 +200,19 @@
                 <p>
                     {{ __('message.My Products') }}
                     <i class="right fas fa-angle-left"></i>
-                    <span class="badge badge badge-danger badge=pill float-right mr-2"> </span>
+                    <span class="badge badge badge-danger badge=pill float-right mr-2">{{ App\Models\Product::where('supplier_id','=', Auth::user()->id)->count() }}</span>
                     {{-- {{ App\Models\Subcategory::count() }} --}}
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="{{ route('show-supplier-products') }}" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ __('message.Show Products') }}</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('supplier.create.product') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ __('message.Add Products') }}</p>
                     </a>
@@ -232,17 +232,23 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="{{ route('supplier.created.orders') }}" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>{{ __('message.show Orders') }}</p>
+                    <p>{{ __('message.Created Orders') }}</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('supplier.inprogress.orders') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>{{ __('message.Add Order') }}</p>
+                    <p>{{ __('message.In-Progress Orders') }}</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{ route('supplier.delivered.orders') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('message.Delivered Orders') }}</p>
+                  </a>
+              </li>
                 </ul>
             </li>
 
