@@ -18,10 +18,11 @@
                     <div class="product-wrapper-single">
                     <div class="product-wrapper mb-30">
                         <div class="product-img">
-                            <a href="product-details.html">
+                            {{-- <a href="product-details.html"> --}}
+                            <a href="{{ route('get-product-single-page', $product_offer->id) }}">
                                 <img alt="" src="{{ asset('images/product/'.$product_offer->photo) }}">
                             </a>
-                            <span>{{$discount_value}}</span>
+                            <span>{{$discount_value}}%</span>
                             <div class="product-action">
                                 <a class="action-wishlist" href="#" title="Wishlist">
                                     <i class="ion-android-favorite-outline"></i>
@@ -43,6 +44,7 @@
                                 </div>
                                 <div class="cart-hover">
                                     <h4><a href="product-details.html">+ Add to cart</a></h4>
+
                                 </div>
                             </div>
                             <div class="product-price-wrapper">

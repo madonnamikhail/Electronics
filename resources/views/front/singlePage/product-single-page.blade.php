@@ -157,6 +157,9 @@
                                     <li><a href="{{ route('get.products.by.subcategory.id',$product->product_subcategory_id) }}"> {{ $product->product_subcategory }},</a></li>
                                     <li><a href="{{ route('get.products.by.brand.id',$product->product_brand_id) }}"> {{ $product->product_brand }}</a></li>
                                 </ul>
+                                <ul>
+                                    <li class="categories-title" ><span style="text-decoration: underline">Supplier Name: </span>{{ $product->supplier_name }}</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

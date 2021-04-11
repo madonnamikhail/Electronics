@@ -110,7 +110,7 @@
                                                                 </button>
                                                             </form>
                                                             @endauth
-                                                         
+
                                                         </div>
                                                     </div>
                                                     <div class="product-price-wrapper">
@@ -173,7 +173,7 @@
                                 <div class="shop-widget">
                                     <h4 class="shop-sidebar-title">Shop By Categories</h4>
                                     <div id="collapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
-                                        <ul> 
+                                        <ul>
                                             @forelse ($categories as $category)
                                                         <li><input id="cat_{{$category->id}}" type="checkbox" {{(in_array($category->id,$cats)? 'checked':'')}}
                                                             attr-name="{{$category->name_en }}" name="cats[]" value="{{$category->id}}" class="filter_checkbox">
@@ -187,7 +187,7 @@
                                 </div>
                                 <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                     <h4 class="shop-sidebar-title">By Subcategory</h4>
-                                  
+
                                     <div id="subcategorycollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
                                         <ul>
                                             @forelse ($subCategories as $subCategory)
@@ -197,14 +197,14 @@
                                             @empty
                                                 <li><input type="checkbox"><a href="#">There are no Subcategories to show</a>
                                             @endforelse
-                                          
+
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                     <h4 class="shop-sidebar-title">By Brand</h4>
                                     <div id="brandcollapseTwo" data-parent="#accordionExample" class="sidebar-list-style mt-20 ">
-                                        <ul> 
+                                        <ul>
                                             @forelse ($brands as $brand)
                                             <li><input id="brands_{{$brand->id}}" type="checkbox" {{(in_array($brand->id,$brand_ids)? 'checked':'')}}
                                                 attr-name="{{$brand->name_en }}" name="brands[]" value="{{$brand->id}}" class="filter_checkbox">
@@ -212,7 +212,7 @@
                                             @empty
                                                 <li><input type="checkbox"><a href="#">There are no Brands to show</a>
                                             @endforelse
-                                          
+
                                         </ul>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@
                                         <h3>Price</h3>
                                         <input type="hidden" id="hidden_minimum_price" class="filter_checkbox" name="min_price" value="{{ $min }}" />
                                         <input type="hidden" id="hidden_maximum_price" class="filter_checkbox" name="max_price" value="{{ $max }}" />
-                                        <p id="price_show">{{ $min }} - {{ $max }}</p>
+                                        <p id="price_show" class="filter_checkbox">{{ $min }} - {{ $max }}</p>
                                         <div class="filter_checkbox" id="price_range"></div>
                                     {{-- </div> --}}
                                 {{-- </div> --}}
@@ -291,7 +291,7 @@
                                             @endforelse
                                         </ul>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="shop-widget mt-40 shop-sidebar-border pt-35">
                                     <h4 class="shop-sidebar-title">Compare Products</h4>
                                     <div class="compare-product">
@@ -593,7 +593,6 @@
                 fetchCauseAgainstCategory();
             });
         });
-
         function fetchCauseAgainstCategory() {
             $('.causes_div').empty();
             $('#filter_form').submit();

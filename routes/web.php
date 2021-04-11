@@ -67,14 +67,14 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
         Route::post('/insert-contactUs-message','ContactUsMessageController@insertMessage')->name('insert.contact-us.message');
     });
 
-    
+
 });
 
 Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['verified','localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
 
     ###################### front
     Route::group(['namespace'=>'Front'], function(){
-        Route::post('/user-cart','IndexController@addCart')->name('add.to.cart'); 
+        Route::post('/user-cart','IndexController@addCart')->name('add.to.cart');
         Route::get('/cart', 'IndexController@getCart')->name('get.cart');
         Route::post('/cart-clear', 'IndexController@cartClear')->name('cart.clear');
 
@@ -121,9 +121,9 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         ########################## end profile
 
         Route::group(['namespace'=>'singlePage'],function(){
-            Route::post('/user-cart-single-page','SinglePageController@singlePageAddCart')->name('single.page.add.to.cart'); 
+            Route::post('/user-cart-single-page','SinglePageController@singlePageAddCart')->name('single.page.add.to.cart');
         });
-     
+
     });
 
         ###################### end front
@@ -132,7 +132,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::post('place-order','OrderController@placeOrder')->name('place.order');
     });
 
-    
+
 
 });
 

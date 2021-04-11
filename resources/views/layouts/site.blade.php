@@ -54,15 +54,14 @@
                             <div class="header-bottom-right">
                                 <div class="main-menu">
                                     <nav>
-
-                                        <div class="col-md-12 mx-auto bg-light rounded p-4">
+                                        <div class="col-md-12   rounded {{--bg-light mx-auto border-info --}}">
                                             <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                                                 @csrf
                                               <div class="input-group">
                                                 <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
                                                  placeholder="Search..." autocomplete="on" required style="width:80%" >
                                                 {{-- <div class="input-group-append"> --}}
-                                                  <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0" style="width:20%">
+                                                  <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:20%">
                                                 {{-- </div> --}}
                                               </div>
                                             </form>
@@ -71,8 +70,6 @@
                                             <div class="list-group" id="show-list">
                                               <!-- Here autocomplete list will be display -->
                                               {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
-
-
                                             </div>
                                         </div>
 
@@ -80,7 +77,7 @@
                                             <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
                                                     <li><a href="{{ route('index.page') }}">home version 1</a></li>
-                                                    <li><a href="index-2.html">home version 2</a></li>
+                                                    <li><a href="{{ route('index.page') }}">home version 2</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="about-us.html">about</a></li>

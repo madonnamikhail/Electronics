@@ -39,7 +39,7 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="single-banner img-zoom mb-30">
                                 <a href="{{ route('hot.deals',$offer->id) }}">
-                                    <img style="width: 20%" src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
+                                    <img style="width:30vw; height:40vh" src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
                                 </a>
                             </div>
                         </div>
@@ -136,17 +136,6 @@
                                     </button>
                                 </form>
                             @endauth
-                            {{-- <form action="{{ route('add.to.cart') }}" method="post">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" name="product_id" value="{{ $product->products_id }}">
-                                <button type="submit">
-                                    <a class="action-cart" title="Add To Cart">
-                                        + Add to cart
-                                        <i class="ion-ios-shuffle-strong"></i>
-                                    </a>
-                                </button>
-                            </form> --}}
                         </div>
                     </div>
                     <div class="product-price-wrapper">

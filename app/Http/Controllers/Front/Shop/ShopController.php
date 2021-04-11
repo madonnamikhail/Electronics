@@ -35,7 +35,7 @@ class ShopController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-        $id=0;        
+        $id=0;
         $cats = [];$subs = [] ; $brand_ids = [] ;
         $min=0;
         $max=6500000;
@@ -232,245 +232,245 @@ class ShopController extends Controller
         ';
         return $output;
     }
-    public function priceFilter(Request $request) {
-        // return $request->minimum_price .".". $request->maximum_price;
-        $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-            ->select('products.id as products_id', 'products.photo as product_photo', 'products.*','products.price as products_price', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-            ->orderBy('products.id', 'asc')
-            // ->where('price', '>=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
-            // ->where('price', '<=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
-            // ->whereBetween('price', [$request->minimum_price, $request->maximum_price])
-            ->whereRaw('price BETWEEN ' . $request->minimum_price . ' AND ' . $request->maximum_price . '')
-            ->get();
-            // min<=price<=max
-            // agefrom  <= age<=   ageto
+    // public function priceFilter(Request $request) {
+    //     // return $request->minimum_price .".". $request->maximum_price;
+    //     $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+    //         ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+    //         ->select('products.id as products_id', 'products.photo as product_photo', 'products.*','products.price as products_price', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+    //         ->orderBy('products.id', 'asc')
+    //         // ->where('price', '>=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
+    //         // ->where('price', '<=', $request->minimum_price)->where('price', '<=', $request->maximum_price)
+    //         // ->whereBetween('price', [$request->minimum_price, $request->maximum_price])
+    //         ->whereRaw('price BETWEEN ' . $request->minimum_price . ' AND ' . $request->maximum_price . '')
+    //         ->get();
+    //         // min<=price<=max
+    //         // agefrom  <= age<=   ageto
 
-        $total_row = count($products);
-        return $total_row;
-        $output = '';
-        if ($total_row > 0) {
-            foreach ($products as $product) {
-                $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
-                $token = csrf_token();
-                $output .= '
-                                <div class="product-wrapper col-lg-4">
-                                <div class="product-img">
-                                    <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
-                                        <img alt="" src="' . $directory . '">
-                                    </a>';
-                if ($product->discount) {
-                    $output .= '<span>' . $product->discount . '%</span>';
-                }
-                $output .= '<div class="product-action">
-                                        <a class="action-wishlist" href="#" title="Wishlist">
-                                            <i class="ion-android-favorite-outline"></i>
-                                        </a>
-                                        <a class="action-cart" href="#" title="Add To Cart">
-                                            <i class="ion-ios-shuffle-strong"></i>
-                                        </a>
-                                        <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-                                            <i class="ion-ios-search-strong"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="product-content text-left">
-                                    <div class="product-hover-style">
-                                        <div class="product-title">
-                                            <h4>
-                                                <a href="#">' . $product->name_en . '</a>
-                                            </h4>
-                                        </div>
-                                        <div class="cart-hover">
-                                            <form action="' . route('add.to.cart') . '" method="post">
-                                            <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
-                                                <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
-                                                <input type="hidden" name="product_id" value="' . $product->products_id . '">
-                                                <button type="submit">
-                                                    <a class="action-cart" title="Add To Cart">
-                                                        + Add to cart
-                                                        <i class="ion-ios-shuffle-strong"></i>
-                                                    </a>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="product-price-wrapper">
-                                    ';
-                if ($product->discount) {
-                    $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
-                                                <span class="product-price-old">EGP ' . $product->price . ' </span>';
-                } else {
-                    $output .= '<span >EGP ' . $product->price . '</span>';
-                }
+    //     $total_row = count($products);
+    //     return $total_row;
+    //     $output = '';
+    //     if ($total_row > 0) {
+    //         foreach ($products as $product) {
+    //             $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
+    //             $token = csrf_token();
+    //             $output .= '
+    //                             <div class="product-wrapper col-lg-4">
+    //                             <div class="product-img">
+    //                                 <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
+    //                                     <img alt="" src="' . $directory . '">
+    //                                 </a>';
+    //             if ($product->discount) {
+    //                 $output .= '<span>' . $product->discount . '%</span>';
+    //             }
+    //             $output .= '<div class="product-action">
+    //                                     <a class="action-wishlist" href="#" title="Wishlist">
+    //                                         <i class="ion-android-favorite-outline"></i>
+    //                                     </a>
+    //                                     <a class="action-cart" href="#" title="Add To Cart">
+    //                                         <i class="ion-ios-shuffle-strong"></i>
+    //                                     </a>
+    //                                     <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+    //                                         <i class="ion-ios-search-strong"></i>
+    //                                     </a>
+    //                                 </div>
+    //                             </div>
+    //                             <div class="product-content text-left">
+    //                                 <div class="product-hover-style">
+    //                                     <div class="product-title">
+    //                                         <h4>
+    //                                             <a href="#">' . $product->name_en . '</a>
+    //                                         </h4>
+    //                                     </div>
+    //                                     <div class="cart-hover">
+    //                                         <form action="' . route('add.to.cart') . '" method="post">
+    //                                         <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
+    //                                             <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
+    //                                             <input type="hidden" name="product_id" value="' . $product->products_id . '">
+    //                                             <button type="submit">
+    //                                                 <a class="action-cart" title="Add To Cart">
+    //                                                     + Add to cart
+    //                                                     <i class="ion-ios-shuffle-strong"></i>
+    //                                                 </a>
+    //                                             </button>
+    //                                         </form>
+    //                                     </div>
+    //                                 </div>
+    //                                 <div class="product-price-wrapper">
+    //                                 ';
+    //             if ($product->discount) {
+    //                 $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
+    //                                             <span class="product-price-old">EGP ' . $product->price . ' </span>';
+    //             } else {
+    //                 $output .= '<span >EGP ' . $product->price . '</span>';
+    //             }
 
-                $output .= '</div>
-                                </div>
-                            </div>
-                        ';
-            }
-        } else {
-            $output = '<h3>No Data Found</h3>';
-        }
-        // return response()->json($output);
-        return $output;
-    }
-    public function getbrand($id){
-        // return $id;
-        var_dump($id);die;
-        $id = explode(',', $id);
-        var_dump($id);die;
-        $products = Product::whereIn('brand_id',$id)
-        ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-        ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-        ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-        ->orderBy('products.id', 'asc')
-        ->get();
-        $total_row = count($products);
-        $output = '';
-        if ($total_row > 0) {
-            foreach ($products as $product) {
-                $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
-                $token = csrf_token();
-                $output .= '
-                    <div class="product-wrapper col-lg-4">
-                    <div class="product-img">
-                        <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
-                            <img alt="" src="' . $directory . '">
-                        </a>';
-                if ($product->discount) {
-                    $output .= '<span>' . $product->discount . '%</span>';
-                }
-                $output .= '<div class="product-action">
-                            <a class="action-wishlist" href="#" title="Wishlist">
-                                <i class="ion-android-favorite-outline"></i>
-                            </a>
-                            <a class="action-cart" href="#" title="Add To Cart">
-                                <i class="ion-ios-shuffle-strong"></i>
-                            </a>
-                            <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-                                <i class="ion-ios-search-strong"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="product-content text-left">
-                        <div class="product-hover-style">
-                            <div class="product-title">
-                                <h4>
-                                    <a href="#">' . $product->name_en . '</a>
-                                </h4>
-                            </div>
-                            <div class="cart-hover">
-                                <form action="' . route('add.to.cart') . '" method="post">
-                                <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
-                                    <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
-                                    <input type="hidden" name="product_id" value="' . $product->products_id . '">
-                                    <button type="submit">
-                                        <a class="action-cart" title="Add To Cart">
-                                            + Add to cart
-                                            <i class="ion-ios-shuffle-strong"></i>
-                                        </a>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="product-price-wrapper">
-                        ';
-                if ($product->discount) {
-                    $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
-                                <span class="product-price-old">EGP ' . $product->price . ' </span>';
-                } else {
-                    $output .= '<span >EGP ' . $product->price . '</span>';
-                }
+    //             $output .= '</div>
+    //                             </div>
+    //                         </div>
+    //                     ';
+    //         }
+    //     } else {
+    //         $output = '<h3>No Data Found</h3>';
+    //     }
+    //     // return response()->json($output);
+    //     return $output;
+    // }
+    // public function getbrand($id){
+    //     // return $id;
+    //     var_dump($id);die;
+    //     $id = explode(',', $id);
+    //     var_dump($id);die;
+    //     $products = Product::whereIn('brand_id',$id)
+    //     ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+    //     ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+    //     ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*', DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+    //     ->orderBy('products.id', 'asc')
+    //     ->get();
+    //     $total_row = count($products);
+    //     $output = '';
+    //     if ($total_row > 0) {
+    //         foreach ($products as $product) {
+    //             $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
+    //             $token = csrf_token();
+    //             $output .= '
+    //                 <div class="product-wrapper col-lg-4">
+    //                 <div class="product-img">
+    //                     <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
+    //                         <img alt="" src="' . $directory . '">
+    //                     </a>';
+    //             if ($product->discount) {
+    //                 $output .= '<span>' . $product->discount . '%</span>';
+    //             }
+    //             $output .= '<div class="product-action">
+    //                         <a class="action-wishlist" href="#" title="Wishlist">
+    //                             <i class="ion-android-favorite-outline"></i>
+    //                         </a>
+    //                         <a class="action-cart" href="#" title="Add To Cart">
+    //                             <i class="ion-ios-shuffle-strong"></i>
+    //                         </a>
+    //                         <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+    //                             <i class="ion-ios-search-strong"></i>
+    //                         </a>
+    //                     </div>
+    //                 </div>
+    //                 <div class="product-content text-left">
+    //                     <div class="product-hover-style">
+    //                         <div class="product-title">
+    //                             <h4>
+    //                                 <a href="#">' . $product->name_en . '</a>
+    //                             </h4>
+    //                         </div>
+    //                         <div class="cart-hover">
+    //                             <form action="' . route('add.to.cart') . '" method="post">
+    //                             <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
+    //                                 <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
+    //                                 <input type="hidden" name="product_id" value="' . $product->products_id . '">
+    //                                 <button type="submit">
+    //                                     <a class="action-cart" title="Add To Cart">
+    //                                         + Add to cart
+    //                                         <i class="ion-ios-shuffle-strong"></i>
+    //                                     </a>
+    //                                 </button>
+    //                             </form>
+    //                         </div>
+    //                     </div>
+    //                     <div class="product-price-wrapper">
+    //                     ';
+    //             if ($product->discount) {
+    //                 $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
+    //                             <span class="product-price-old">EGP ' . $product->price . ' </span>';
+    //             } else {
+    //                 $output .= '<span >EGP ' . $product->price . '</span>';
+    //             }
 
-                $output .= '</div>
-                                </div>
-                            </div>
-                        ';
-            }
-        } else {
-            $output = '<h3>No Data Found</h3>';
-        }
-        return response()->json($output);
-    }
-    public function getSubcategory($id){
-        $id = explode(',', $id);
-        // return $id;
-        $products = Product::whereIn('subCategory_id',$id)
-        ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-        ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-        ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*',
-        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-        ->orderBy('products.id', 'asc')
-        ->get();
-        $total_row = count($products);
-        // return $total_row;
-        $output = '';
-        if ($total_row > 0) {
-            foreach ($products as $product) {
-                $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
-                $token = csrf_token();
-                $output .= '
-                    <div class="product-wrapper col-lg-4">
-                    <div class="product-img">
-                        <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
-                            <img alt="" src="' . $directory . '">
-                        </a>';
-                if ($product->discount) {
-                    $output .= '<span>' . $product->discount . '%</span>';
-                }
-                $output .= '<div class="product-action">
-                            <a class="action-wishlist" href="#" title="Wishlist">
-                                <i class="ion-android-favorite-outline"></i>
-                            </a>
-                            <a class="action-cart" href="#" title="Add To Cart">
-                                <i class="ion-ios-shuffle-strong"></i>
-                            </a>
-                            <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-                                <i class="ion-ios-search-strong"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="product-content text-left">
-                        <div class="product-hover-style">
-                            <div class="product-title">
-                                <h4>
-                                    <a href="#">' . $product->name_en . '</a>
-                                </h4>
-                            </div>
-                            <div class="cart-hover">
-                                <form action="' . route('add.to.cart') . '" method="post">
-                                <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
-                                    <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
-                                    <input type="hidden" name="product_id" value="' . $product->products_id . '">
-                                    <button type="submit">
-                                        <a class="action-cart" title="Add To Cart">
-                                            + Add to cart
-                                            <i class="ion-ios-shuffle-strong"></i>
-                                        </a>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="product-price-wrapper">
-                        ';
-                if ($product->discount) {
-                    $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
-                                <span class="product-price-old">EGP ' . $product->price . ' </span>';
-                } else {
-                    $output .= '<span >EGP ' . $product->price . '</span>';
-                }
+    //             $output .= '</div>
+    //                             </div>
+    //                         </div>
+    //                     ';
+    //         }
+    //     } else {
+    //         $output = '<h3>No Data Found</h3>';
+    //     }
+    //     return response()->json($output);
+    // }
+    // public function getSubcategory($id){
+    //     $id = explode(',', $id);
+    //     // return $id;
+    //     $products = Product::whereIn('subCategory_id',$id)
+    //     ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+    //     ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+    //     ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*',
+    //     DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+    //     ->orderBy('products.id', 'asc')
+    //     ->get();
+    //     $total_row = count($products);
+    //     // return $total_row;
+    //     $output = '';
+    //     if ($total_row > 0) {
+    //         foreach ($products as $product) {
+    //             $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
+    //             $token = csrf_token();
+    //             $output .= '
+    //                 <div class="product-wrapper col-lg-4">
+    //                 <div class="product-img">
+    //                     <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
+    //                         <img alt="" src="' . $directory . '">
+    //                     </a>';
+    //             if ($product->discount) {
+    //                 $output .= '<span>' . $product->discount . '%</span>';
+    //             }
+    //             $output .= '<div class="product-action">
+    //                         <a class="action-wishlist" href="#" title="Wishlist">
+    //                             <i class="ion-android-favorite-outline"></i>
+    //                         </a>
+    //                         <a class="action-cart" href="#" title="Add To Cart">
+    //                             <i class="ion-ios-shuffle-strong"></i>
+    //                         </a>
+    //                         <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+    //                             <i class="ion-ios-search-strong"></i>
+    //                         </a>
+    //                     </div>
+    //                 </div>
+    //                 <div class="product-content text-left">
+    //                     <div class="product-hover-style">
+    //                         <div class="product-title">
+    //                             <h4>
+    //                                 <a href="#">' . $product->name_en . '</a>
+    //                             </h4>
+    //                         </div>
+    //                         <div class="cart-hover">
+    //                             <form action="' . route('add.to.cart') . '" method="post">
+    //                             <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
+    //                                 <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
+    //                                 <input type="hidden" name="product_id" value="' . $product->products_id . '">
+    //                                 <button type="submit">
+    //                                     <a class="action-cart" title="Add To Cart">
+    //                                         + Add to cart
+    //                                         <i class="ion-ios-shuffle-strong"></i>
+    //                                     </a>
+    //                                 </button>
+    //                             </form>
+    //                         </div>
+    //                     </div>
+    //                     <div class="product-price-wrapper">
+    //                     ';
+    //             if ($product->discount) {
+    //                 $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
+    //                             <span class="product-price-old">EGP ' . $product->price . ' </span>';
+    //             } else {
+    //                 $output .= '<span >EGP ' . $product->price . '</span>';
+    //             }
 
-                $output .= '</div>
-                                </div>
-                            </div>
-                        ';
-            }
-        } else {
-            $output = '<h3>No Data Found</h3>';
-        }
-        return response()->json($output);
-    }
+    //             $output .= '</div>
+    //                             </div>
+    //                         </div>
+    //                     ';
+    //         }
+    //     } else {
+    //         $output = '<h3>No Data Found</h3>';
+    //     }
+    //     return response()->json($output);
+    // }
     // multi filter
     public function filtering(Request $request) {
         $rules=[
@@ -484,7 +484,7 @@ class ShopController extends Controller
         if ($validator->fails()) {
             return abort(404);
         }
-        
+
         $min=$request->min_price;
         $max=$request->max_price;
         $cats = [];$subs = [] ; $brand_ids = [] ;
@@ -569,8 +569,8 @@ class ShopController extends Controller
                                     </button>
                                 </form>';
                             }
-                       
-                            $output.='    
+
+                            $output.='
                             </div>
                         </div>
                         <div class="product-price-wrapper">
@@ -592,7 +592,7 @@ class ShopController extends Controller
         }
         // echo $output;die;
         $products = $query;
-        
+
 
         // return response()->json(array('output','cats','subs','brands'));
         $categories = Category::get();
@@ -623,13 +623,13 @@ class ShopController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-        $id=0;        
+        $id=0;
         $cats = []; $subs = []; $brand_ids = [];
         $min=0;
         $max=6500000;
         // return $products;
         return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-    
+
     }
 
     public function getProductsBySubcategoryId($id)
@@ -651,13 +651,13 @@ class ShopController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-        $id=0;        
+        $id=0;
         $cats = []; $subs = []; $brand_ids = [];
         $min=0;
         $max=6500000;
         // return $products;
         return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-    
+
     }
 
     public function getProductsByBrandId($id)
@@ -682,11 +682,11 @@ class ShopController extends Controller
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
-        $id=0;        
+        $id=0;
         $cats = []; $subs = []; $brand_ids = [];
         $min=0;
         $max=6500000;
         return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-    
+
     }
 }

@@ -201,6 +201,7 @@ class IndexController extends Controller
         //kda m3ana id al offer
         $offers=Offer::find($id);
         $products_offers=$offers->products;
+        // return $products_offers;
         $discount_value=$offers->discount;
         return view('front.hot_deals',compact('products_offers','discount_value'));
     }

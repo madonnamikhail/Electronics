@@ -18,6 +18,7 @@ class SinglePageController extends Controller
                 ->join('subcategories','products.subCategory_id','=','subcategories.id')
                 ->join('categories','subcategories.category_id','=','categories.id')
                 ->join('brands','products.brand_id','=','brands.id')
+                ->join('suppliers','products.supplier_id','=','suppliers.id')
                 ->leftjoin('offers','offer_product.offer_id','=','offers.id')
                 ->join('ratings', 'ratings.product_id','=','products.id')
                 ->leftjoin('users','users.id','=','ratings.user_id')
@@ -32,7 +33,7 @@ class SinglePageController extends Controller
                     'products.*',
                     'products.details_en as product_details_en',
                     'products.details_ar as product_details_ar','offers.*',
-                    'users.name as user_name',
+                    'users.name as user_name','suppliers.name_en as supplier_name',
                     DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'),
                     DB::raw('count(`ratings`.`user_id`) as user_rating_count'),'ratings.updated_at as rating_updated_at',
                     DB::raw('avg(`ratings`.`value`) as rating_average'),
