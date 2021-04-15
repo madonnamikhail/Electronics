@@ -13,13 +13,13 @@
     width: 60px;
     height: 34px;
   }
-  
-  .switch input { 
+
+  .switch input {
     opacity: 0;
     width: 0;
     height: 0;
   }
-  
+
   .slider {
     position: absolute;
     cursor: pointer;
@@ -31,7 +31,7 @@
     -webkit-transition: .4s;
     transition: .4s;
   }
-  
+
   .slider:before {
     position: absolute;
     content: "";
@@ -43,26 +43,26 @@
     -webkit-transition: .4s;
     transition: .4s;
   }
-  
+
   input:checked + .slider {
     background-color: #2196F3;
   }
-  
+
   input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
   }
-  
+
   input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
-  
+
   /* Rounded sliders */
   .slider.round {
     border-radius: 34px;
   }
-  
+
   .slider.round:before {
     border-radius: 50%;
   }
@@ -95,6 +95,7 @@
                   <th>{{ __('message.Arabic Name') }}</th>
                   <th>{{ __('message.price') }}</th>
                   <th>{{ __('message.code') }}</th>
+                  <th>{{ __('message.id') }}</th>
                   <th>{{ __('message.status') }}</th>
                   <th>{{ __('message.English details') }}</th>
                   <th>{{ __('message.Arabic details') }}</th>
@@ -104,30 +105,41 @@
                   <th>{{ __('message.ACTION') }}</th>
                 </tr>
                 </thead>
+
                 <tbody>
+                    <td>
+                        <div class="test">
+
+                    </div>
+                    </td>
+
                     @php
                         $i=1;
                     @endphp
                     @foreach ($products->products as $products)
+                    {{ $products->id }}
                     <tr>
-                        <td>{{ $i }} @php
-                            $i++;
-                        @endphp
-                    </td>
+                        <td>{{ $i }}
+                            @php $i++; @endphp
+                        </td>
                         <td>{{ $products->name_en }}</td>
                         <td>{{ $products->name_ar }}</td>
                         <td>{{ $products->price }}</td>
                         <td>{{ $products->code }}</td>
+                        <td>{{ $products->id }}</td>
                         <td>
-                          <input type="hidden" name="product_{{ $products->id }}" value="{{ $products->id }}">
+
                           @if($products->status == 1)
+                          {{ $products->id }}
                             <label class="switch">
-                              <input type="checkbox" id="product_status" checked name="status_{{ $products->id }}" value='0' data-id="{{ $products->id }}" data-status="1">
+                              <input type="checkbox" class="check" id="" checked name="status" value="0" product_id="{{ $products->id}}">
                               <span class="slider round"></span>
                             </label>
-                          @elseif($products->status == 0)
+                            @endif
+                          @if($products->status == 0)
+                          {{ $products->id }}
                             <label class="switch">
-                              <input type="checkbox" id="product_status" name="status_{{ $products->id }}" value='1' data-id="{{ $products->id }}" data-status="0">
+                              <input type="checkbox" class="check" id="product_status" name="status" value="1" product_id="{{ $products->id}}">
                               <span class="slider round"></span>
                             </label>
                           @endif
@@ -155,23 +167,24 @@
                         <td>
                             <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                               <a href="{{ route('supplier.edit.product',$products->id) }}" class="btn btn-success"><i class="fas fa-user-edit"></i></a>
-                                    <form method="post" action="{{route('supplier.delete.product')}}">
+                                    {{-- <form method="post" action="{{route('supplier.delete.product')}}">
                                         @csrf
                                         @method('delete')
                                         <input type="hidden" name="id" value="{{ $products->id }}">
                                         <input type="hidden" name="photo" value="{{ $products->photo }}">
                                         <button class="btn btn-danger form-group"><i class="fas fa-trash-alt"></i></button>
-                                    </form>
+                                    </form> --}}
                                 <br>
                             </div>
 
                         </td>
+
                       </tr>
                     @endforeach
                 </tbody>
             </table>
         </form>
-        
+
     </div>
 
 
@@ -211,34 +224,27 @@
   <script>
     // product_status
     $(document).ready(function(){
-            $(document).on('click','#product_status', function(event){
+            $(document).on('click','.check', function(event){
               event.preventDefault();
-              $('#status_product_form').submit();
-                // let id = $('.product_status').data('id');
-                // let status = $('#product_status').data('status');
-                // let token = $('meta[name="csrf-token"]').attr('content');
-                // console.log($('#product_status').data('id'));
-                // console.log($('#product_status').data('status'));
-                // $.ajax({
-                //     url: '{{ route('load.more') }}',
-                //     type: 'post',
-                //     data: {
-                //     _token : token ,
-                //     id: id,
-                //     },
-                //     // dataType:"text",
-                //     success: function (response) {
-                //         if(response != ''){
-                //             console.log("mmmm");
-                //             $('#remove_row').remove();
-                //             $('#products_container').append(response);
-                //         }else{
-                //             $('#load_more').html("No Data");
-                //         }
-                //     },
-                // });
-            // }
-
+            //   $('#status_product_form').submit();
+                let token = $('meta[name="csrf-token"]').attr('content');
+                let product_id = $(this).attr('product_id');
+                let status = $(this).val();
+                // alert("product id = " + product_id +" status " + status);
+                $.ajax({
+                    method: 'POST',
+                    url: '{{route('update-product-status')}}',
+                    dataType: 'text',
+                    data: {
+                    _token : token ,
+                    product_id: product_id,
+                    status:status
+                    },
+                    success: function (data) {
+                        // $('.test').append(data);
+                        location.reload();
+                    },
+                });
             });
         });
   </script>

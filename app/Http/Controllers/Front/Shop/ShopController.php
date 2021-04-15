@@ -121,6 +121,7 @@ class ShopController extends Controller
         return response()->json($output);
     }
     public function loadMore(Request $request){
+        // return $request->id;
         $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
             ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
             ->select(
