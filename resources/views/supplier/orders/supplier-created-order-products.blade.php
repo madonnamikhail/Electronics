@@ -79,11 +79,18 @@
                                 @endif
                             @endforeach
                             </td>
-
-                            {{-- <td>
-                              <a href="{{ route('') }}" class="btn btn-success" title="agreed to deliver"><i class="fas fa-truck"></i></a><br>
-                              <a href="#" class="btn btn-danger" title="can't deliver"><i class="fas fa-trash-alt"></i></a>
-                            </td> --}}
+                            <td>
+                              @if (is_null($product->pivot->status))
+                                <a href="{{ route('supplier.can.deliver',['product_id'=>$product->id,'order_id'=>$order->id]) }}" class="btn btn-success" title="can deliver"><i class="fas fa-truck"></i></a><br>
+                                <a href="{{ route('supplier.cannot.deliver',['product_id'=>$product->id,'order_id'=>$order->id]) }}" class="btn btn-danger" title="cannot deliver"><i class="fas fa-trash-alt"></i></a> 
+                              @elseif($product->pivot->status == 1)
+                                <p class="alert alert-success">The product will be delivered</p>
+                                <a href="{{ route('supplier.cannot.deliver',['product_id'=>$product->id,'order_id'=>$order->id]) }}" class="btn btn-danger" title="cannot deliver"><i class="fas fa-trash-alt"></i></a> 
+                              @elseif($product->pivot->status == 0)
+                                <p class="alert alert-danger">The product willnot be delivered</p>
+                                <a href="{{ route('supplier.can.deliver',['product_id'=>$product->id,'order_id'=>$order->id]) }}" class="btn btn-success" title="can deliver"><i class="fas fa-truck"></i></a>
+                              @endif
+                            </td>
                         </tr>
                     @endif
                       

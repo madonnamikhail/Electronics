@@ -44,7 +44,13 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 // 3) get delivered orders
                     Route::get('supplier-delivered-orders','SupplierOrderController@getDeliveredOrders')->name('supplier.delivered.orders');
                 // 4) update order's status
-                    Route::get('supplier-update-order/{id}','OrderCrudController@update')->name('supplier.update.order');
+                    // Route::get('supplier-update-order/{id}','OrderCrudController@update')->name('supplier.update.order');
+            
+            // supplier can/cannot deliver the product
+                // 1) suppplier can deliver product
+                    Route::get('supllier-can-deliver/{product_id}/{order_id}','SupplierOrderController@supplierCanDeliver')->name('supplier.can.deliver');
+                // 2) suppplier cannot deliver product
+                    Route::get('supllier-cannot-deliver/{product_id}/{order_id}','SupplierOrderController@supplierCannotDeliver')->name('supplier.cannot.deliver');
         });
     });
 });

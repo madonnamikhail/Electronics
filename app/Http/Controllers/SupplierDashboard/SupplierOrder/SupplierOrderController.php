@@ -54,4 +54,68 @@ class SupplierOrderController extends Controller
         $order->save();
         return redirect()->back()->with('Success','The Order\'s Status Has Been updated');
     }
+
+    public function supplierCanDeliver($product_id, $order_id)
+    {
+        $rules = [
+            'product_id' => 'required|exists:products,id',
+            'order_id' => 'required|exists:orders,id'
+        ];
+        $idd = [];
+        $idd['product_id'] = $product_id;
+        $idd['order_id'] = $order_id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+        $orders=Order::with('products')->where('id','=',$order_id)->get();
+
+        // looping to get the right product_id && update its status in order_product
+        foreach ($orders as $order) {
+            foreach ($order->products as $product){
+                if($product->id == $product_id){
+                    Order::find($order_id)->products()->updateExistingPivot($product_id, ['status' => 1]);
+                }
+            }
+        }
+        return redirect()->back()->with('Success','Product can be delivered to the customer');
+        // $order=Order::where('id','=',$order_id)->has('products')->with('products.id')->get();
+        // $matches = Criteria::whereUserId( Auth::id() )
+        //                     ->has('alerts')
+        //                     ->with('alerts.location', 'alerts.user.companies')
+        //                     ->withPivot('foo', 'bar'); //pivot table columns you need from pivot table criteria_alert
+        //                     ->get();
+
+        // $order->where('product_id','=',$product_id)->get();
+        // $order->status=1;
+        // $order->save();
+        // return $order;
+        // return $product_id . ' ' . $order_id;
+    }
+
+    public function supplierCannotDeliver($product_id, $order_id)
+    {
+        $rules = [
+            'product_id' => 'required|exists:products,id',
+            'order_id' => 'required|exists:orders,id'
+        ];
+        $idd = [];
+        $idd['product_id'] = $product_id;
+        $idd['order_id'] = $order_id;
+        $validator = Validator::make($idd,$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+        $orders=Order::with('products')->where('id','=',$order_id)->get();
+
+        // looping to get the right product_id && update its status in order_product
+        foreach ($orders as $order) {
+            foreach ($order->products as $product){
+                if($product->id == $product_id){
+                    Order::find($order_id)->products()->updateExistingPivot($product_id, ['status' => 0]);
+                }
+            }
+        }
+        return redirect()->back()->with('Error','Product cannot be delivered to the customer');
+    }
 }
