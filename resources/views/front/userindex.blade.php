@@ -96,8 +96,8 @@
             @foreach($products as $product)
             <div class="product-wrapper">
                 <div class="product-img">
-                    <a href="{{ route('get-product-single-page', $product->products_id) }}">
-                        <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
+                    <a href="{{ route('get-product-single-page',$product->products_id) }}">
+                        <img alt="" src="{{ asset('images\product\\'.$product->product_photo ) }}">
                     </a>
                         @if($product->discount )
                             <span>{{$product->discount}}%</span>

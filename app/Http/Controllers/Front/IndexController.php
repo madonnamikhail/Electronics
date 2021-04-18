@@ -37,8 +37,7 @@ class IndexController extends Controller
             echo "<p class='list-group-item border-1'>No Records</p>";
         }
     }
-    public function searchBoxbutton(Request $request)
-    {
+    public function searchBoxbutton(Request $request){
         $products=Product::where('name_en', 'LIKE', '%'.$request->search.'%')
         // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
         // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
@@ -69,8 +68,7 @@ class IndexController extends Controller
         return view('front.shop.shop-page',compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','idd','brand_idd','subcategory_idd','min','max','id'));
     }
 
-    public function index()
-    {
+    public function index(){
         $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
                      ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
                     //     Join('offer_product','offer_product.product_id','=','products.id','left outer')
@@ -86,8 +84,7 @@ class IndexController extends Controller
         $offers = Offer::get();
     return view('front.userindex', compact('products','offers','newest_products'));
     }
-    public function addCart(Request $request)
-    {
+    public function addCart(Request $request) {
         $rules =[
             'user_id' => 'required|exists:users,id',
             'product_id' => 'required|exists:products,id',
@@ -124,6 +121,7 @@ class IndexController extends Controller
                         'offers.*',
                         DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
                     ->orderBy('products.id', 'asc')->get();
+                    // return $products;
         return view('front.cart', compact('products','user_id','addresses','regions','cities'));
     }
 
@@ -189,11 +187,23 @@ class IndexController extends Controller
                         'products.photo as product_photo',
                         'products.*',
                         'offers.*',
-                        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount') ,
-                        DB::raw('(products.price *((100-offers.discount)/100)) * carts.quantity as total_price_after_discount'),
-                        DB::raw('products.price * carts.quantity as total_price'))
+                        DB::raw('IF(
+                            offers.discount IS NULL,
+                            1,
+                            ((100 - offers.discount) / 100)
+                        ) AS `discount`') ,
+                        DB::raw('products.price * IF(
+            offers.discount IS NULL,
+            1,
+            ((100 - offers.discount) / 100)
+        ) AS `price_after_discount`'),
+                        DB::raw('products.price * IF(
+                            offers.discount IS NULL,
+                            1,
+                            ((100 - offers.discount) / 100)
+                        ) * carts.quantity AS `total_price_after_discount`'))
                     ->orderBy('products.id', 'asc')->get();
-        // return $products;
+            // return $products;
         return view('front.cart-total',compact('products','user_id','address','address_id','regions','cities'));
     }
     public function hotDeals($id)

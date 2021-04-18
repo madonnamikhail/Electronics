@@ -1,18 +1,19 @@
 @extends('layouts.site')
 @section('titile','Total')
 @section('content')
-<div class="col-12" style="margin:20px auto ; ">
-    <div class="col-lg-12 col-md-12">
-        <div class="grand-totall" >
-            <div class="title-wrap">
+<div class="col-12" style="margin:20px auto ; "> <div class="title-wrap">
                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
             </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="grand-totall" >
+
 
             <form method="post" action="{{ route('place.order') }}" enctype="multipart/form-data">
                 @csrf
                 {{-- 3ayzeno 3shan al address yfdal m3aya --}}
                 <input type="hidden" name="address_id" value="{{ $address_id }}">
-                 <table>
+                <div class="table-content table-responsive">
+                <table>
                         @if(Session()->has('Success'))
                             <div class="alert alert-success">{{ Session()->get('Success') }}</div>
                                 @php
@@ -35,11 +36,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $netPrice =0;
+
+                        @endphp
                             @foreach ($products as $product)
                                 @if ($product->user_id == $user_id)
                                 <tr>
                                     <td class="product-thumbnail">
-                                        <a href="#"><img style="width:20%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
+                                        <a href="#"><img style="width:80%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
                                     </td>
                                     <input type="hidden" name="photo[]" value="{{ $product->product_photo }}">
                                     <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
@@ -70,46 +75,50 @@
                                             <input type="hidden" name="productPrice[]" value="{{ $product->total_price }}">
                                         @endif
                                     </td>
-
                                 </tr>
+                                @php
+                                    $netPrice += $product->total_price_after_discount;
+
+                                @endphp
                                 @endif
                             @endforeach
                         </tbody>
-                    </table>
+                </table>
+            </div>
+            <hr>
+                    <h3><span style="font-weight:600">{{ __('message.Net Total Price') }}: </span>
+                        <span style="float: right;">@php
+                            echo $netPrice;
+                         @endphp
+                         EGP</span>
+                    </h3>
+                    <hr>
+                    <section class="">
+                        <h3 style="font-weight:600">Order will be deliverd to :</h3>
+                        <p style="padding-left:50px"> <span style="font-weight:600"> Flat Number: </span> {{ $address->flat }} , <br>
+                            <span style="font-weight:600"> Building number: </span> {{ $address->building }} , <br>
+                            <span style="font-weight:600">  Floor Number: </span>{{ $address->floor }}, <br>
+                            <span style="font-weight:600">  Street Name: </span> {{ $address->street_en }} , <br>
+                            @foreach ($regions as $region)
+                                @if($region->id == $address->region_id)
+                                <span style="font-weight:600"> Region: </span>{{ $region->name_en }}, <br>
+                                    @php
+                                        $region_city_id = $region->city_id;
+                                    @endphp
+                                @endif
+                            @endforeach
 
-                        <section class="">
-                            <h3>Order will be deliverd to :</h3>
-                            <p> Flat number: {{ $address->flat }} ,  Building number: {{ $address->building }} ,
-                                 Floor Number: {{ $address->floor }}, Street Name: {{ $address->street_en }} ,
-                                @foreach ($regions as $region)
-                                    @if($region->id == $address->region_id)
-                                        Region: {{ $region->name_en }}
-                                        @php
-                                            $region_city_id = $region->city_id;
-                                        @endphp
+                                @foreach ($cities as $city)
+                                    @if($city->id == $region_city_id)
+                                    <span style="font-weight:600"> City: </span>{{ $city->name_en }}
                                     @endif
                                 @endforeach
-                            ,
-                                    @foreach ($cities as $city)
-                                        @if($city->id == $region_city_id)
-                                            City: {{ $city->name_en }}
-                                        @endif
-                                    @endforeach
-                            </p>
+                        </p>
 
-                        </section>
-
-
-
-                    <h5>{{ __('message.Net Total Price') }} <span>
-                        {{-- @php
-                           $sum= array_sum($productPrice);
-                           echo $sum;
-                        @endphp --}}
-                        EGP
-                    </span></h5>
+                    </section>
+                    <hr>
                     <div class="total-shipping">
-                        <h5>{{ __('message.Payment Method') }}</h5>
+                        <h3 style="font-weight:600">{{ __('message.Payment Method') }}</h3>
                         <ul>
                             <li>
                             <input type="radio" id="female" name="method_payment" value="0.9">

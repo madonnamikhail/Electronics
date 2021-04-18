@@ -585,7 +585,6 @@
         });
     });
     </script> --}}
-
     {{-- multiple filters --}}
     <script>
         $(document).ready(function() {

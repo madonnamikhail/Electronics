@@ -54,6 +54,9 @@
             <th>Quantity</th>
             <th>Price</th>
         </tr>
+            @php
+                $netPrice=0;
+            @endphp
         @foreach($products as $product)
             @if ($product->user_id == $orderInsert['user_id'])
                 <tr>
@@ -67,6 +70,9 @@
                         @endif
                     </td>
                 </tr>
+                @php
+                    $netPrice += $product->total_price_after_discount;
+                @endphp
             @endif
         @endforeach
 
@@ -78,10 +84,10 @@
             <td colspan="2" style="font-weight: bold;">Payment Method:</td>
             <td>{{$orderInsert['payment_method']}}</td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td colspan="2" style="font-weight: bold;">Shipping:</td>
             <td>{{$orderInsert['payment_method']}}</td>
-        </tr>
+        </tr> --}}
         <tr>
             <td colspan="2" style="font-weight: bold;">PromoCode Used:</td>
 
@@ -117,17 +123,17 @@
             @php
                 if($orderInsert['discountOfPromocode'] != 1){
                     if($orderInsert['payment_method'] == "Master Card ( 10% Discount )")
-                        $grand_total= $orderInsert['subtotal'] * (0.9) * $orderInsert['discountOfPromocode'];
+                        $grand_total= $netPrice * (0.9) * $orderInsert['discountOfPromocode'];
 
                     elseif ($orderInsert['payment_method'] == "Cash On Delivery ( +5 EGP )")
-                        $grand_total= $orderInsert['subtotal'] + (5) * $orderInsert['discountOfPromocode'];
+                        $grand_total= $netPrice + (5) * $orderInsert['discountOfPromocode'];
                     // echo $grand_total . "EGP";
                 }else{
                     if($orderInsert['payment_method'] == "Master Card ( 10% Discount )")
-                        $grand_total= $orderInsert['subtotal'] * (0.9);
+                        $grand_total= $netPrice * (0.9);
 
                     elseif ($orderInsert['payment_method'] == "Cash On Delivery ( +5 EGP )")
-                        $grand_total= $orderInsert['subtotal'] + (5);
+                        $grand_total= $netPrice + (5);
                     // echo $grand_total . "EGP";
                 }
             @endphp

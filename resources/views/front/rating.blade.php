@@ -119,7 +119,7 @@
                     <div class="billing-information-wrapper">
                         <div class="row">
                             {{--- Table Body ----}}
-                            <form action="{{ route('product.rating') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('product.rating') }}" method="get" enctype="multipart/form-data">
                                 @csrf
                                 <div class="table-content table-responsive wishlist">
                                     <table>

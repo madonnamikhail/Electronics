@@ -233,6 +233,219 @@ class ShopController extends Controller
         ';
         return $output;
     }
+    // multi filter
+    public function filtering(Request $request) {
+        $rules=[
+            "cats"=>"exists:categories,id",
+            "subs"=>"exists:subcategories,id",
+            "brands"=>"exists:brands,id",
+            "min_price"=>"required|integer|min:0",
+            "max_price"=>"required|integer|max:6500000",
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if ($validator->fails()) {
+            return abort(404);
+        }
+
+        $min=$request->min_price;
+        $max=$request->max_price;
+        $cats = [];$subs = [] ; $brand_ids = [] ;
+        $query = Product::join('Subcategories','products.subCategory_id', '=', 'subcategories.id')
+        ->join('categories','categories.id', '=', 'subcategories.category_id')
+        // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+        ->leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+        // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+        ->select('products.id as product_id', 'products.photo as product_photo', 'products.*', 'offers.*',
+        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+        ->orderBy('products.id', 'asc');
+
+        if($request->has('cats')){
+            $cats = $request->cats;
+            $query = $query->orWhereIn('category_id', $cats);
+
+        }
+        if($request->has('subs')){
+            $subs = $request->subs ;
+            // return Product::whereIn('id',$ids)->get();
+            $query = $query->orWhereIn('subCategory_id', $subs);
+        }
+        if($request->has('brands')){
+            $brand_ids = $request->brands;
+            $query = $query->orWhereIn('brand_id', $brand_ids);
+        }
+        if($request->has('min_price') && $request->has('max_price')){
+            $query = $query->orWhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
+        }
+        $query = $query
+        // ->toSql();
+        // return $query;
+        ->get();
+        $total_row = count($query);
+        // return $total_row;
+        $output = '';
+        if ($total_row > 0) {
+            foreach ($query as $product) {
+                $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
+                $token = csrf_token();
+                $output .= '
+                    <div class="product-wrapper col-lg-4">
+                    <div class="product-img">
+                        <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
+                            <img alt="" src="' . $directory . '">
+                        </a>';
+                if ($product->discount) {
+                    $output .= '<span>' . $product->discount . '%</span>';
+                }
+                $output .= '<div class="product-action">
+                            <a class="action-wishlist" href="#" title="Wishlist">
+                                <i class="ion-android-favorite-outline"></i>
+                            </a>
+                            <a class="action-cart" href="#" title="Add To Cart">
+                                <i class="ion-ios-shuffle-strong"></i>
+                            </a>
+                            <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+                                <i class="ion-ios-search-strong"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="product-content text-left">
+                        <div class="product-hover-style">
+                            <div class="product-title">
+                                <h4>
+                                    <a href="#">' . $product->name_en . '</a>
+                                </h4>
+                            </div>
+                            <div class="cart-hover">';
+                            if(Auth::user()){
+                                $output.='
+                                <form action="' . route('add.to.cart') . '" method="post">
+                                <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
+                                    <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
+                                    <input type="hidden" name="product_id" value="' . $product->products_id . '">
+                                    <button type="submit">
+                                        <a class="action-cart" title="Add To Cart">
+                                            + Add to cart
+                                            <i class="ion-ios-shuffle-strong"></i>
+                                        </a>
+                                    </button>
+                                </form>';
+                            }
+
+                            $output.='
+                            </div>
+                        </div>
+                        <div class="product-price-wrapper">
+                        ';
+                if ($product->discount) {
+                    $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
+                                <span class="product-price-old">EGP ' . $product->price . ' </span>';
+                } else {
+                    $output .= '<span >EGP ' . $product->price . '</span>';
+                }
+
+                $output .= '</div>
+                                </div>
+                            </div>
+                        ';
+            }
+        } else {
+            $output = '<h3>No Data Found</h3>';
+        }
+        // echo $output;die;
+        $products = $query;
+
+
+        // return response()->json(array('output','cats','subs','brands'));
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+    }
+    public function getProductsByCategoryId($id){
+        // return $id;
+        $products = Subcategory::where('category_id','=',$id)
+            ->join('products','subCategory_id','=','subcategories.id')
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+        // return count($products);
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        // return $products;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+
+    }
+    public function getProductsBySubcategoryId($id){
+        $products = Product::where('subCategory_id','=',$id)
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        // return $products;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+
+    }
+    public function getProductsByBrandId($id){
+        $products = Product::where('brand_id','=',$id)
+            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+            ->select(
+                'products.id as product_id',
+                'products.photo as product_photo',
+                'products.*',
+                'products.details_en as product_details_en',
+                'products.details_ar as product_details_ar',
+                'offers.*',
+                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
+            )
+            ->orderBy('products.id', 'asc')
+            ->get();
+            // return count($products);
+            // ->toSql();
+            // return $products;
+        $categories = Category::get();
+        $brands=Brand::get();
+        $subCategories=Subcategory::get();
+        $id=0;
+        $cats = []; $subs = []; $brand_ids = [];
+        $min=0;
+        $max=6500000;
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+
+    }
     // public function priceFilter(Request $request) {
     //     // return $request->minimum_price .".". $request->maximum_price;
     //     $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
@@ -395,299 +608,81 @@ class ShopController extends Controller
     //     return response()->json($output);
     // }
     // public function getSubcategory($id){
-    //     $id = explode(',', $id);
-    //     // return $id;
-    //     $products = Product::whereIn('subCategory_id',$id)
-    //     ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-    //     ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-    //     ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*',
-    //     DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-    //     ->orderBy('products.id', 'asc')
-    //     ->get();
-    //     $total_row = count($products);
-    //     // return $total_row;
-    //     $output = '';
-    //     if ($total_row > 0) {
-    //         foreach ($products as $product) {
-    //             $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
-    //             $token = csrf_token();
-    //             $output .= '
-    //                 <div class="product-wrapper col-lg-4">
-    //                 <div class="product-img">
-    //                     <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
-    //                         <img alt="" src="' . $directory . '">
-    //                     </a>';
-    //             if ($product->discount) {
-    //                 $output .= '<span>' . $product->discount . '%</span>';
-    //             }
-    //             $output .= '<div class="product-action">
-    //                         <a class="action-wishlist" href="#" title="Wishlist">
-    //                             <i class="ion-android-favorite-outline"></i>
-    //                         </a>
-    //                         <a class="action-cart" href="#" title="Add To Cart">
-    //                             <i class="ion-ios-shuffle-strong"></i>
-    //                         </a>
-    //                         <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-    //                             <i class="ion-ios-search-strong"></i>
-    //                         </a>
-    //                     </div>
-    //                 </div>
-    //                 <div class="product-content text-left">
-    //                     <div class="product-hover-style">
-    //                         <div class="product-title">
-    //                             <h4>
-    //                                 <a href="#">' . $product->name_en . '</a>
-    //                             </h4>
-    //                         </div>
-    //                         <div class="cart-hover">
-    //                             <form action="' . route('add.to.cart') . '" method="post">
-    //                             <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
-    //                                 <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
-    //                                 <input type="hidden" name="product_id" value="' . $product->products_id . '">
-    //                                 <button type="submit">
-    //                                     <a class="action-cart" title="Add To Cart">
-    //                                         + Add to cart
-    //                                         <i class="ion-ios-shuffle-strong"></i>
-    //                                     </a>
-    //                                 </button>
-    //                             </form>
-    //                         </div>
-    //                     </div>
-    //                     <div class="product-price-wrapper">
-    //                     ';
-    //             if ($product->discount) {
-    //                 $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
-    //                             <span class="product-price-old">EGP ' . $product->price . ' </span>';
-    //             } else {
-    //                 $output .= '<span >EGP ' . $product->price . '</span>';
-    //             }
+    //         //     $id = explode(',', $id);
+    //         //     // return $id;
+    //         //     $products = Product::whereIn('subCategory_id',$id)
+    //         //     ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
+    //         //     ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
+    //         //     ->select('products.id as products_id', 'products.photo as product_photo', 'products.*', 'offers.*',
+    //         //     DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
+    //         //     ->orderBy('products.id', 'asc')
+    //         //     ->get();
+    //         //     $total_row = count($products);
+    //         //     // return $total_row;
+    //         //     $output = '';
+    //         //     if ($total_row > 0) {
+    //         //         foreach ($products as $product) {
+    //         //             $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
+    //         //             $token = csrf_token();
+    //         //             $output .= '
+    //         //                 <div class="product-wrapper col-lg-4">
+    //         //                 <div class="product-img">
+    //         //                     <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
+    //         //                         <img alt="" src="' . $directory . '">
+    //         //                     </a>';
+    //         //             if ($product->discount) {
+    //         //                 $output .= '<span>' . $product->discount . '%</span>';
+    //         //             }
+    //         //             $output .= '<div class="product-action">
+    //         //                         <a class="action-wishlist" href="#" title="Wishlist">
+    //         //                             <i class="ion-android-favorite-outline"></i>
+    //         //                         </a>
+    //         //                         <a class="action-cart" href="#" title="Add To Cart">
+    //         //                             <i class="ion-ios-shuffle-strong"></i>
+    //         //                         </a>
+    //         //                         <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+    //         //                             <i class="ion-ios-search-strong"></i>
+    //         //                         </a>
+    //         //                     </div>
+    //         //                 </div>
+    //         //                 <div class="product-content text-left">
+    //         //                     <div class="product-hover-style">
+    //         //                         <div class="product-title">
+    //         //                             <h4>
+    //         //                                 <a href="#">' . $product->name_en . '</a>
+    //         //                             </h4>
+    //         //                         </div>
+    //         //                         <div class="cart-hover">
+    //         //                             <form action="' . route('add.to.cart') . '" method="post">
+    //         //                             <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
+    //         //                                 <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
+    //         //                                 <input type="hidden" name="product_id" value="' . $product->products_id . '">
+    //         //                                 <button type="submit">
+    //         //                                     <a class="action-cart" title="Add To Cart">
+    //         //                                         + Add to cart
+    //         //                                         <i class="ion-ios-shuffle-strong"></i>
+    //         //                                     </a>
+    //         //                                 </button>
+    //         //                             </form>
+    //         //                         </div>
+    //         //                     </div>
+    //         //                     <div class="product-price-wrapper">
+    //         //                     ';
+    //         //             if ($product->discount) {
+    //         //                 $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
+    //         //                             <span class="product-price-old">EGP ' . $product->price . ' </span>';
+    //         //             } else {
+    //         //                 $output .= '<span >EGP ' . $product->price . '</span>';
+    //         //             }
 
-    //             $output .= '</div>
-    //                             </div>
-    //                         </div>
-    //                     ';
-    //         }
-    //     } else {
-    //         $output = '<h3>No Data Found</h3>';
-    //     }
-    //     return response()->json($output);
+    //         //             $output .= '</div>
+    //         //                             </div>
+    //         //                         </div>
+    //         //                     ';
+    //         //         }
+    //         //     } else {
+    //         //         $output = '<h3>No Data Found</h3>';
+    //         //     }
+    //         //     return response()->json($output);
     // }
-    // multi filter
-    public function filtering(Request $request) {
-        $rules=[
-            "cats"=>"exists:categories,id",
-            "subs"=>"exists:subcategories,id",
-            "brands"=>"exists:brands,id",
-            "min_price"=>"required|integer|min:0",
-            "max_price"=>"required|integer|max:6500000",
-        ];
-        $validator = Validator::make($request->all(),$rules);
-        if ($validator->fails()) {
-            return abort(404);
-        }
-
-        $min=$request->min_price;
-        $max=$request->max_price;
-        $cats = [];$subs = [] ; $brand_ids = [] ;
-        $query = Product::join('Subcategories','products.subCategory_id', '=', 'subcategories.id')
-        ->join('categories','categories.id', '=', 'subcategories.category_id')
-        // ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-        ->leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
-        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
-        // ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-        ->select('products.id as product_id', 'products.photo as product_photo', 'products.*', 'offers.*',
-        DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount'))
-        ->orderBy('products.id', 'asc');
-
-        if($request->has('cats')){
-            $cats = $request->cats;
-            $query = $query->orWhereIn('category_id', $cats);
-
-        }
-        if($request->has('subs')){
-            $subs = $request->subs ;
-            // return Product::whereIn('id',$ids)->get();
-            $query = $query->orWhereIn('subCategory_id', $subs);
-        }
-        if($request->has('brands')){
-            $brand_ids = $request->brands;
-            $query = $query->orWhereIn('brand_id', $brand_ids);
-        }
-        if($request->has('min_price') && $request->has('max_price')){
-            $query = $query->orWhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
-        }
-        $query = $query
-        // ->toSql();
-        // return $query;
-        ->get();
-        $total_row = count($query);
-        // return $total_row;
-        $output = '';
-        if ($total_row > 0) {
-            foreach ($query as $product) {
-                $directory = 'http://127.0.0.1:8000/images/product/' . $product->product_photo;
-                $token = csrf_token();
-                $output .= '
-                    <div class="product-wrapper col-lg-4">
-                    <div class="product-img">
-                        <a href="route(\'get-product-single-page\',' . $product->products_id . ')">
-                            <img alt="" src="' . $directory . '">
-                        </a>';
-                if ($product->discount) {
-                    $output .= '<span>' . $product->discount . '%</span>';
-                }
-                $output .= '<div class="product-action">
-                            <a class="action-wishlist" href="#" title="Wishlist">
-                                <i class="ion-android-favorite-outline"></i>
-                            </a>
-                            <a class="action-cart" href="#" title="Add To Cart">
-                                <i class="ion-ios-shuffle-strong"></i>
-                            </a>
-                            <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-                                <i class="ion-ios-search-strong"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="product-content text-left">
-                        <div class="product-hover-style">
-                            <div class="product-title">
-                                <h4>
-                                    <a href="#">' . $product->name_en . '</a>
-                                </h4>
-                            </div>
-                            <div class="cart-hover">';
-                            if(Auth::user()){
-                                $output.='
-                                <form action="' . route('add.to.cart') . '" method="post">
-                                <input type="hidden" name="_token" id="csrf-token" value="' . $token . '" />
-                                    <input type="hidden" name="user_id" value="' . Auth::user()->id . '">
-                                    <input type="hidden" name="product_id" value="' . $product->products_id . '">
-                                    <button type="submit">
-                                        <a class="action-cart" title="Add To Cart">
-                                            + Add to cart
-                                            <i class="ion-ios-shuffle-strong"></i>
-                                        </a>
-                                    </button>
-                                </form>';
-                            }
-
-                            $output.='
-                            </div>
-                        </div>
-                        <div class="product-price-wrapper">
-                        ';
-                if ($product->discount) {
-                    $output .= '<span>EGP ' . $product->price_after_discount . ' -</span>
-                                <span class="product-price-old">EGP ' . $product->price . ' </span>';
-                } else {
-                    $output .= '<span >EGP ' . $product->price . '</span>';
-                }
-
-                $output .= '</div>
-                                </div>
-                            </div>
-                        ';
-            }
-        } else {
-            $output = '<h3>No Data Found</h3>';
-        }
-        // echo $output;die;
-        $products = $query;
-
-
-        // return response()->json(array('output','cats','subs','brands'));
-        $categories = Category::get();
-        $brands=Brand::get();
-        $subCategories=Subcategory::get();
-        $id=0;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-    }
-
-    public function getProductsByCategoryId($id)
-    {
-        $products = Subcategory::where('category_id','=',$id)
-            ->join('products','subCategory_id','=','subcategories.id')
-            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-            ->select(
-                'products.id as product_id',
-                'products.photo as product_photo',
-                'products.*',
-                'products.details_en as product_details_en',
-                'products.details_ar as product_details_ar',
-                'offers.*',
-                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
-            )
-            ->orderBy('products.id', 'asc')
-            ->get();
-        // return count($products);
-        $categories = Category::get();
-        $brands=Brand::get();
-        $subCategories=Subcategory::get();
-        $id=0;
-        $cats = []; $subs = []; $brand_ids = [];
-        $min=0;
-        $max=6500000;
-        // return $products;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-
-    }
-
-    public function getProductsBySubcategoryId($id)
-    {
-        $products = Product::where('subCategory_id','=',$id)
-            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-            ->select(
-                'products.id as product_id',
-                'products.photo as product_photo',
-                'products.*',
-                'products.details_en as product_details_en',
-                'products.details_ar as product_details_ar',
-                'offers.*',
-                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
-            )
-            ->orderBy('products.id', 'asc')
-            ->get();
-        $categories = Category::get();
-        $brands=Brand::get();
-        $subCategories=Subcategory::get();
-        $id=0;
-        $cats = []; $subs = []; $brand_ids = [];
-        $min=0;
-        $max=6500000;
-        // return $products;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-
-    }
-
-    public function getProductsByBrandId($id)
-    {
-        $products = Product::where('brand_id','=',$id)
-            ->Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
-            ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
-            ->select(
-                'products.id as product_id',
-                'products.photo as product_photo',
-                'products.*',
-                'products.details_en as product_details_en',
-                'products.details_ar as product_details_ar',
-                'offers.*',
-                DB::raw('products.price *((100-offers.discount)/100) AS price_after_discount')
-            )
-            ->orderBy('products.id', 'asc')
-            ->get();
-            // return count($products);
-            // ->toSql();
-            // return $products;
-        $categories = Category::get();
-        $brands=Brand::get();
-        $subCategories=Subcategory::get();
-        $id=0;
-        $cats = []; $subs = []; $brand_ids = [];
-        $min=0;
-        $max=6500000;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
-
-    }
 }

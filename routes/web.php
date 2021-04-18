@@ -91,7 +91,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
         Route::group(['namespace'=>'profile' , 'middleware'=>'auth'], function(){
             Route::get('/profile', 'ProfileController@getProfile')->name('get.profile');
             Route::get('/rating','ProfileController@getRating')->name('get.rating');
-            Route::post('/rating/product','ProfileController@ProductRating')->name('product.rating');
+            Route::get('/rating/product','ProfileController@ProductRating')->name('product.rating');
             Route::post('/rating/product/insert','ProfileController@ProductRatingInsert')->name('insert');
 
 

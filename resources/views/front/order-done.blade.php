@@ -7,7 +7,8 @@
             <div class="title-wrap">
                 <h4 class="cart-bottom-title section-bg-gary-cart">Order Placed</h4>
             </div>
-                 <table>
+            <div class="table-content table-responsive">
+                <table>
                         @if(Session()->has('Success'))
                             <div class="alert alert-success">{{ Session()->get('Success') }}</div>
                                 @php
@@ -30,6 +31,10 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $netPrice=0;
+
+                        @endphp
                             @foreach ($products as $product)
                                 @if ($product->user_id == $user_id)
                                 <tr>
@@ -65,41 +70,50 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @php
+                                $netPrice += $product->total_price_after_discount;
+
+                            @endphp
                                 @endif
                             @endforeach
                         </tbody>
-                    </table>
+                </table>
+            </div>
+            <hr>
+
+            <h3><span style="font-weight:600">{{ __('message.Net Total Price') }}: </span>
+                <span style="float: right;">@php
+                    echo $netPrice;
+                 @endphp
+                 EGP</span>
+            </h3>
+                    <hr>
                     <section class="">
-                        <h3>Order will be deliverd to :</h3>
-                        <p><span style="font-weight:800">Flat number: </span> {{ $address->flat }} , <span style="font-weight:800"> Building number:</span>{{ $address->building }} ,
-                            <span  style="font-weight:800"> Floor Number: </span>{{ $address->floor }} , <span style="font-weight:800">Street Name: </span> {{ $address->street_en }} ,
+                        <h3 style="font-weight:600">Order will be deliverd to :</h3>
+                        <p  style="padding-left:40px"> <span style="font-weight:800">Flat number: </span> {{ $address->flat }} , <br>
+                             <span style="font-weight:800"> Building number:</span>{{ $address->building }} ,<br>
+                            <span  style="font-weight:800"> Floor Number: </span>{{ $address->floor }} , <br>
+                            <span style="font-weight:800">Street Name: </span> {{ $address->street_en }} , <br>
                             @foreach ($regions as $region)
                                 @if($region->id == $address->region_id)
-                                  <span style="font-weight:800">Region:</span>   {{ $region->name_en }}
+                                  <span style="font-weight:800">Region:</span>   {{ $region->name_en }}, <br>
                                     @php
                                         $region_city_id = $region->city_id;
                                     @endphp
                                 @endif
                             @endforeach
-                        ,
                                 @foreach ($cities as $city)
                                     @if($city->id == $region_city_id)
-                                    <span style="font-weight:800">  City:</span>  {{ $city->name_en }}
+                                    <span style="font-weight:800">  City:</span>  {{ $city->name_en }} <br>
                                     @endif
                                 @endforeach
                         </p>
 
                     </section>
-                    <h5>{{ __('message.Net Total Price') }} <span>
-                        {{-- @php
-                           $sum= array_sum($productPrice);
-                           echo $sum;
-                        @endphp --}}
-                        EGP
-                    </span></h5>
+                    <hr>
                     <div class="total-shipping">
-                        <h4>{{ __('message.Payment Method') }}</h5>
-                        <h5>{{ $paymentMethod }} </h5>
+                        <h3 style="font-weight:600">{{ __('message.Payment Method') }} :</h3>
+                        <h5 style="padding-left:40px">{{ $paymentMethod }} </h5>
                     </div>
                     <div class="col-lg-12 col-md-6">
                         <div class="discount-code-wrapper">
@@ -107,6 +121,11 @@
                                <h4 class="cart-bottom-title section-bg-gray">Promo Code :
                                 @if ($promoCode and $usage)
                                     {{ $promoCode->name }}
+                                    ( @if($promocode_type)
+                                    {{ "type:percentage" }}
+                                @else
+                                    {{ "type:fixed" }}
+                                @endif)
 
                                     @if($usage != 1)
                                         <div class="alert alert-danger">
@@ -136,28 +155,24 @@
                         </div>
                     </div>
                         <h4 class="grand-totall-title">Grand Total  <span>
-                            @if($promocode_type)
-                                {{ "type:percentage" }}
-                            @else
-                                {{ "type:fixed" }}
-                            @endif
-                            {{-- @php
+                            {{-- check on promocode and payment method --}}
+                            @php
                                 if($discountOfPromocode != 1){
                                     if($paymentMethod == "Master Card ( 10% Discount )")
-                                        $grand_total= $sum * (0.9) * $discountOfPromocode;
+                                        $grand_total= $netPrice * (0.9) * $discountOfPromocode;
 
                                     elseif ($paymentMethod == "Cash On Delivery ( +5 EGP )")
-                                        $grand_total= ($sum + (5)) * $discountOfPromocode;
+                                        $grand_total= ($netPrice + (5)) * $discountOfPromocode;
                                     echo $grand_total . "EGP";
                                 }else{
                                     if($paymentMethod == "Master Card ( 10% Discount )")
-                                        $grand_total= $sum * (0.9);
+                                        $grand_total= $netPrice * (0.9);
 
                                     elseif ($paymentMethod == "Cash On Delivery ( +5 EGP )")
-                                        $grand_total= $sum + (5);
+                                        $grand_total= $netPrice + (5);
                                     echo $grand_total . "EGP";
                                 }
-                            @endphp --}}
+                            @endphp
                         </span>
                     </h4>
         </div>

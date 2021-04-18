@@ -49,10 +49,11 @@
                                 @forelse ($products as $product)
                                     @if ($product->user_id == $user_id)
                                     <tr>
+                                        {{-- product_id --}}
                                         <td class="product-thumbnail">
-                                            <a href="#"><img style="width:50%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
+                                            <a href="{{ route('get-product-single-page', $product->product_id) }}"><img style="width:50%" src="{{ asset('images\product\\'. $product->product_photo ) }}" alt=""></a>
                                         </td>
-                                        <td class="product-name"><a href="#">{{ $product->name_en }} </a></td>
+                                        <td class="product-name"><a href="{{ route('get-product-single-page', $product->product_id) }}">{{ $product->name_en }} </a></td>
 
                                         <td class="product-price-cart"><span class="amount">
                                             @if ($product->discount)
@@ -91,32 +92,30 @@
                             @php
                                 $i=0;
                             @endphp
-
-                            <div class="form-control">
-
+<br><hr><br>
+                            <h1 style="text-align: center;">Choose Your Address</h1>
+                            <div class="d-flex justify-content-around">
                                 @forelse  ($addresses as $address)
-                                    <h1>Choose Your Address</h1>
-                                        <div >
-                                            <input class="form-control"type="radio" id="address{{ $i }}" name="address_id" value="{{ $address->id  }}">
-                                            <label class="form-control"for="address{{ $i }}">
-                                                    <p> Flat number: {{ $address->flat }} </p>
-                                                    <p> Building number: {{ $address->building }} </p>
-                                                    <p> Floor Number: {{ $address->floor }} </p>
-                                                    <p> Street Name: {{ $address->street_en }} </p>
-                                                    <p>
+                                        <div class="col-3" style="border:solid #ccc 1px" >
+                                            <input type="radio" id="address{{ $i }}" name="address_id" value="{{ $address->id  }}">
+                                            <label for="address{{ $i }}">
+                                                    <p> <span style="font-weight:600"> Flat number: </span> {{ $address->flat }}, <br>
+                                                        <span style="font-weight:600"> Building number: </span>{{ $address->building }}, <br>
+                                                        <span style="font-weight:600"> Floor Number: </span> {{ $address->floor }} , <br>
+                                                        <span style="font-weight:600">Street Name: </span> {{ $address->street_en }} , <br>
+
                                                         @foreach ($regions as $region)
                                                             @if($region->id == $address->region_id)
-                                                                Region: {{ $region->name_en }}
+                                                            <span style="font-weight:600"> Region: </span>{{ $region->name_en }} , <br>
                                                                 @php
                                                                     $region_city_id = $region->city_id;
                                                                 @endphp
                                                             @endif
                                                         @endforeach
-                                                    </p>
-                                                    <p>
+
                                                             @foreach ($cities as $city)
                                                                 @if($city->id == $region_city_id)
-                                                                    City: {{ $city->name_en }}
+                                                                <span style="font-weight:600">  City: </span> {{ $city->name_en }} , <br>
                                                                 @endif
                                                             @endforeach
                                                     </p>
@@ -130,8 +129,8 @@
                             <p>No Address Entered !</p>
                             <button><a href="{{ route('profile.create.address') }}">Add Address</a></button>
                         @endforelse
-
                     </div>
+
 
 
                                 </div>

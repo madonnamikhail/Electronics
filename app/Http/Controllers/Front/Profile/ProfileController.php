@@ -74,31 +74,40 @@ class ProfileController extends Controller
         // return $product_data;
         return view('front.product-rating',compact('order_id','products','product_data','suppliers','user_id'));
     }
-    public function ProductRatingInsert(Request $request)
-    {
+    public function ProductRatingInsert(Request $request){
+        // return $request;
+        // return $request->all();
         // $forgien_key=[];
         // $pivot_attribute=[];
         // $forgien_key['user_id']=$request->user_id;
         // $forgien_key['product_id']=$request->product_id;
-        $forgien_key = $request->only('user_id', 'product_id');
-        $pivot_attribute = $request->only('value', 'comment');
-        // $pivot_attribute['value']=$request->value;
-        // $pivot_attribute['comment']=$request->comment;
+        $i=0;
+        foreach($request->product_id as $product_id){
+            $forgien_key['product_id'] = $product_id;
+            $forgien_key['user_id'] = $request->user_id;
+            // $pivot_attribute['value'] = $request->only('value_'.$i);
+            // $pivot_attribute['comment'] = $request->only('comment_'.$i);
+            $pivot_attribute = $request->only('value_'.$i ,'comment_'.$i);
+            // $pivot_attribute['comment'] = $request->only('comment_'.$i);
+            $rename_array['comment']="comment";
+            $rename_array['value']="value";
 
-        // return "wsgwdhs";
-
-        // user_id should be given from the auth not from the from
-        $user_id = Auth::user()->id;
-        $user=User::findOrFail($user_id);
-        $check=$user->productRate()->where('product_id', $forgien_key['product_id'])->exists();
-        if($check)
-            $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
-        else
-            $user->productRate()->attach($request->product_id,$pivot_attribute);
-
+            $pivot_attribute =array_combine(str_replace(array_keys($rename_array), $rename_array, array_keys($pivot_attribute)), $pivot_attribute);
+            // $pivot_attribute['value']=$request->value;
+            // $pivot_attribute['comment']=$request->comment;
+            return $pivot_attribute;
+            // user_id should be given from the auth not from the from
+            $user_id = Auth::user()->id;
+            $user=User::findOrFail($user_id);
+            $check=$user->productRate()->where('product_id', $forgien_key['product_id'])->exists();
+            if($check)
+                $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
+            else
+                $user->productRate()->attach($request->product_id,$pivot_attribute);
+            $i++;
+        }
         return redirect('profile');
     }
-
     public function profileChangeInfo(Request $request)
     {
         $rules = [

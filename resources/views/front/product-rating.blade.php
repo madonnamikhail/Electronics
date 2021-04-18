@@ -1,47 +1,86 @@
 @extends('layouts.site')
 @section('title','Product Rating')
+@section('link')
+
+@endsection
 @section('css')
 <style>
     *{
     margin: 0;
     padding: 0;
-}
-.rate {
-    float: left;
-    height: 46px;
-    padding: 0 10px;
-}
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc;
-}
-.rate:not(:checked) > label:before {
-    content: '★ ';
-}
-.rate > input:checked ~ label {
-    color: #ffc700;
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
+        }
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+
+</style>
+<style>
+    div.stars {
+  width: 270px;
+  display: inline-block;
 }
 
+input.star { display: none; }
+
+label.star {
+  float: right;
+  padding: 10px;
+  font-size: 36px;
+  color: #444;
+  transition: all .2s;
+}
+
+input.star:checked ~ label.star:before {
+  content: '\f005';
+  color: #FD4;
+  transition: all .25s;
+}
+
+input.star-5:checked ~ label.star:before {
+  color: #FE7;
+  text-shadow: 0 0 20px #952;
+}
+
+input.star-1:checked ~ label.star:before { color: #F62; }
+
+label.star:hover { transform: rotate(-15deg) scale(1.3); }
+
+label.star:before {
+  content: '\f006';
+  font-family: FontAwesome;
+}
 </style>
 
 @endsection
@@ -85,6 +124,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <form method="post" action="{{ route('insert') }}" name="rating">
+                                            @php
+                                            $i=0;
+                                        @endphp
                                                 @foreach ($products as $product)
                                                     @foreach ($product_data as $id)
                                                         @if ($product->id == $id)
@@ -103,11 +146,10 @@
                                                                 @endforeach
                                                             </span></td>
                                                             <td>
-                                                                <form method="post" action="{{ route('insert') }}" name="rating">
                                                                     @csrf
-                                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                                    <input type="hidden" name="product_id[]" value="{{ $product->id }}">
                                                                     <input type="hidden" name="user_id" value="{{ $user_id }}">
-                                                                    <div class="rate">
+                                                                    {{-- <div class="rate">
                                                                         <input type="radio" id="star5_{{ $product->id }}" name="value" value="5" />
                                                                         <label for="star5_{{ $product->id }}" title="text">5 stars</label>
                                                                         <input type="radio" id="star4_{{ $product->id }}" name="value" value="4" />
@@ -118,17 +160,32 @@
                                                                         <label for="star2_{{ $product->id }}" title="text">2 stars</label>
                                                                         <input type="radio" id="star1_{{ $product->id }}" name="value" value="1" />
                                                                         <label for="star1_{{ $product->id }}" title="text">1 star</label>
+                                                                      </div> --}}
+                                                                      <div class="stars">
+                                                                          <input class="star star-5" id="star-5_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="5"/>
+                                                                          <label class="star star-5" for="star-5_{{ $product->id }}"></label>
+                                                                          <input class="star star-4" id="star-4_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="4"/>
+                                                                          <label class="star star-4" for="star-4_{{ $product->id }}"></label>
+                                                                          <input class="star star-3" id="star-3_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="3"/>
+                                                                          <label class="star star-3" for="star-3_{{ $product->id }}"></label>
+                                                                          <input class="star star-2" id="star-2_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="2"/>
+                                                                          <label class="star star-2" for="star-2_{{ $product->id }}"></label>
+                                                                          <input class="star star-1" id="star-1_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="1"/>
+                                                                          <label class="star star-1" for="star-1_{{ $product->id }}"></label>
                                                                       </div>
-                                                                    <textarea row="2" col="4" name="comment" placeholder="Enter your comment"></textarea>
-                                                                    {{-- <button type="submit">Review This Product</button>
-                                                                </form> --}}
+                                                                    <textarea row="2" col="4" name="comment_{{ $i }}" placeholder="Enter your comment"></textarea>
+                                                                    @php
+                                                                    $i++;
+                                                                @endphp
+                                                                    {{-- <button type="submit">Review This Product</button> --}}
+                                                                {{-- </form> --}}
                                                             </td>
                                                         </tr>
                                                         @endif
                                                     @endforeach
                                             @endforeach
                                     </tbody>
-                                    <button type="submit">Review This Product</button>
+                                    <button  type="submit">Review This Product</button>
                                 </form>
                                 </table>
                             </div>

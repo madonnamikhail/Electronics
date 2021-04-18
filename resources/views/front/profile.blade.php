@@ -88,7 +88,7 @@
                                     <div class="panel-heading">
                                         <h5 class="panel-title"><span>@php echo($i); $i++; @endphp</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-2">Change your email </a></h5>
                                     </div>   {{--  --}}
-                                    <div id="my-account-2" class="panel-collapse collapse show">
+                                    <div id="my-account-2" class="panel-collapse collapse ">
                                         <div class="panel-body">
                                             <div class="billing-information-wrapper">
                                                 <div class="account-info-wrapper">
@@ -125,7 +125,7 @@
                                     <div class="panel-heading">
                                         <h5 class="panel-title"><span>@php echo($i); $i++; @endphp</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-2">Change your password </a></h5>
                                     </div>
-                                    <div id="my-account-2" class="panel-collapse collapse show">
+                                    <div id="my-account-2" class="panel-collapse collapse ">
                                         <div class="panel-body">
                                             <div class="billing-information-wrapper">
                                                 <div class="account-info-wrapper">
@@ -171,7 +171,7 @@
                                     <div class="panel-heading">
                                         <h5 class="panel-title"><span>@php echo($i); $i++; @endphp</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-3">Modify your address book entries   </a></h5>
                                     </div>
-                                    <div id="my-account-3" class="panel-collapse collapse show">
+                                    <div id="my-account-3" class="panel-collapse collapse ">
                                         <div class="panel-body">
                                             <div class="billing-information-wrapper">
                                                 <div class="account-info-wrapper">

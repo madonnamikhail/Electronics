@@ -41,6 +41,7 @@ class SinglePageController extends Controller
                 ->orderBy('products.id', 'asc')
                 ->where('products.id','=',$id)
                 ->first();
+                // return $product;
         $supplier_product=Product::where('supplier_id','=',$product->supplier_id)
         ->leftjoin('offer_product','offer_product.product_id','=','products.id')
         ->leftjoin('offers','offer_product.offer_id','=','offers.id')
