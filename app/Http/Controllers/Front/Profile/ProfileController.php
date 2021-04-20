@@ -82,29 +82,29 @@ class ProfileController extends Controller
         // $forgien_key['user_id']=$request->user_id;
         // $forgien_key['product_id']=$request->product_id;
         $i=0;
-        foreach($request->product_id as $product_id){
-            $forgien_key['product_id'] = $product_id;
-            $forgien_key['user_id'] = $request->user_id;
-            // $pivot_attribute['value'] = $request->only('value_'.$i);
-            // $pivot_attribute['comment'] = $request->only('comment_'.$i);
-            $pivot_attribute = $request->only('value_'.$i ,'comment_'.$i);
-            // $pivot_attribute['comment'] = $request->only('comment_'.$i);
-            $rename_array['comment']="comment";
-            $rename_array['value']="value";
+        // foreach($request->product_id as $product_id){
+            for($i=0 ; $i<count($request->product_id) ; $i++){
+                $forgien_key['product_id'] = $request->product_id[$i];
+                // $forgien_key['user_id'] = $request->user_id;
 
-            $pivot_attribute =array_combine(str_replace(array_keys($rename_array), $rename_array, array_keys($pivot_attribute)), $pivot_attribute);
-            // $pivot_attribute['value']=$request->value;
-            // $pivot_attribute['comment']=$request->comment;
-            return $pivot_attribute;
-            // user_id should be given from the auth not from the from
-            $user_id = Auth::user()->id;
-            $user=User::findOrFail($user_id);
-            $check=$user->productRate()->where('product_id', $forgien_key['product_id'])->exists();
-            if($check)
-                $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
-            else
-                $user->productRate()->attach($request->product_id,$pivot_attribute);
-            $i++;
+                $pivot_attribute['value'] = $request->value[$i];
+                // $pivot_attribute['comment'] = $request->only('comment_'.$i);
+                // $pivot_attribute = $request->only('value_'.$i ,'comment_'.$i);
+                $pivot_attribute['comment'] = $request->comment[$i];
+                // print_r($pivot_attribute);
+                // user_id should be given from the auth not from the from
+                $user_id = Auth::user()->id;
+                $user=User::findOrFail($user_id);
+                $check=$user->productRate()->where('product_id', $forgien_key['product_id'])->exists();
+                if($check){
+                    // echo "check true";
+                    // $user->productRate()->updateExistingPivot($request->product_id,$pivot_attribute);
+                    $user->productRate()->updateExistingPivot($request->product_id[$i], $pivot_attribute);
+                }
+                else{
+                    //  echo "check false";
+                    $user->productRate()->attach($request->product_id[$i],$pivot_attribute);
+                }
         }
         return redirect('profile');
     }

@@ -147,8 +147,7 @@ label.star:before {
                                                             </span></td>
                                                             <td>
                                                                     @csrf
-                                                                    <input type="hidden" name="product_id[]" value="{{ $product->id }}">
-                                                                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+
                                                                     {{-- <div class="rate">
                                                                         <input type="radio" id="star5_{{ $product->id }}" name="value" value="5" />
                                                                         <label for="star5_{{ $product->id }}" title="text">5 stars</label>
@@ -161,19 +160,21 @@ label.star:before {
                                                                         <input type="radio" id="star1_{{ $product->id }}" name="value" value="1" />
                                                                         <label for="star1_{{ $product->id }}" title="text">1 star</label>
                                                                       </div> --}}
+                                                                      <input type="hidden" name="product_id[]" value="{{ $product->id }}">
+                                                                    <input type="hidden" name="user_id" value="{{ $user_id }}">
                                                                       <div class="stars">
-                                                                          <input class="star star-5" id="star-5_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="5"/>
+                                                                          <input class="star star-5" id="star-5_{{ $product->id }}" type="radio" name="value[{{$i}}]" value="5"/>
                                                                           <label class="star star-5" for="star-5_{{ $product->id }}"></label>
-                                                                          <input class="star star-4" id="star-4_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="4"/>
+                                                                          <input class="star star-4" id="star-4_{{ $product->id }}" type="radio" name="value[{{$i}}]" value="4"/>
                                                                           <label class="star star-4" for="star-4_{{ $product->id }}"></label>
-                                                                          <input class="star star-3" id="star-3_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="3"/>
+                                                                          <input class="star star-3" id="star-3_{{ $product->id }}" type="radio" name="value[{{$i}}]" value="3"/>
                                                                           <label class="star star-3" for="star-3_{{ $product->id }}"></label>
-                                                                          <input class="star star-2" id="star-2_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="2"/>
+                                                                          <input class="star star-2" id="star-2_{{ $product->id }}" type="radio" name="value[{{$i}}]" value="2"/>
                                                                           <label class="star star-2" for="star-2_{{ $product->id }}"></label>
-                                                                          <input class="star star-1" id="star-1_{{ $product->id }}" type="radio" name="value_{{ $i }}" value="1"/>
+                                                                          <input class="star star-1" id="star-1_{{ $product->id }}" type="radio" name="value[{{$i}}]" value="1"/>
                                                                           <label class="star star-1" for="star-1_{{ $product->id }}"></label>
                                                                       </div>
-                                                                    <textarea row="2" col="4" name="comment_{{ $i }}" placeholder="Enter your comment"></textarea>
+                                                                    <textarea row="2" col="4" name="comment[{{ $i }}]" placeholder="Enter your comment"></textarea>
                                                                     @php
                                                                     $i++;
                                                                 @endphp
