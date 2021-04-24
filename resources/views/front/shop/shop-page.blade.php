@@ -220,10 +220,17 @@
                                 {{-- <div class="col-lg-12"> --}}
                                     {{-- <div class="list-group"> --}}
                                         <h3>Price</h3>
-                                        <input type="hidden" id="hidden_minimum_price" class="filter_checkbox" name="min_price" value="{{ $min }}" />
+                                        {{-- <input type="hidden" id="hidden_minimum_price" class="filter_checkbox" name="min_price" value="{{ $min }}" />
                                         <input type="hidden" id="hidden_maximum_price" class="filter_checkbox" name="max_price" value="{{ $max }}" />
                                         <p id="price_show" class="filter_checkbox">{{ $min }} - {{ $max }}</p>
-                                        <div class="filter_checkbox" id="price_range"></div>
+                                        <div class="filter_checkbox" id="price_range"></div> --}}
+
+                                        <input type="hidden" id="hidden_minimum_price"/>
+                                        <input type="hidden" id="hidden_maximum_price"/>
+                                        <p id="price_show">0 - 650000</p>
+                                        {{-- <div class="filter_checkbox" id="price_range"></div> --}}
+                                        <div class="price_slider" id="price_range"></div>
+
                                     {{-- </div> --}}
                                 {{-- </div> --}}
                             </form>
@@ -591,6 +598,12 @@
             $(document).on('click', '.filter_checkbox', function () {
                 fetchCauseAgainstCategory();
             });
+            $(document).on('click', '.price_slider', function () {
+                document.getElementById('hidden_minimum_price').setAttribute("name", "min_price");
+                document.getElementById('hidden_maximum_price').setAttribute("name", "max_price");
+                fetchCauseAgainstCategory();
+            });
+
         });
         function fetchCauseAgainstCategory() {
             $('.causes_div').empty();
@@ -600,14 +613,13 @@
             range:true,
             min:0,
             max:650000,
-            values:[$('#hidden_minimum_price').val(), $('#hidden_maximum_price').val()],
+            values:[0, 650000],
             step:50,
             stop:function(event, ui)
             {
                 $('#price_show').html(ui.values[0] + ' - ' + ui.values[1]);
                 $('#hidden_minimum_price').val(ui.values[0]);
                 $('#hidden_maximum_price').val(ui.values[1]);
-                // filter_data();
             }
         });
     </script>

@@ -37,10 +37,10 @@ class ShopController extends Controller
         $subCategories=Subcategory::get();
         $id=0;
         $cats = [];$subs = [] ; $brand_ids = [] ;
-        $min=0;
-        $max=6500000;
+        // $min=0;
+        // $max=6500000;
         // return $products;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids'/*,'min','max'*/,'id'));
     }
     public function get_causes_against_category($id) {
         $id = explode(',', $id);
@@ -239,8 +239,8 @@ class ShopController extends Controller
             "cats"=>"exists:categories,id",
             "subs"=>"exists:subcategories,id",
             "brands"=>"exists:brands,id",
-            "min_price"=>"required|integer|min:0",
-            "max_price"=>"required|integer|max:6500000",
+            // "min_price"=>"integer|min:0",
+            // "max_price"=>"integer|max:6500000",
         ];
         $validator = Validator::make($request->all(),$rules);
         if ($validator->fails()) {
@@ -282,7 +282,7 @@ class ShopController extends Controller
         // return $query;
         ->get();
         $total_row = count($query);
-        // return $total_row;
+        return $total_row;
         $output = '';
         if ($total_row > 0) {
             foreach ($query as $product) {
