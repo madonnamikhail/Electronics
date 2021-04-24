@@ -593,8 +593,24 @@
     });
     </script> --}}
     {{-- multiple filters --}}
+    {{-- <p>ghjdjfc</p> --}}
     <script>
         $(document).ready(function() {
+            if(window.location.toString().indexOf("filter") > -1) // This doesn't work, any suggestions?
+                {
+                     $('#remove_row').remove();
+                     var urlsearch = window.location.search;
+            console.log(urlsearch);
+            const urlParams = new URLSearchParams(urlsearch);
+            const min_price = urlParams.get('min_price');
+            console.log(min_price);
+            const max_price = urlParams.get('max_price');
+            console.log(max_price);
+            // document.getElementById('#hidden_minimum_price').innerHTML=min_price + ' - ' + max_price;
+            // $('#hidden_minimum_price').val(min_price);
+            // $('#hidden_maximum_price').val(max_price);
+                }
+
             $(document).on('click', '.filter_checkbox', function () {
                 fetchCauseAgainstCategory();
             });
@@ -603,11 +619,14 @@
                 document.getElementById('hidden_maximum_price').setAttribute("name", "max_price");
                 fetchCauseAgainstCategory();
             });
-
         });
         function fetchCauseAgainstCategory() {
             $('.causes_div').empty();
+            // console.log(window.location.href);
+            // var url = window.location.href;
+
             $('#filter_form').submit();
+
         }
         $('#price_range').slider({
             range:true,

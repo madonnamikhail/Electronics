@@ -17,7 +17,10 @@ use RecursiveDirectoryIterator;
 
 class ShopController extends Controller
 {
+    // public $min;
+
     public function getShop() {
+        // return $this->min;
         $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
             ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
             ->select(
@@ -246,9 +249,10 @@ class ShopController extends Controller
         if ($validator->fails()) {
             return abort(404);
         }
-
+        // global $min;
         $min=$request->min_price;
         $max=$request->max_price;
+        // return $min;
         $cats = [];$subs = [] ; $brand_ids = [] ;
         $query = Product::join('Subcategories','products.subCategory_id', '=', 'subcategories.id')
         ->join('categories','categories.id', '=', 'subcategories.category_id')
@@ -282,7 +286,7 @@ class ShopController extends Controller
         // return $query;
         ->get();
         $total_row = count($query);
-        return $total_row;
+        // return $total_row;
         $output = '';
         if ($total_row > 0) {
             foreach ($query as $product) {
