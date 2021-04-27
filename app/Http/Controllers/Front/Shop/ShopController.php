@@ -18,9 +18,8 @@ use RecursiveDirectoryIterator;
 class ShopController extends Controller
 {
     // public $min;
-
-    public function getShop() {
-        // return $this->min;
+    public function getShop(Request $request) {
+        // return $request;
         $products = Product::Join('offer_product', 'offer_product.product_id', '=', 'products.id', 'left outer')
             ->join('offers', 'offer_product.offer_id', '=', 'offers.id', 'left outer')
             ->select(
@@ -40,10 +39,11 @@ class ShopController extends Controller
         $subCategories=Subcategory::get();
         $id=0;
         $cats = [];$subs = [] ; $brand_ids = [] ;
+        $url = $request;
         // $min=0;
         // $max=6500000;
         // return $products;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids'/*,'min','max'*/,'id'));
+        return view('front.shop.shop-page', compact('products', 'url', 'categories','brands','subCategories','cats','subs','brand_ids'/*,'min','max'*/,'id'));
     }
     public function get_causes_against_category($id) {
         $id = explode(',', $id);
@@ -266,20 +266,22 @@ class ShopController extends Controller
 
         if($request->has('cats')){
             $cats = $request->cats;
-            $query = $query->orWhereIn('category_id', $cats);
+            $query = $query->WhereIn('category_id', $cats);
 
         }
         if($request->has('subs')){
             $subs = $request->subs ;
             // return Product::whereIn('id',$ids)->get();
-            $query = $query->orWhereIn('subCategory_id', $subs);
+            $query = $query->WhereIn('subCategory_id', $subs);
         }
         if($request->has('brands')){
             $brand_ids = $request->brands;
-            $query = $query->orWhereIn('brand_id', $brand_ids);
+            $query = $query->WhereIn('brand_id', $brand_ids);
         }
         if($request->has('min_price') && $request->has('max_price')){
-            $query = $query->orWhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
+            // $query = $query->orWhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
+            $query = $query->WhereRaw('price BETWEEN ' . $request->min_price . ' AND ' . $request->max_price . '');
+
         }
         $query = $query
         // ->toSql();
@@ -358,14 +360,16 @@ class ShopController extends Controller
         }
         // echo $output;die;
         $products = $query;
-
-
         // return response()->json(array('output','cats','subs','brands'));
         $categories = Category::get();
         $brands=Brand::get();
         $subCategories=Subcategory::get();
         $id=0;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+
+        $url = $request;
+        // return $url;
+        // return redirect()->route('get.shop');
+        return view('front.shop.shop-page', compact('products', 'url','categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
     }
     public function getProductsByCategoryId($id){
         // return $id;

@@ -47,14 +47,17 @@
                           @enderror
 
 
-                          
+
                           <div class="form-group">
                             <label for="exampleInputEmail1">{{ __('message.Promocode Type') }}</label>
+                            {{ 'old:'.old('type') .'<br>DB:'.$promo->type  }}
                               <select  name="type" id="type" class="form-control">
-                                  <option {{ (old('type')==0) || ($promo->type ==0)  ? 'selected' : '' }} value="0" class="form-group">
+
+                                  <option {{ (old('type') !== NULL) ? ( ( old('type')==0)   ? 'selected' : '' ) : ($promo->type ==0 ? 'selected' : '') }} value="0" class="form-group">
                                       Fixed
                                   </option>
-                                  <option {{ (old('type')==1) || ($promo->type ==1)  ? 'selected' : '' }} value="1" class="form-group">
+                                  {{-- ($promo->type ==0 ? 'selected' : '') --}}
+                                  <option {{ (old('type') !== NULL) ? (( old('type')==1)   ? 'selected' : '' ) : ($promo->type ==1 ? 'selected' : '') }}  value="1" class="form-group">
                                       Percentage
                                   </option>
                                 </select>

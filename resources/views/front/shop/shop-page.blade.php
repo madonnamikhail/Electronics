@@ -68,7 +68,7 @@
                                     @endif
 
                                     @forelse ($products as $product)
-                                        <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                        <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30 search-results-block" id="searchResults">
                                             <div class="product-wrapper">
                                                 <div class="product-img">
                                                     <a href="{{ route('get-product-single-page', $product->product_id) }}">
@@ -217,22 +217,22 @@
                                     </div>
                                 </div>
                                 <h4 class="shop-sidebar-title">Price Filter</h4>
-                                {{-- <div class="col-lg-12"> --}}
-                                    {{-- <div class="list-group"> --}}
                                         <h3>Price</h3>
                                         {{-- <input type="hidden" id="hidden_minimum_price" class="filter_checkbox" name="min_price" value="{{ $min }}" />
                                         <input type="hidden" id="hidden_maximum_price" class="filter_checkbox" name="max_price" value="{{ $max }}" />
                                         <p id="price_show" class="filter_checkbox">{{ $min }} - {{ $max }}</p>
                                         <div class="filter_checkbox" id="price_range"></div> --}}
 
-                                        <input type="hidden" id="hidden_minimum_price"/>
-                                        <input type="hidden" id="hidden_maximum_price"/>
-                                        <p id="price_show">0 - 650000</p>
-                                        {{-- <div class="filter_checkbox" id="price_range"></div> --}}
-                                        <div class="price_slider" id="price_range"></div>
+                                        {{-- <input type="hidden" id="hidden_minimum_price" value ="{{   $url !== NULL ?  $url->min_price  : '0' }}"/>
+                                        <input type="hidden" id="hidden_maximum_price" value ="{{   $url !== NULL ?  $url->max_price  : '650000'}}"/>
+                                        <p id="price_show" >{{   $url !== NULL ?  $url->min_price  : '0' }} - {{   $url !== NULL ?  $url->max_price  : '650000'}} </p>
+                                        {{-- <div class="filter_checkbox" id="price_range"></div>
+                                        <div class="price_slider" id="price_range"></div> --}}
+                                        <input type="number" style="width:100px " {{--min=0 max="9900" oninput="validity.valid||(value='0');" --}} value ="{{   $url !== NULL ?  $url->min_price  : '0' }}" name="min_price" id="min_price" class="price-range-field" />
+                                        <input type="number" style="width:100px " {{-- min=0 max="10000" oninput="validity.valid||(value='10000');" --}} value ="{{   $url !== NULL ?  $url->max_price  : '650000'}}" name="max_price" id="max_price" class="price-range-field" />
+                                        <div id="slider-range" class="price-filter-range" name="rangeInput" style="width:210px; margin-top:20px" ></div>
+                                        <button class="price-range-search filter_checkbox" id="price-range-submit">Search</button>
 
-                                    {{-- </div> --}}
-                                {{-- </div> --}}
                             </form>
                             {{-- <div class="shop-price-filter mt-40 shop-sidebar-border pt-35">
                                 <h4 class="shop-sidebar-title">Price Filter</h4>
@@ -328,7 +328,6 @@
             </div>
         </div>
 		<!-- Shop Page Area End -->
-
     </div>
 @endsection
 @section('script')
@@ -594,22 +593,24 @@
     </script> --}}
     {{-- multiple filters --}}
     {{-- <p>ghjdjfc</p> --}}
-    <script>
+    {{-- <script>
         $(document).ready(function() {
+            // event.preventDefault();
             if(window.location.toString().indexOf("filter") > -1) // This doesn't work, any suggestions?
                 {
                      $('#remove_row').remove();
-                     var urlsearch = window.location.search;
+                }
+             var urlsearch = window.location.search;
             console.log(urlsearch);
-            const urlParams = new URLSearchParams(urlsearch);
-            const min_price = urlParams.get('min_price');
+            var urlParams = new URLSearchParams(urlsearch);
+            var min_price = urlParams.get('min_price');
             console.log(min_price);
-            const max_price = urlParams.get('max_price');
+            var max_price = urlParams.get('max_price');
             console.log(max_price);
-            // document.getElementById('#hidden_minimum_price').innerHTML=min_price + ' - ' + max_price;
+            // $('#price_show').html(min_price + ' -*-/ ' + max_price);
+            //  document.getElementById('#price_show').innerHTML=min_price + ' - ' + max_price;
             // $('#hidden_minimum_price').val(min_price);
             // $('#hidden_maximum_price').val(max_price);
-                }
 
             $(document).on('click', '.filter_checkbox', function () {
                 fetchCauseAgainstCategory();
@@ -624,9 +625,7 @@
             $('.causes_div').empty();
             // console.log(window.location.href);
             // var url = window.location.href;
-
             $('#filter_form').submit();
-
         }
         $('#price_range').slider({
             range:true,
@@ -636,10 +635,50 @@
             step:50,
             stop:function(event, ui)
             {
-                $('#price_show').html(ui.values[0] + ' - ' + ui.values[1]);
+                $('#price_show').html(ui.values[0] + ' -- ' + ui.values[1]);
                 $('#hidden_minimum_price').val(ui.values[0]);
                 $('#hidden_maximum_price').val(ui.values[1]);
             }
         });
+        // $('#price_show').html($('#price_range').slider("values",0)+ "--" + $('#price_range').slider("values",1));
+    </script> --}}
+    <script>
+         $(document).ready(function() {
+            if(window.location.toString().indexOf("filter") > -1) // This doesn't work, any suggestions?
+                {
+                     $('#remove_row').remove();
+                }
+            $(document).on('click', '.filter_checkbox', function () {
+                fetchCauseAgainstCategory();
+            });
+        });
+        function fetchCauseAgainstCategory() {
+            $('.causes_div').empty();
+            // console.log(window.location.href);
+            // var url = window.location.href;
+            $('#filter_form').submit();
+        }
+        $("#slider-range").slider({
+            range: true,
+            orientation: "horizontal",
+            min: 0,
+            max: 10000,
+            values: [@php  $url != NULL ?  $url->min_price  : '0' @endphp , @php $url != NULL ?  $url->max_price  : '650000' @endphp],
+            step: 100,
+
+            slide: function (event, ui) {
+                if (ui.values[0] == ui.values[1]) {
+                return false;
+                }
+
+                $("#min_price").val(ui.values[0]);
+                $("#max_price").val(ui.values[1]);
+
+            }
+            $("#min_price").val($("#slider-range").slider("values", 0));
+	        $("#max_price").val($("#slider-range").slider("values", 1));
+
+            });
+
     </script>
 @endsection

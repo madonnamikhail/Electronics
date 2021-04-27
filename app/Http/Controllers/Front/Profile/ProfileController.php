@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Supplier;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -234,12 +235,15 @@ class ProfileController extends Controller
     {
         $regions = Region::get();
         $user_id = Auth::user()->id;
+
         return view('front.create-address-profile', compact('regions','user_id'));
     }
 
     public function profileStoreAddress(Request $request)
     {
-        // return $request;
+        // return request()->previous()->segment(count(request()->segments()));
+        // return Route::previous()->getName();
+        // Route
         // return $request;
         $rules=[
             'flat' =>'required|numeric',
@@ -253,6 +257,7 @@ class ProfileController extends Controller
         // return $request;
         $data = $request->except('_token');
         Address::insert($data);
+
         return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
 
     }

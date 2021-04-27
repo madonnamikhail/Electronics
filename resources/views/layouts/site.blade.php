@@ -33,6 +33,14 @@
 
            <!-- jQuery library -->
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+           <!-- price slider includes -->
+           <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js" integrity="sha256-0vBSIAi/8FxkNOSKyPEfdGQzFDak1dlqFKBYqBp1yC4=" crossorigin="anonymous"></script>
+           {{-- <link rel="stylesheet" href="/path/to/jquery-ui.css"> --}}
+            {{-- <script src="/path/to/jquery.min.js"></script> --}}
+            {{-- <script src="/path/to/jquery-ui.min.js"></script> --}}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+            <link rel="stylesheet" href="{{ asset('css/price_range_style.css')}}">
+            {{-- <script src="{{ asset('js/price_range_script.js') }}"></script> --}}
            <!-- Popper JS -->
            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
            <!-- Latest compiled JavaScript -->

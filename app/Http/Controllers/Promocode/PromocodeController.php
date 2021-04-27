@@ -24,10 +24,10 @@ class PromocodeController extends Controller
     public function store(Request $request){
         $rules=[
             "name"=>'required|max:100',
-            "discountValue"=>'required|numeric',
             "minOrderValue"=>'required|string|min:1',
             "maxOrderValue"=>'required|string|gt:minOrderValue',
             "type"=>'required|integer|min:0|max:1',
+            "discountValue"=>$request->type == 1 ? 'required|numeric|max:100|min:1' : 'required|numeric',
             "max_usage"=>'required|integer|gt:max_usage_per_user',
             "max_usage_per_user"=>'required|integer|min:1',
             "start_date"=>'required|date|before:expire_date',
