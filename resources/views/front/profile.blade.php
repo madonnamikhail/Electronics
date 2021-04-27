@@ -177,57 +177,60 @@
                                                 <div class="account-info-wrapper">
                                                     <h4>Address Book Entries</h4>
                                                 </div>
-                                                <div class="entries-wrapper">
+                                                {{-- <div class="entries-wrapper"> --}}
                                                     <div class="row">
-                                                        <div class="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
-                                                            <div class="entries-info text-center">
+                                                        <div class="col-lg-12 col-md-6 d-flex justify-content-around">
+                                                            {{-- <div class="entries-info text-center"> --}}
                                                                 @foreach ($addresses as $address)
                                                                 @if (!$address)
                                                                     <p>No Address Entered !</p>
                                                                     <button><a href="{{ route('profile.create.address') }}">Add Address</a></button>
                                                                 @else
-                                                                    <p> Flat number: {{ $address->flat }} </p>
-                                                                    <p> Building number: {{ $address->building }} </p>
-                                                                    <p> Floor Number: {{ $address->floor }} </p>
-                                                                    <p> Street Name: {{ $address->street_en }} </p>
-                                                                    <p>
-                                                                        @foreach ($regions as $region)
-                                                                            @if($region->id == $address->region_id)
-                                                                                Region: {{ $region->name_en }}
-                                                                                @php
-                                                                                    $region_city_id = $region->city_id;
-                                                                                @endphp
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </p>
-                                                                    <p>
-                                                                        {{-- @foreach ($regions as $region) --}}
-                                                                            @foreach ($cities as $city)
-                                                                                @if($city->id == $region_city_id)
-                                                                                    City: {{ $city->name_en }}
+                                                                    <div style="padding:20px; border:#ccc solid 2px;">
+                                                                        <p> Flat number: {{ $address->flat }} </p>
+                                                                        <p> Building number: {{ $address->building }} </p>
+                                                                        <p> Floor Number: {{ $address->floor }} </p>
+                                                                        <p> Street Name: {{ $address->street_en }} </p>
+                                                                        <p>
+                                                                            @foreach ($regions as $region)
+                                                                                @if($region->id == $address->region_id)
+                                                                                    Region: {{ $region->name_en }}
+                                                                                    @php
+                                                                                        $region_city_id = $region->city_id;
+                                                                                    @endphp
                                                                                 @endif
                                                                             @endforeach
+                                                                        </p>
+                                                                        <p>
+                                                                            {{-- @foreach ($regions as $region) --}}
+                                                                                @foreach ($cities as $city)
+                                                                                    @if($city->id == $region_city_id)
+                                                                                        City: {{ $city->name_en }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            {{-- @endforeach --}}
+                                                                        </p>
                                                                         {{-- @endforeach --}}
-                                                                    </p>
-                                                                {{-- @endforeach --}}
-                                                                    <div class="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
-                                                                        <div class="entries-edit-delete text-center">
-                                                                            <a class="edit" href="{{ route('profile.edit.address',$address->id ) }}">Edit</a>
-                                                                            <form action="{{ route('profile.delete.address') }}" method="post">
-                                                                                @csrf
-                                                                                @method('delete')
-                                                                                <input type="hidden" name="address_id" value="{{ $address->id }}">
-                                                                                <button type="submit">Delete</button>
-                                                                            </form>
-                                                                        </div>
+                                                                            <div class="col-lg-6 col-md-6 ">
+                                                                                <div class="entries-edit-delete text-center ">
+                                                                                    <a class="edit" href="{{ route('profile.edit.address',$address->id ) }}">Edit</a>
+                                                                                    <form action="{{ route('profile.delete.address') }}" method="post">
+                                                                                        @csrf
+                                                                                        @method('delete')
+                                                                                        <input type="hidden" name="address_id" value="{{ $address->id }}">
+                                                                                        <button type="submit">Delete</button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
                                                                     </div>
+
                                                                 @endif
                                                             @endforeach
-                                                            </div>
+                                                            {{-- </div> --}}
                                                         </div>
 
                                                     </div>
-                                                </div>
+                                                {{-- </div> --}}
 
                                                 <div class="billing-back-btn">
                                                     <div class="billing-back">

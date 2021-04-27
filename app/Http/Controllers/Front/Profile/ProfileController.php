@@ -245,6 +245,12 @@ class ProfileController extends Controller
         // return Route::previous()->getName();
         // Route
         // return $request;
+        // return URL::previous();
+        return app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName();
+        // if(app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == 'public.contact'){
+        //     return "ay klam ";
+        // }
+
         $rules=[
             'flat' =>'required|numeric',
             'building' => 'required|numeric',

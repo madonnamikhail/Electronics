@@ -1,5 +1,6 @@
 @extends('layouts.site')
 @section('title','Shop')
+
 @section('content')
     <div class="col-lg-12">
 
@@ -153,9 +154,7 @@
                                     @endforelse
                                 </div>
                             </div>
-                            {{-- <div class="causes_div">
-
-                            </div> --}}
+                         
                             <div class="pagination-total-pages" id="remove_row">
                                 {{-- <div class="total-pages">
                                     <p>Showing 1 - 20 of 30 results  </p>

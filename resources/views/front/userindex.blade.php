@@ -1,5 +1,30 @@
 @extends('layouts.site')
 @section('title','Index')
+@section('css')
+<style>
+
+.btn-grad {background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%)}
+         .btn-grad {
+            margin: 50px 5px 50px 5px;
+            padding: 15px 40px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            display: block;
+          }
+
+          .btn-grad:hover {
+            background-position: right center; /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+          }
+
+</style>
+@endsection
 @section('content')
 {{-- <div class="slider-area">
     <div class="slider-active owl-dot-style owl-carousel">
@@ -24,6 +49,37 @@
     </div>
 </div> --}}
 <!-- Slider End -->
+{{-- <!-- shop by brand buttons -->
+<h3 style="margin:50px; ">Shop By Brand </h3> --}}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-title-wrap text-center">
+                <h3 class="section-title" style="margin-top:50px">shop by brand</h3>
+            </div>
+            <div class="featured-product-active hot-flower owl-carousel product-nav">
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+                <button class="btn-grad"> Apple </button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
 <!--  Hot Deals Banner Start -->
 <div class="banner-area pt-100 pb-70">
     <div class="container">
