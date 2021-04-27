@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -50,15 +51,32 @@
     </head>
     <body>
         <!-- header start -->
-        <section style="width:100% ; height:100px; background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);">
-            <h3 style="padding:30px 100px; color:white">Website Name</h3>
-            <div style="float:right;">
-                {{-- <a> home</a>
-                <a> home</a>
-                <a> home</a>
-                <a> home</a>
-                <a> home</a> --}}
+        <section style="background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%); width:100%; height:50px;">
+            <div class="col-5" style="margin-left:auto; margin-right:auto;">
+                <form action="{{ route('search.box.button') }}" method="post" class="p-3">
+                    @csrf
+                  <div class="input-group">
+                    <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
+                     placeholder="Search..." autocomplete="on" required style="width:70%" >
+                    {{-- <div class="input-group-append"> --}}
+                      <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:5%; background-image: linear-gradient(to right, #f79d00 0%, #64f38c  51%, #f79d00  100%)">
+                    {{-- </div> --}}
+                  </div>
+                </form>
             </div>
+            <div class="col-md-12" style="position: relative; margin-top: -38px;margin-left: 215px;">
+                <div class="list-group" id="show-list">
+                  <!-- Here autocomplete list will be display -->
+                  {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
+                </div>
+            </div>
+        </section>
+        <section style="width:100% ; height:90px; background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);">
+            <div>
+                <h3 style="padding:30px 100px; color:white; float:left;">Website Name</h3>
+                <nav style="padding:30px 100px; color:white; float:right;">hgjhgj</nav>
+            </div>
+
         </section>
         <header class="header-area gray-bg clearfix">
             <div class="header-bottom">
@@ -75,24 +93,24 @@
                             <div class="header-bottom-right">
                                 <div class="main-menu">
                                     <nav>
-                                        <div class="col-md-12   rounded {{--bg-light mx-auto border-info --}}">
+                                        {{-- <div class="col-md-12   rounded {{--bg-light mx-auto border-info ">
                                             <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                                                 @csrf
                                               <div class="input-group">
                                                 <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
                                                  placeholder="Search..." autocomplete="on" required style="width:80%" >
-                                                {{-- <div class="input-group-append"> --}}
+                                                {{-- <div class="input-group-append"> -
                                                   <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:20%; background-color:#3CA55C;">
-                                                {{-- </div> --}}
+                                                {{-- </div>
                                               </div>
                                             </form>
                                         </div>
                                         <div class="col-md-12" style="position: relative; margin-top: -38px;margin-left: 215px;">
                                             <div class="list-group" id="show-list">
                                               <!-- Here autocomplete list will be display -->
-                                              {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
+                                              {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <ul>
                                             <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
