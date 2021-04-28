@@ -52,7 +52,7 @@
     <body>
         <!-- header start -->
         <section style="background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%); width:100%; height:50px;">
-            <div class="col-5" style="margin-left:auto; margin-right:auto;">
+            <div class="col-5" style="margin-left:auto; margin-right:auto; padding-top:10px">
                 <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                     @csrf
                   <div class="input-group">
@@ -64,8 +64,8 @@
                   </div>
                 </form>
             </div>
-            <div class="col-md-12" style="position: relative; margin-top: -38px;margin-left: 215px;">
-                <div class="list-group" id="show-list">
+            <div class="col-md-12" style="position: relative; margin-top: -18px;margin-left: 400px; z-index:1000; width:900px;">
+                <div class="list-group" id="show-list" style="height:500px;">
                   <!-- Here autocomplete list will be display -->
                   {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
                 </div>
@@ -74,43 +74,161 @@
         <section style="width:100% ; height:90px; background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);">
             <div>
                 <h3 style="padding:30px 100px; color:white; float:left;">Website Name</h3>
-                <nav style="padding:30px 100px; color:white; float:right;">hgjhgj</nav>
+                {{-- <nav style="padding:30px 100px; color:white; float:right;">hgjhgj</nav> --}}
+            </div>
+            <div class="col-lg-9 col-md-8 col-6">
+                <div class="header-bottom-right" style="justify-content: center; height: 90px;">
+                    <div class="main-menu" style="padding-left: 60px;">
+                        <nav>
+                            <ul>
+                                <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
+                                    <ul class="submenu">
+                                        <li><a href="{{ route('index.page') }}">home version 1</a></li>
+                                        <li><a href="{{ route('index.page') }}">home version 2</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="about-us.html">about</a></li>
+                                <li class="mega-menu-position top-hover"><a href="{{ route('get.shop') }}">shop</a>
+                                    <ul class="mega-menu">
+                                        @foreach (App\Models\Category::get() as $category)
+                                        <li>
+                                            <ul>
+                                                <li class="mega-menu-title"><a style="font-weight: 600" href="{{route('get.products.by.category.id',$category->id)}}">{{ $category->name_en }}</a></li>
+                                                @foreach(App\Models\Subcategory::get() as $subcategory)
+                                                     @if ($category->id == $subcategory->category_id )
+                                                        <li><a href="{{route('get.products.by.subcategory.id',$subcategory->id)}}">{{ $subcategory->name_en }}</a></li>
+                                                     @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <li style="padding-right: 15px;"><a href="{{route('contact-us.message')}}">contact</a></li>
+                                @guest
+                                <li class="top-hover">
+                                    <a id="navbarDropdown" style="padding-bottom: 0px;height: 90px;" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Account
+                                    </a>
+                                        <ul class="submenu">
+                                            <li class="top-hover">
+                                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            </li>
+                                            @if (Route::has('register'))
+                                                <li class="top-hover">
+                                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                            </li>
+                        @else
+                            <li class="top-hover">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                    <ul class="submenu">
+                                        <li class="top-hover">
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('get.profile') }}">profile</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('get.cart') }}">cart</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('get.rating') }}">My Orders</a>
+                                        </li>
+                                    </ul>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                {{-- </div> --}}
+                            </li>
+                            @endguest
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="header-currency">
+                        <span class="digit" style="line-height: 115px">Language <i class="ti-angle-down"></i></span>
+                        <div class="dollar-submenu" style="z-index: 10;">
+                            <ul>
+                                <li><a href="#">English</a></li>
+                                <li><a href="#">Arabic</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="header-cart" style="line-height: 115px">
+                        <a href="#">
+                            <div class="cart-icon">
+                                <i class="ti-shopping-cart"></i>
+                            </div>
+                        </a>
+                        <div class="shopping-cart-content">
+                            <ul>
+                                <li class="single-shopping-cart">
+                                    <div class="shopping-cart-img">
+                                        <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-1.jpg') }}"></a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="#">Phantom Remote </a></h4>
+                                        <h6>Qty: 02</h6>
+                                        <span>$260.00</span>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="ion ion-close"></i></a>
+                                    </div>
+                                </li>
+                                <li class="single-shopping-cart">
+                                    <div class="shopping-cart-img">
+                                        <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-2.jpg') }}"></a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="#">Phantom Remote</a></h4>
+                                        <h6>Qty: 02</h6>
+                                        <span>$260.00</span>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="ion ion-close"></i></a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="shopping-cart-total">
+                                <h4>Shipping : <span>$20.00</span></h4>
+                                <h4>Total : <span class="shop-total">$260.00</span></h4>
+                            </div>
+                            <div class="shopping-cart-btn">
+                                <a href="cart-page.html">view cart</a>
+                                <a href="checkout.html">checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </section>
-        <header class="header-area gray-bg clearfix">
+        {{-- <header class="header-area gray-bg clearfix">
             <div class="header-bottom">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-6">
+                        {{-- <div class="col-lg-3 col-md-4 col-6">
                             <div class="logo">
                                 <a href="{{ route('index.page') }}">
                                     <img alt="" src="{{ asset('assets/img/logo/logo.png') }}">
                                 </a>
                             </div>
-                        </div>
-                        <div class="col-lg-9 col-md-8 col-6">
+                        </div> --}}
+                        {{-- <div class="col-lg-9 col-md-8 col-6">
                             <div class="header-bottom-right">
                                 <div class="main-menu">
                                     <nav>
-                                        {{-- <div class="col-md-12   rounded {{--bg-light mx-auto border-info ">
-                                            <form action="{{ route('search.box.button') }}" method="post" class="p-3">
-                                                @csrf
-                                              <div class="input-group">
-                                                <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
-                                                 placeholder="Search..." autocomplete="on" required style="width:80%" >
-                                                {{-- <div class="input-group-append"> -
-                                                  <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:20%; background-color:#3CA55C;">
-                                                {{-- </div>
-                                              </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-12" style="position: relative; margin-top: -38px;margin-left: 215px;">
-                                            <div class="list-group" id="show-list">
-                                              <!-- Here autocomplete list will be display -->
-                                              {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a>
-                                            </div>
-                                        </div> --}}
                                         <ul>
                                             <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
                                                 <ul class="submenu">
@@ -141,7 +259,6 @@
                                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                     Account
                                                 </a>
-                                                {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> --}}
                                                     <ul class="submenu">
                                                         <li class="top-hover">
                                                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -152,7 +269,6 @@
                                                             </li>
                                                         @endif
                                                     </ul>
-                                            {{-- </div> --}}
                                         </li>
                                     @else
                                         <li class="top-hover">
@@ -160,7 +276,6 @@
                                                 {{ Auth::user()->name }}
                                             </a>
 
-                                            {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> --}}
                                                 <ul class="submenu">
                                                     <li class="top-hover">
                                                         <a class="dropdown-item" href="{{ route('logout') }}"
@@ -183,7 +298,6 @@
                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                     @csrf
                                                 </form>
-                                            {{-- </div> --}}
                                         </li>
                                         @endguest
                                         </ul>
@@ -245,7 +359,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}
                     </div>
                     {{-- <div class="mobile-menu-area">
                         <div class="mobile-menu">
@@ -276,10 +390,11 @@
                                 </ul>
                             </nav>
                         </div>
-                    </div> --}}
+                    </div> --}
                 </div>
             </div>
         </header>
+        slakngoeirqninepoivnpiewnvpinreoppoiqenbprnqepoinb --}}
 		<!-- header end -->
 		<!-- Slider Start -->
       <div class="container">
