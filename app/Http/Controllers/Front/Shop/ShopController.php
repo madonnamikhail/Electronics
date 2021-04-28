@@ -39,6 +39,7 @@ class ShopController extends Controller
         $subCategories=Subcategory::get();
         $id=0;
         $cats = [];$subs = [] ; $brand_ids = [] ;
+        $url=[];
         $url = $request;
         // $min=0;
         // $max=6500000;
@@ -365,7 +366,7 @@ class ShopController extends Controller
         $brands=Brand::get();
         $subCategories=Subcategory::get();
         $id=0;
-
+        $url=[];
         $url = $request;
         // return $url;
         // return redirect()->route('get.shop');
@@ -449,9 +450,10 @@ class ShopController extends Controller
         $subCategories=Subcategory::get();
         $id=0;
         $cats = []; $subs = []; $brand_ids = [];
+        $url=null;
         $min=0;
         $max=6500000;
-        return view('front.shop.shop-page', compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
+        return view('front.shop.shop-page', compact('products','url', 'categories','brands','subCategories','cats','subs','brand_ids','min','max','id'));
 
     }
     // public function priceFilter(Request $request) {

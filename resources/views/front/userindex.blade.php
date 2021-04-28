@@ -22,7 +22,19 @@
             color: #fff;
             text-decoration: none;
           }
-
+    .salebtn{
+        border-radius:30%;
+        width:300px;
+        height:200px;
+        border:green 7px solid;
+        margin: 30px;
+        background-color:white;
+        font-size:40px
+        /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%) */
+    }
+    .salebtn:hover {
+        box-shadow: 0 12px 16px 0px rgba(2, 68, 37, 0.795), 0 17px 50px 0 rgb(251, 255, 11,0.7) , 0 17px 50px 0 rgb(61, 248, 0.7);
+    }
 </style>
 @endsection
 @section('content')
@@ -51,6 +63,7 @@
 <!-- Slider End -->
 {{-- <!-- shop by brand buttons -->
 <h3 style="margin:50px; ">Shop By Brand </h3> --}}
+
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -58,53 +71,42 @@
                 <h3 class="section-title" style="margin-top:50px">shop by brand</h3>
             </div>
             <div class="featured-product-active hot-flower owl-carousel product-nav">
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-                <button class="btn-grad"> Apple </button>
-
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-
-
-<!--  Hot Deals Banner Start -->
-<div class="banner-area pt-100 pb-70">
-    <div class="container">
-        <div class="product-top-bar section-border mb-55">
-            <div class="section-title-wrap text-center">
-                <h3 class="section-title">Hot Deals</h3>
-            </div>
-        </div>
-        <div class="banner-wrap">
-            <div class="row" >
-                @foreach ($offers as $offer)
-                    @if ($offer->discount == 50 || $offer->discount > 50)
-                        <div class="col-lg-6 col-md-6">
-                            <div class="single-banner img-zoom mb-30">
-                                <a href="{{ route('hot.deals',$offer->id) }}">
-                                    <img style="width:30vw; height:40vh" src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    @endif
+                @foreach ($brands as $brand)
+                        <button class="btn-grad"><a style="color: white;" href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button>
                 @endforeach
             </div>
         </div>
     </div>
 </div>
+<div style="width:100%; height:1px; background-color:green;"> </div>
+<!--  Hot Deals Banner Start -->
+<div class="banner-area pt-50 pb-50">
+    <div class="container">
+        <div class="product-top-bar section-border mb-30">
+            <div class="section-title-wrap text-center">
+                <h3 class="section-title">Hot Deals</h3>
+            </div>
+        </div>
+        <div class="banner-wrap">
+            <div class="row " >
+                <div class="col-lg-12 ">
+                     <div class="single-banner img-zoom mb-30 d-flex justify-content-around">
+                @foreach ($offers as $offer)
+                    @if ($offer->discount == 50 || $offer->discount > 50)
+                                {{-- <a href="{{ route('hot.deals',$offer->id) }}"> --}}
+                                    <button class="salebtn"><a style="font-weight:600; color:black;" href="{{ route('hot.deals',$offer->id) }}">  {{ $offer->title_en }}</a></button>
+                                    {{-- <img style="width:30vw; height:40vh" src="{{ asset('images/offers/'.$offer->photo ) }}" alt=""> --}}
+                    @endif
+                @endforeach
+                </div>
+
+             </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="width:100%; height:1px; background-color:green;"> </div>
+
 <!-- Hot Deals Banner End -->
 <!--  all sales Banner Start -->
 
@@ -116,99 +118,115 @@
             </div>
         </div>
         <div class="banner-wrap">
-            <div class="row" style="display:flex">
+            <div class="row">
+                <div class="col-lg-12 col-md-4">
+                            <div class="single-banner img-zoom mb-30 d-flex justify-content-around flex-wrap">
                 @foreach ($offers as $offer)
                     @if ($offer->discount < 50)
-                        <div class="col-lg-4 col-md-4">
-                            <div class="single-banner img-zoom mb-30">
-                                <a href="{{ route('hot.deals',$offer->id) }}">
+
+                                {{-- <a href="{{ route('hot.deals',$offer->id) }}">
                                     <img style="width:50%;"src="{{ asset('images/offers/'.$offer->photo ) }}" alt="">
-                                </a>
-                            </div>
-                        </div>
+                                </a> --}}
+                                <button class="salebtn"><a style="font-weight:500; color:black;" href="{{ route('hot.deals',$offer->id) }}">  {{ $offer->title_en }}</a></button>
+
+
                     @endif
                 @endforeach
+             </div>
+                        </div>
             </div>
         </div>
     </div>
 </div>
 <!-- all sales Banner End -->
+
 <!-- Product Area Start (doneeeeeeeeeeeeeeeeeeeeee)-->
-<div class="product-area bg-image-1 pt-100 pb-95">
+<div class="product-area bg-image-1 pt-40 pb-40">
     <div class="container">
-        @if(Session()->has('Success'))
-            <div class="alert alert-success">{{ Session()->get('Success') }}</div>
-                @php
-                Session()->forget('Success');
-                @endphp
-        @endif
-        @if(Session()->has('Error'))
-            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
-                @php
-                Session()->forget('Error');
-                @endphp
-        @endif
-        <div class="featured-product-active hot-flower owl-carousel product-nav">
-            @foreach($products as $product)
-            <div class="product-wrapper">
-                <div class="product-img">
-                    <a href="{{ route('get-product-single-page',$product->products_id) }}">
-                        <img alt="" src="{{ asset('images\product\\'.$product->product_photo ) }}">
-                    </a>
-                        @if($product->discount )
-                            <span>{{$product->discount}}%</span>
-                        @endif
-                    <div class="product-action">
-                        <a class="action-wishlist" href="#" title="Wishlist">
-                            <i class="ion-android-favorite-outline"></i>
-                        </a>
-                        <a class="action-cart" href="#" title="Add To Cart">
-                            <i class="ion-ios-shuffle-strong"></i>
-                        </a>
-                        <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
-                            <i class="ion-ios-search-strong"></i>
-                        </a>
-                    </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title-wrap text-center">
+                    <h3 class="section-title" style=" margin-bottom:100px;">sdfghjkl</h3>
                 </div>
-                <div class="product-content text-left">
-                    <div class="product-hover-style">
-                        <div class="product-title">
-                            <h4>
-                                <a href="#">{{ $product->name_en }}</a>
-                            </h4>
-                        </div>
-                        <div class="cart-hover">
-                            {{-- <h4><a href="product-details.html">+ Add to cart</a></h4> --}}
-                            @auth('web')
-                                <form action="{{ route('add.to.cart') }}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                    <input type="hidden" name="product_id" value="{{ $product->products_id }}">
-                                    <button type="submit">
-                                        <a class="action-cart" title="Add To Cart">
-                                            + Add to cart
-                                            <i class="ion-ios-shuffle-strong"></i>
-                                        </a>
-                                    </button>
-                                </form>
-                            @endauth
-                        </div>
-                    </div>
-                    <div class="product-price-wrapper">
-                        @if($product->discount )
-                                <span>EGP {{ $product->price_after_discount }} -</span>
-                                <span class="product-price-old">EGP {{ $product->price}} </span>
-                        @else
-                            <span >EGP {{ $product->price}} </span>
+                @if(Session()->has('Success'))
+                            <div class="alert alert-success">{{ Session()->get('Success') }}</div>
+                                @php
+                                Session()->forget('Success');
+                                @endphp
+                        @endif
+                        @if(Session()->has('Error'))
+                            <div class="alert alert-danger">{{ Session()->get('Error') }}</div>
+                                @php
+                                Session()->forget('Error');
+                                @endphp
                         @endif
 
-                    </div>
-                </div>
+                        <div class="featured-product-active hot-flower owl-carousel product-nav">
+                            @foreach($products as $product)
+                            <div class="product-wrapper">
+                                <div class="product-img">
+                                    <a href="{{ route('get-product-single-page',$product->products_id) }}">
+                                        <img alt="" src="{{ asset('images\product\\'.$product->product_photo ) }}">
+                                    </a>
+                                        @if($product->discount )
+                                            <span>{{$product->discount}}%</span>
+                                        @endif
+                                    <div class="product-action">
+                                        <a class="action-wishlist" href="#" title="Wishlist">
+                                            <i class="ion-android-favorite-outline"></i>
+                                        </a>
+                                        <a class="action-cart" href="#" title="Add To Cart">
+                                            <i class="ion-ios-shuffle-strong"></i>
+                                        </a>
+                                        <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+                                            <i class="ion-ios-search-strong"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-content text-left">
+                                    <div class="product-hover-style">
+                                        <div class="product-title">
+                                            <h4>
+                                                <a href="#">{{ $product->name_en }}</a>
+                                            </h4>
+                                        </div>
+                                        <div class="cart-hover">
+                                            {{-- <h4><a href="product-details.html">+ Add to cart</a></h4> --}}
+                                            @auth('web')
+                                                <form action="{{ route('add.to.cart') }}" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" name="product_id" value="{{ $product->products_id }}">
+                                                    <button type="submit">
+                                                        <a class="action-cart" title="Add To Cart">
+                                                            + Add to cart
+                                                            <i class="ion-ios-shuffle-strong"></i>
+                                                        </a>
+                                                    </button>
+                                                </form>
+                                            @endauth
+                                        </div>
+                                    </div>
+                                    <div class="product-price-wrapper">
+                                        @if($product->discount )
+                                                <span>EGP {{ $product->price_after_discount }} -</span>
+                                                <span class="product-price-old">EGP {{ $product->price}} </span>
+                                        @else
+                                            <span >EGP {{ $product->price}} </span>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
             </div>
-            @endforeach
         </div>
+
     </div>
-    <a href="{{ route('get.shop') }}">Load More</a>
+    <button style="margin-left:auto;margin-right:auto;"class="btn-grad"><a style="color: white;" href="{{ route('get.shop') }}">Load More</a></button>
+
+
 </div>
 <!-- Product Area End -->
 <!-- Banner Start -->
@@ -244,7 +262,7 @@
 </div>
 <!-- Banner End -->
 <!-- New Products Start -->
-<div class="product-area gray-bg pt-90 pb-65">
+<div class="product-area gray-bg pt-10 pb-15">
     <div class="container">
         <div class="product-top-bar section-border mb-55">
             <div class="section-title-wrap text-center">
@@ -256,10 +274,10 @@
             {{-- <h1> {{ $newest_product->price }}</h1> --}}
             <div class="col-3 d-flex">
                 <div class="product-wrapper-single">
-                                <div class="product-wrapper mb-30">
+                                <div class="product-wrapper mb-10">
                                     <div class="product-img">
                                         <a href="{{ route('get-product-single-page', $product->products_id) }}">
-                                            <img alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
+                                            <img style="width:100%;"alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
                                         </a>
                                         @foreach ($newest_product->offers as $offer)
                                             @if($offer->discount)

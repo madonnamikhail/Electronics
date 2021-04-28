@@ -82,7 +82,8 @@ class IndexController extends Controller
 
         //Hot Deals(50% & 70% only from offers)
         $offers = Offer::get();
-    return view('front.userindex', compact('products','offers','newest_products'));
+        $brands=Brand::get();
+    return view('front.userindex', compact('products','brands','offers','newest_products'));
     }
     public function addCart(Request $request) {
         $rules =[

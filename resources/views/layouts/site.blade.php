@@ -64,7 +64,7 @@
                   </div>
                 </form>
             </div>
-            <div class="col-md-12" style="position: relative; margin-top: -18px;margin-left: 400px; z-index:1000; width:900px;">
+            <div class="col-md-12" style="position: relative; margin-top:-18px;margin-left:100px; {{-- z-index:1000; --}}">
                 <div class="list-group" id="show-list" style="height:500px;">
                   <!-- Here autocomplete list will be display -->
                   {{-- <a class="list-group-item list-group-item-action border-1" id="product_search"> list1</a> --}}
@@ -413,12 +413,15 @@
                                 </div>
                                 <div class="footer-content">
                                     <ul>
-                                        <li><a href="my-account.html">My Account</a></li>
-                                        <li><a href="about-us.html">Order History</a></li>
-                                        <li><a href="wishlist.html">WishList</a></li>
+                                        {{-- @auth --}}
+                                        <li><a href="{{ route('get.profile') }}">My Account</a></li>
+                                        <li><a href="{{ route('get.rating') }}">Order History</a></li>
+                                        <li><a href="{{ route('get.profile') }}">My Addresses</a></li>
                                         <li><a href="#">Newsletter</a></li>
                                         <li><a href="about-us.html">Order History</a></li>
-                                        <li><a href="#">International Orders</a></li>
+
+                                        {{-- @endauth --}}
+
                                     </ul>
                                 </div>
                             </div>
@@ -431,7 +434,7 @@
                                 <div class="footer-content">
                                     <ul>
                                         <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="#">Delivery Information</a></li>
+                                        <li><a href="{{ route('contact-us.message') }}">Contact Us</a></li>
                                         <li><a href="#">Privacy Policy</a></li>
                                         <li><a href="#">Terms & Conditions</a></li>
                                         <li><a href="#">Customer Service</a></li>
