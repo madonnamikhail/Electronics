@@ -47,11 +47,32 @@
            <!-- Latest compiled JavaScript -->
            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="{{ asset('assets/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        <style>
+            html, body {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            #l_header {
+                width: 100%; 
+                height:500px;
+                background: url('{{ asset('images/backgrounds/bg_wall.jpg') }}') no-repeat;
+                background-size: cover; 
+            }
+            #l_div {
+                width: 100%;
+                height: 500px;
+                background: url('{{ asset('images/backgrounds/devices_used.png') }}') no-repeat;
+                /* background-size: cover;  */
+            }
+            nav ul li a {
+                color: #cca43b !important;
+            }
+        </style>
         @yield('css')
     </head>
     <body>
         <!-- header start -->
-        <section style="background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%); width:100%; height:50px;">
+        <section style="width:100% ; height:90px; background-color: #242f40; {{--background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);--}}">
             <div class="col-5" style="margin-left:auto; margin-right:auto; padding-top:10px">
                 <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                     @csrf
@@ -59,7 +80,7 @@
                     <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info"
                      placeholder="Search..." autocomplete="on" required style="width:70%" >
                     {{-- <div class="input-group-append"> --}}
-                      <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:5%; background-image: linear-gradient(to right, #f79d00 0%, #64f38c  51%, #f79d00  100%)">
+                      <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0 form-control form-control-lg border-info" style="width:5%; background-color: #cca43b">
                     {{-- </div> --}}
                   </div>
                 </form>
@@ -71,25 +92,25 @@
                 </div>
             </div>
         </section>
-        <section style="width:100% ; height:90px; background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);">
+        <section style="width:100% ; height:90px; background-color: #242f40; {{--background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);--}}">
             <div>
                 <h3 style="padding:30px 100px; color:white; float:left;">Website Name</h3>
                 {{-- <nav style="padding:30px 100px; color:white; float:right;">hgjhgj</nav> --}}
             </div>
             <div class="col-lg-9 col-md-8 col-6">
-                <div class="header-bottom-right" style="justify-content: center; height: 90px;">
-                    <div class="main-menu" style="padding-left: 60px;">
+                <div class="header-bottom-right" style="justify-content: center; height: 120px;">
+                    <div class="main-menu">
                         <nav>
                             <ul>
-                                <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
+                                <li class="top-hover" style="height: 82px;"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
                                     <ul class="submenu">
                                         <li><a href="{{ route('index.page') }}">home version 1</a></li>
                                         <li><a href="{{ route('index.page') }}">home version 2</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="about-us.html">about</a></li>
-                                <li class="mega-menu-position top-hover"><a href="{{ route('get.shop') }}">shop</a>
-                                    <ul class="mega-menu">
+                                <li class="mega-menu-position top-hover" style="padding-right: 35px;"><a href="{{ route('get.shop') }}">shop</a>
+                                    <ul class="mega-menu" style="padding-top: 10px;top: 90px;">
                                         @foreach (App\Models\Category::get() as $category)
                                         <li>
                                             <ul>
@@ -155,9 +176,9 @@
                             </ul>
                         </nav>
                     </div>
-                    <div class="header-currency">
-                        <span class="digit" style="line-height: 115px">Language <i class="ti-angle-down"></i></span>
-                        <div class="dollar-submenu" style="z-index: 10;">
+                    <div class="header-currency" style="padding: 0px 0 0 41px;">
+                        <span class="digit" style="line-height: 115px; color:#cca43b">Language <i class="ti-angle-down"></i></span>
+                        <div class="dollar-submenu" style="z-index: 10;top: 90px;">
                             <ul>
                                 <li><a href="#">English</a></li>
                                 <li><a href="#">Arabic</a></li>
@@ -168,7 +189,7 @@
                     <div class="header-cart" style="line-height: 115px">
                         <a href="#">
                             <div class="cart-icon">
-                                <i class="ti-shopping-cart"></i>
+                                <i style="color: #cca43b" class="ti-shopping-cart"></i>
                             </div>
                         </a>
                         <div class="shopping-cart-content">
@@ -214,194 +235,16 @@
             </div>
 
         </section>
-        {{-- <header class="header-area gray-bg clearfix">
-            <div class="header-bottom">
-                <div class="container">
-                    <div class="row">
-                        {{-- <div class="col-lg-3 col-md-4 col-6">
-                            <div class="logo">
-                                <a href="{{ route('index.page') }}">
-                                    <img alt="" src="{{ asset('assets/img/logo/logo.png') }}">
-                                </a>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="col-lg-9 col-md-8 col-6">
-                            <div class="header-bottom-right">
-                                <div class="main-menu">
-                                    <nav>
-                                        <ul>
-                                            <li class="top-hover"><a href="{{ route('index.page') }}">{{ __('message.HOME') }}</a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{ route('index.page') }}">home version 1</a></li>
-                                                    <li><a href="{{ route('index.page') }}">home version 2</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="about-us.html">about</a></li>
-                                            <li class="mega-menu-position top-hover"><a href="{{ route('get.shop') }}">shop</a>
-                                                <ul class="mega-menu">
-                                                    @foreach (App\Models\Category::get() as $category)
-                                                    <li>
-                                                        <ul>
-                                                            <li class="mega-menu-title"><a style="font-weight: 600" href="{{route('get.products.by.category.id',$category->id)}}">{{ $category->name_en }}</a></li>
-                                                            @foreach(App\Models\Subcategory::get() as $subcategory)
-                                                                 @if ($category->id == $subcategory->category_id )
-                                                                    <li><a href="{{route('get.products.by.subcategory.id',$subcategory->id)}}">{{ $subcategory->name_en }}</a></li>
-                                                                 @endif
-                                                            @endforeach
-                                                        </ul>
-                                                    </li>
-                                                    @endforeach
-                                                </ul>
-                                            </li>
-                                            <li><a href="{{route('contact-us.message')}}">contact</a></li>
-                                            @guest
-                                            <li class="top-hover">
-                                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                                    Account
-                                                </a>
-                                                    <ul class="submenu">
-                                                        <li class="top-hover">
-                                                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                                        </li>
-                                                        @if (Route::has('register'))
-                                                            <li class="top-hover">
-                                                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                                            </li>
-                                                        @endif
-                                                    </ul>
-                                        </li>
-                                    @else
-                                        <li class="top-hover">
-                                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                                {{ Auth::user()->name }}
-                                            </a>
-
-                                                <ul class="submenu">
-                                                    <li class="top-hover">
-                                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                                        onclick="event.preventDefault();
-                                                                    document.getElementById('logout-form').submit();">
-                                                        {{ __('Logout') }}
-                                                    </a>
-                                                    </li>
-
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('get.profile') }}">profile</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('get.cart') }}">cart</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('get.rating') }}">My Orders</a>
-                                                    </li>
-                                                </ul>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                    @csrf
-                                                </form>
-                                        </li>
-                                        @endguest
-                                        </ul>
-                                    </nav>
-                                </div>
-								<div class="header-currency">
-									<span class="digit">Language <i class="ti-angle-down"></i></span>
-									<div class="dollar-submenu">
-										<ul>
-											<li><a href="#">English</a></li>
-											<li><a href="#">Arabic</a></li>
-
-										</ul>
-									</div>
-								</div>
-                                <div class="header-cart">
-                                    <a href="#">
-                                        <div class="cart-icon">
-                                            <i class="ti-shopping-cart"></i>
-                                        </div>
-                                    </a>
-                                    <div class="shopping-cart-content">
-                                        <ul>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-1.jpg') }}"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Phantom Remote </a></h4>
-                                                    <h6>Qty: 02</h6>
-                                                    <span>$260.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="ion ion-close"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="{{ asset('assets/img/cart/cart-2.jpg') }}"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Phantom Remote</a></h4>
-                                                    <h6>Qty: 02</h6>
-                                                    <span>$260.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="ion ion-close"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-total">
-                                            <h4>Shipping : <span>$20.00</span></h4>
-                                            <h4>Total : <span class="shop-total">$260.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-btn">
-                                            <a href="cart-page.html">view cart</a>
-                                            <a href="checkout.html">checkout</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}
-                    </div>
-                    {{-- <div class="mobile-menu-area">
-                        <div class="mobile-menu">
-                            <nav id="mobile-menu-active">
-                                <ul class="menu-overflow">
-                                    <li><a href="{{ route('index.page') }}">HOME</a>
-                                        <ul>
-                                            <li><a href="{{ route('index.page') }}">home version 1</a></li>
-                                            <li><a href="index-2.html">home version 2</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="shop.html"> Shop </a>
-                                        <ul>
-                                            @foreach (App\Models\Category::get() as $category)
-                                                <li><a href="#">{{ $category->name_en }}</a>
-                                                    <ul>
-                                                        @foreach(App\Models\Subcategory::get() as $subcategory)
-                                                            @if ($category->id == $subcategory->category_id )
-                                                                <li><a href="shop.html">{{ $subcategory->name_en }}</a></li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                            @endforeach
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="{{route('contact-us.message')}}"> Contact us </a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div> --}
-                </div>
+        <section id="l_header">
+            <div id="l_div">
+                
             </div>
-        </header>
-        slakngoeirqninepoivnpiewnvpinreoppoiqenbprnqepoinb --}}
-		<!-- header end -->
-		<!-- Slider Start -->
-      <div class="container">
-          <div class="row">
+        </section>
+      {{-- <div class="container">
+          <div class="row"> --}}
                 @yield('content')
-          </div>
-      </div>
+          {{-- </div>
+      </div> --}}
         <footer class="footer-area pt-75 gray-bg-3">
             <div class="footer-top gray-bg-3 pb-35">
                 <div class="container">

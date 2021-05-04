@@ -63,6 +63,25 @@
 <!-- Slider End -->
 {{-- <!-- shop by brand buttons -->
 <h3 style="margin:50px; ">Shop By Brand </h3> --}}
+<div class="container">
+    <div class="row">
+       <div class="col-12">
+            <section style="width: 100%; height: 300px; text-align: center; margin: 10px 30px; padding: 58px 0 0 0;">
+                <h1>{{ __('message.SLOGAN') }}</h1>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias optio consequuntur est vero doloribus exercitationem ducimus eveniet fugiat eos in, voluptas quam unde animi quisquam? Labore, odio. Dolores minima id quidem minus nam voluptatum dignissimos rem dolor amet recusandae! In!</p>
+                <a style="margin: 0 auto; color:#cca43b; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Shop') }}</a>
+            </section>
+        </div>  
+    </div>
+   
+</div>
+
+
+    {{-- <section style="width:100%; height:400px; text-align: center; background-color: rgba(204, 164, 59, 0.5)">
+        <h1 style="text-align: center; padding:30px">New Arrivals<h1>
+        
+    </section> --}}
+
 
 <div class="container">
     <div class="row">
@@ -70,11 +89,16 @@
             <div class="section-title-wrap text-center">
                 <h3 class="section-title" style="margin-top:50px">shop by brand</h3>
             </div>
-            <div class="featured-product-active hot-flower owl-carousel product-nav">
+            <section style="background-color:rgba(207,255,185,0.3) ; width:100%; height:130px;" class="d-flex justify-content-around">
+                @foreach ($brands as $brand)
+                <button style="box-shadow: 10px 20px 5px green; margin:20px; width:10%; height:70px;"><a style="color: black;" href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button>
+                @endforeach
+            </section>
+            {{-- <div class="featured-product-active hot-flower owl-carousel product-nav">
                 @foreach ($brands as $brand)
                         <button class="btn-grad"><a style="color: white;" href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button>
                 @endforeach
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -262,7 +286,7 @@
 </div>
 <!-- Banner End -->
 <!-- New Products Start -->
-<div class="product-area gray-bg pt-10 pb-15">
+{{-- <div class="product-area gray-bg pt-10 pb-15">
     <div class="container">
         <div class="product-top-bar section-border mb-55">
             <div class="section-title-wrap text-center">
@@ -271,7 +295,6 @@
         </div>
         <div class="row">
             @foreach ($newest_products as $newest_product)
-            {{-- <h1> {{ $newest_product->price }}</h1> --}}
             <div class="col-3 d-flex">
                 <div class="product-wrapper-single">
                                 <div class="product-wrapper mb-10">
@@ -328,6 +351,71 @@
         </div>
 
 
+    </div>
+</div> --}}
+<div class="product-area gray-bg pt-10 pb-15">
+    <div class="container">
+        <div class="product-top-bar section-border mb-55">
+            <div class="section-title-wrap text-center">
+                <h3 class="section-title">New Products</h3>
+            </div>
+        </div>
+        <div class="row">
+            @foreach ($newest_products as $newest_product)
+            <div class="col-3 d-flex">
+                <div class="product-wrapper-single">
+                                <div class="product-wrapper mb-10">
+                                    <div class="product-img">
+                                        <a href="{{ route('get-product-single-page', $product->products_id) }}">
+                                            <img style="width:100%;"alt="" src="{{ asset('images/product/'.$newest_product->photo) }}">
+                                        </a>
+                                        @foreach ($newest_product->offers as $offer)
+                                            @if($offer->discount)
+                                                <span>{{ $offer->discount }}%</span>
+                                            @endif
+                                        @endforeach
+                                        <div class="product-action">
+                                            <a class="action-wishlist" href="#" title="Wishlist">
+                                                <i class="ion-android-favorite-outline"></i>
+                                            </a>
+                                            <a class="action-cart" href="#" title="Add To Cart">
+                                                <i class="ion-ios-shuffle-strong"></i>
+                                            </a>
+                                            <a class="action-compare" href="#" data-target="#exampleModal" data-toggle="modal" title="Quick View">
+                                                <i class="ion-ios-search-strong"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="product-content text-left">
+                                        <div class="product-hover-style">
+                                            <div class="product-title">
+                                                <h4>
+                                                    <a href="{{ route('get-product-single-page', $product->products_id) }}">{{ $newest_product->name_en }}</a>
+                                                </h4>
+                                            </div>
+                                            <div class="cart-hover">
+                                                <h4><a href="product-details.html">+ Add to cart</a></h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-price-wrapper">
+                                                @if(count($newest_product->offers)>0)
+                                                    @foreach ($newest_product->offers as $offer)
+                                                    <span>EGP {{ $newest_product->price*((100-$offer->discount)/100) }}-</span>
+                                                    <span class="product-price-old">EGP{{ $newest_product->price }}</span>
+                                                    @endforeach
+                                                @else
+                                                     <span >EGP{{ $newest_product->price }}</span>
+                                                @endif
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            @endforeach
+        </div>
     </div>
 </div>
 <!-- New Products End -->
