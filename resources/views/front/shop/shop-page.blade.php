@@ -3,19 +3,18 @@
 
 @section('content')
     <div class="col-lg-12">
-
         <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-image-3 ptb-150">
-            <div class="container">
+        {{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
+            {{-- <div class="container"> --}}
                 <div class="breadcrumb-content text-center">
-					<h3>SHOP PAGE</h3>
-                    <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
-                        <li class="active">SHOP PAGE</li>
-                    </ul>
+                        <h3>SHOP PAGE</h3>
+                        <ul>
+                            <li ><a style="color:black" href="{{ route('index.page') }}">Home</a></li>
+                            <li style="color:black" class="active">SHOP PAGE</li>
+                        </ul>
                 </div>
-            </div>
-        </div>
+            {{-- </div> --}}
+        {{-- </div> --}}
 		<!-- Breadcrumb Area End -->
 		<!-- Shop Page Area Start -->
         <div class="shop-page-area ptb-100">
@@ -76,7 +75,7 @@
                                                         <img alt="" src="{{ asset('images\product\\'. $product->product_photo ) }}">
                                                     </a>
                                                     @if($product->discount )
-                                                        <span>{{$product->discount}}%</span>
+                                                        <span style="background-color: #CCA43B;">{{$product->discount}}%</span>
                                                     @endif
                                                     <div class="product-action">
                                                         <a class="action-wishlist" href="#" title="Wishlist">
@@ -154,7 +153,7 @@
                                     @endforelse
                                 </div>
                             </div>
-                         
+
                             <div class="pagination-total-pages" id="remove_row">
                                 {{-- <div class="total-pages">
                                     <p>Showing 1 - 20 of 30 results  </p>

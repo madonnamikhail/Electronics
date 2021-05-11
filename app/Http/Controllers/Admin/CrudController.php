@@ -22,16 +22,16 @@ class CrudController extends Controller
     //for categories
     use generalTrait;
     public function show(){
-        $flag =0;
-        // return Auth::guard('admin')->user()->name;
-        $current_admin = Auth::guard('admin')->user()->name;
-        // return $current_admin;
-        $superAdmin_name =  Admin::role('SuperAdmin')->first()->name;
-        if($superAdmin_name == $current_admin){
-            $flag=1;
-        }
+        // $flag =0;
+        // // return Auth::guard('admin')->user()->name;
+        // $current_admin = Auth::guard('admin')->user()->name;
+        // // return $current_admin;
+        // $superAdmin_name =  Admin::role('SuperAdmin')->first()->name;
+        // if($superAdmin_name == $current_admin){
+        //     $flag=1;
+        // }
         $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->get();
-        return view('admin.category.all-category' , compact('categorys','flag'));
+        return view('admin.category.all-category' , compact('categorys'/*,'flag'*/));
     }
 
     public function create(){

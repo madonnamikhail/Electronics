@@ -2,16 +2,16 @@
 @section('title','My Account')
 @section('content')
     <div class="col-12">
-        <div class="breadcrumb-area bg-image-3 ptb-150">
+        {{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
             <div class="container">
                 <div class="breadcrumb-content text-center">
 					<h3>MY ACCOUNT</h3>
                     <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
-                        <li class="active">My Account</li>
+                        <li><a style="color: black;" href="{{ route('index.page') }}">Home</a></li>
+                        <li class="active" style="color: black;">My Account</li>
                     </ul>
                 </div>
-            </div>
+            {{-- </div> --}}
         </div>
         @php
             $i=1;

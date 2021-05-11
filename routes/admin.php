@@ -30,10 +30,20 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::get('/admin','LoginController@dashboard')->middleware('auth:admin')->name('admin.Dashboard');
             Route::get('/login','LoginController@getLogin')->name('admin.get.login');
             Route::post('/logged-in','LoginController@Loggedin')->name('admin.login');
+            Route::post('/logout','LoginController@logout')->name('admin.logout');
     });
 
-        #########categories################
+
+
     Route::group(['middleware'=>'auth:admin'], function(){
+        Route::group(['prefix'=>'admin/role','namespace'=>'Admin\Role'],function(){
+            Route::get('show','RoleController@show')->name('all.roles');
+            Route::get('create-role','RoleController@create')->name('create.role');
+            Route::post('store-role','RoleController@store')->name('store.role');
+            Route::get('edit-role/{role_id}','RoleController@edit')->name('edit.role.permissions');
+            Route::post('update-role/{role_id}','RoleController@update')->name('update.role.permissions');
+        });
+     #########categories################
         Route::group(['prefix'=>'admin', 'namespace'=>'Admin'], function(){
             Route::get('show','CrudController@show')->name('all.categorys');
             //add new category 'role:super-admin','permission:publish articles'
@@ -41,14 +51,14 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::get('create','CrudController@create');
                 Route::post('store','CrudController@store')->name('create.category');
                 //edit category
-                Route::get('edit/{id}','CrudController@edit')->name('edit.category');
-                Route::post('update/{id}','CrudController@update')->name('update.category');
+                Route::get('edit/{id}','CrudController@edit')->name('edit.category')->middleware(['role:writer']);
+                Route::post('update/{id}','CrudController@update')->name('update.category')->middleware(['role:writer']);
                 //delete category
                 Route::delete('delete','CrudController@delete')->name('delete.category');
             // });
         });
-    
-    
+
+
         Route::group(['prefix' => 'admin/subcat' , 'namespace'=> 'Admin'], function () {
             //to get subCategories of specified category
             //show
@@ -65,7 +75,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::delete('delete','CrudController@subdelete')->name('delete.subcategory');
             // });
         });
-    
+
             ########################products#######################
         Route::group(['prefix' => 'admin/product' , 'namespace'=>'products' ], function () {
             //show without id
@@ -86,14 +96,14 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('update-product-spec','ProductController@updateProductSpec')->name('update.product.specs');
             //delete spec from product
             Route::delete('delete-spec-from-product','ProductController@deleteSpecFromProduct')->name('delete.spec.from.product');
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
             });
-    
+
             ####################Brands########################
             Route::group(['prefix' => 'admin/brand' , 'namespace'=>'Brand' ], function () {
                 //show without id
@@ -106,7 +116,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::post('update/{id}','BrandController@update')->name('update.brand');
                 // //delete
                 Route::delete('delete','BrandController@delete')->name('delete.brand');
-    
+
                 });
                 #########################OFFERS##################
                 Route::group(['prefix' => 'admin/offer','namespace'=>'offer'],function(){
@@ -114,7 +124,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                     //show offers product
                     Route::get('show-offers-product/{id}','OfferController@showOffersProduct')->name('offers.product');
                     Route::post('add-offers-product','OfferController@addProductstoOffer')->name('offers.product.add');
-    
+
                     //add offer
                     Route::get('create','OfferController@create')->name('add.offer');
                      Route::post('store','OfferController@store')->name('store.offer');
@@ -124,16 +134,16 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                      //delete
                      Route::delete('delete','OfferController@delete')->name('delete.offer');
                      Route::delete('delete-product-from-offer','OfferController@deleteProductFromOffer')->name('delete.product.offer');
-    
+
                 });
-    
+
                 #########################suppliers##################
                 Route::group(['prefix' => 'admin/supplier','namespace'=>'supplier'],function(){
                     //show-all
                     Route::get('all-suppliers','SupplierController@allsuppliers')->name('all.suppliers');
                         //show supplier products
                     Route::get('show-Supplier-products/{id}','SupplierController@SupplierProducts')->name('show-Supplier-products');
-    
+
                     //add Supplier
                     Route::get('create','SupplierController@create')->name('add.supplier');
                     Route::post('store','SupplierController@store')->name('store.supplier');
@@ -143,7 +153,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                         //delete
                         Route::delete('delete','SupplierController@delete')->name('delete.supplier');
             });
-    
+
                 #########################promocode##################
                 Route::group(['prefix' => 'admin/promocode','namespace'=>'promocode'],function(){
                 //show-all
@@ -157,13 +167,13 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                     //delete
                 Route::delete('delete','PromocodeController@delete')->name('delete.promocode');
                   });
-    
+
             Route::group(['prefix'=>'admin/message','namespace'=>'Admin\Message'],function(){
                 Route::get('show-message','MessageController@showMessage')->name('show.Message');
                 //delete message
                 Route::delete('delete-message','MessageController@delete')->name('delete.Message');
                 Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
-    
+
             });
             Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
                 Route::get('show-order','OrderCrudController@show')->name('show.order');
@@ -173,30 +183,30 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::get('add-order','OrderCrudController@add')->name('add.order');
                 // 2)
                 Route::get('get-subcategories', 'OrderCrudController@getSubcategoriesByCategoryId')->name('get.subcategory.by.category_id');
-    
+
                 //3)
                 Route::get('get-products', 'OrderCrudController@getProductsBySubcategoryId');
-    
-    
+
+
                 // 4) save to cart
                 Route::get('get-user','OrderCrudController@getUser')->name('get.user');
                 Route::post('select-user','OrderCrudController@selectUserAndAddToCart')->name('select.user');
                 Route::get('admin-show-cart/{user_id}','OrderCrudController@AdminShowCart')->name('admin.show.cart');
                 Route::delete('admin-delete-cart','OrderCrudController@AdminCartProductDelete')->name('admin.cart.product.delete');
                 Route::post('admin-add-cart','OrderCrudController@adminAddToCart')->name('admin.add.to.cart');
-    
+
                 // 5) add fl orders && order-product
                 Route::get('admin-proceed-checkout/{user_id}','OrderCrudController@adminProceedToCheckout')->name('admin.proceed.checkout');
-    
+
                 Route::post('admin-place-order','OrderCrudController@adminPlaceOrder')->name('admin.place.order');
-    
+
                 //update
                 Route::get('update/{id}/{action}','OrderCrudController@update')->name('update.order');
                 // //delete
                 Route::delete('delete-order','OrderCrudController@delete')->name('delete.order');
                 // Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
             });
-    
+
             Route::group(['prefix' => 'admin/cart','namespace'=>'Admin\Cart'],function(){
                 //show-all
                 Route::get('all-carts','CartController@allCarts')->name('all.carts');
@@ -206,8 +216,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 // //delete
                 Route::delete('delete','CartController@delete')->name('delete.cart');
             });
-    
-    
+
+
             ########################## citys ######################
             Route::group(['prefix' => 'admin/city','namespace'=>'Admin\city'],function(){
                 //show-all
@@ -222,8 +232,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::delete('delete','CityControler@delete')->name('delete.city');
                   });
             ########################### end citys #####################
-    
-    
+
+
             ########################## regions ######################
             Route::group(['prefix' => 'admin/region','namespace'=>'Admin\region'],function(){
                 //show-all
@@ -239,8 +249,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::delete('delete','RegionController@delete')->name('delete.region');
                   });
             ########################### end regions #####################
-    
-    
+
+
             ########################## address ######################
             Route::group(['prefix' => 'admin/address','namespace'=>'Admin\address'],function(){
                 //show-all
@@ -256,8 +266,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::delete('delete','AddressController@delete')->name('delete.address');
                   });
             ########################### end address #####################
-    
-    
+
+
             ######### static pages ################
         Route::group(['prefix'=>'admin/staticPages' ,'namespace'=>'Admin\Statics'], function(){
             Route::get('show','StaticPageController@show')->name('all.staticPages');
@@ -270,7 +280,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             //delete staticPage
             Route::delete('delete','StaticPageController@delete')->name('delete.staticPage');
         });
-    
+
         ########################users###############################
             Route::group(['prefix'=>'admin/user' ,'namespace'=>'Admin\User'], function(){
                 Route::get('show','UserController@show')->name('all.users');
@@ -284,10 +294,10 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 Route::delete('delete','UserController@delete')->name('delete.user');
                 //show user-orders
                 Route::get('user-order/{user_id}','UserController@userOrder')->name('user.order');
-    
+
             });
-    
-    
+
+
         ########################## speccs ######################
         Route::group(['prefix' => 'admin/specc','namespace'=>'Admin\specc'],function(){
             //show-all
@@ -304,11 +314,11 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('store-sepcc-to-product','SpeccController@storeSpecToProduct')->name('store.specc.product');
             Route::get('show-sepcc-products/{spec_id}','SpeccController@showSpecProducts')->name('show.specc.product');
             Route::Delete('deattach-product-from-spec','SpeccController@deattachProductFromSpec')->name('deattach.product.specc');
-    
+
         });
         ########################### end citys #####################
     });
-    
+
 });
 
 

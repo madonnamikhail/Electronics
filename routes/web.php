@@ -20,11 +20,10 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]],function(){
+
     Route::group(['namespace'=>'Front'], function(){
+        Route::get('/','IndexController@index');
         Route::post('/search-box','IndexController@searchBox')->name('search.box');
         Route::post('/search-button','IndexController@searchBoxbutton')->name('search.box.button');
         Route::get('/index', 'IndexController@index')->name('index.page');
@@ -113,7 +112,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::get('/profile/editing-address/{id}','ProfileController@profileEditAddress')->name('profile.edit.address');
             Route::post('/profile/changing-address/{id}', 'ProfileController@profileChangeAddress')->name('profile.change.address');
             Route::delete('/profile/deleting-address','ProfileController@profileDeleteAddress')->name('profile.delete.address');
-
+            //if previous=1 comes from profile if previous=0 comes from cart
             Route::get('/profile/creating-address','ProfileController@profileCreateAddress')->name('profile.create.address');
             Route::post('/profile/storing-address','ProfileController@profileStoreAddress')->name('profile.store.address');
             Route::get('choose_address','ProfileController@chooseAddress')->name('choose.address');

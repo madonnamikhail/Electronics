@@ -3,7 +3,10 @@
 @section('css')
 <style>
 
-.btn-grad {background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%)}
+.btn-grad {
+    /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%) */
+    background-color: #CCA43B;
+    }
          .btn-grad {
             margin: 50px 5px 50px 5px;
             padding: 15px 40px;
@@ -22,19 +25,44 @@
             color: #fff;
             text-decoration: none;
           }
+        .sechover{
+            background:#E5E5E5;
+            text-align:center;
+            width:160px;
+            /* height:50px; */
+            margin:20px;
+            line-height:50px;
+            border-radius: 10px;
+
+        }
+        .sechover:hover{
+            border-radius: 30px;
+            background:#CCA43B;
+            color:white;
+        }
+
     .salebtn{
-        border-radius:30%;
-        width:300px;
-        height:200px;
-        border:green 7px solid;
+        border-radius:10px;
+        width:70px;
+        height:70px;
+        border:#CCA43B 5px solid;
+        /* CCA43B */
         margin: 30px;
         background-color:white;
-        font-size:40px
-        /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%) */
+        /* background-color:rgba(204,164,59,1); */
+
+        /* font-size:40px; */
+        /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%); */
     }
     .salebtn:hover {
-        box-shadow: 0 12px 16px 0px rgba(2, 68, 37, 0.795), 0 17px 50px 0 rgb(251, 255, 11,0.7) , 0 17px 50px 0 rgb(61, 248, 0.7);
+        border-radius:50px;
+        width:70px;
+        height:70px;
+        border:#242F40 5px solid;
+        background-color:rgba(204,164,59,1);
+
     }
+
 </style>
 @endsection
 @section('content')
@@ -63,46 +91,24 @@
 <!-- Slider End -->
 {{-- <!-- shop by brand buttons -->
 <h3 style="margin:50px; ">Shop By Brand </h3> --}}
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
+
 <div class="container">
     <div class="row">
        <div class="col-12">
             <section style="width: 100%; height: 300px; text-align: center; margin: 10px 30px; padding: 58px 0 0 0;">
-                <h1>{{ __('message.SLOGAN') }}</h1>
+                {{-- <h1>{{ __('message.SLOGAN') }}</h1> --}}
+                <h1>Shopping Shines Through</h1>
+
                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias optio consequuntur est vero doloribus exercitationem ducimus eveniet fugiat eos in, voluptas quam unde animi quisquam? Labore, odio. Dolores minima id quidem minus nam voluptatum dignissimos rem dolor amet recusandae! In!</p>
-                <a style="margin: 0 auto; color:#cca43b; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Shop') }}</a>
+                <button style="background-color:#cca43b;border-radius:20px;padding:10px;"><a style="margin: 0 auto; color:#242F40; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Shop') }}</a>
+</button>
             </section>
-        </div>  
-    </div>
-   
-</div>
-
-
-    {{-- <section style="width:100%; height:400px; text-align: center; background-color: rgba(204, 164, 59, 0.5)">
-        <h1 style="text-align: center; padding:30px">New Arrivals<h1>
-        
-    </section> --}}
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="section-title-wrap text-center">
-                <h3 class="section-title" style="margin-top:50px">shop by brand</h3>
-            </div>
-            <section style="background-color:rgba(207,255,185,0.3) ; width:100%; height:130px;" class="d-flex justify-content-around">
-                @foreach ($brands as $brand)
-                <button style="box-shadow: 10px 20px 5px green; margin:20px; width:10%; height:70px;"><a style="color: black;" href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button>
-                @endforeach
-            </section>
-            {{-- <div class="featured-product-active hot-flower owl-carousel product-nav">
-                @foreach ($brands as $brand)
-                        <button class="btn-grad"><a style="color: white;" href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button>
-                @endforeach
-            </div> --}}
         </div>
     </div>
 </div>
-<div style="width:100%; height:1px; background-color:green;"> </div>
+<div style="width:100%; height:10px; background-color:#242F40"> </div>
+
 <!--  Hot Deals Banner Start -->
 <div class="banner-area pt-50 pb-50">
     <div class="container">
@@ -129,16 +135,14 @@
         </div>
     </div>
 </div>
-<div style="width:100%; height:1px; background-color:green;"> </div>
-
 <!-- Hot Deals Banner End -->
 <!--  all sales Banner Start -->
-
-<div class="banner-area pt-100 pb-70">
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
+<div class="banner-area pt-30 pb-30" style="width:100%; background-color:#242F40;">
     <div class="container">
-        <div class="product-top-bar section-border mb-55">
+        <div class="product-top-bar section-border mb-30">
             <div class="section-title-wrap text-center">
-                <h3 class="section-title">Sale</h3>
+                <h3 class="section-title" style="color: #CCA43B ;">Sale</h3>
             </div>
         </div>
         <div class="banner-wrap">
@@ -162,6 +166,8 @@
         </div>
     </div>
 </div>
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
+
 <!-- all sales Banner End -->
 
 <!-- Product Area Start (doneeeeeeeeeeeeeeeeeeeeee)-->
@@ -193,7 +199,7 @@
                                         <img alt="" src="{{ asset('images\product\\'.$product->product_photo ) }}">
                                     </a>
                                         @if($product->discount )
-                                            <span>{{$product->discount}}%</span>
+                                            <span style="background-color:#CCA43B;">{{$product->discount}}%</span>
                                         @endif
                                     <div class="product-action">
                                         <a class="action-wishlist" href="#" title="Wishlist">
@@ -221,7 +227,7 @@
                                                     @csrf
                                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                     <input type="hidden" name="product_id" value="{{ $product->products_id }}">
-                                                    <button type="submit">
+                                                    <button type="submit" >
                                                         <a class="action-cart" title="Add To Cart">
                                                             + Add to cart
                                                             <i class="ion-ios-shuffle-strong"></i>
@@ -253,37 +259,15 @@
 
 </div>
 <!-- Product Area End -->
-<!-- Banner Start -->
-<div class="banner-area pt-100 pb-70">
-    <div class="container">
-        <div class="banner-wrap">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="single-banner img-zoom mb-30">
-                        <a href="#">
-                            <img src="{{ asset('assets/img/banner/banner-1.png') }}" alt="">
-                        </a>
-                        <div class="banner-content">
-                            <h4>-50% Sale</h4>
-                            <h5>Summer Vacation</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="single-banner img-zoom mb-30">
-                        <a href="#">
-                            <img src="{{ asset('assets/img/banner/banner-2.png') }}" alt="">
-                        </a>
-                        <div class="banner-content">
-                            <h4>-20% Sale</h4>
-                            <h5>Winter Vacation</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
+
+<section style="width:100%;height:500px; background-color:rgba(36,47,64,1); text-align:center; padding:50px;">
+    <h1 style="color:white; margin-bottom:60px;">Shop By Brand<h1>
+        @foreach ($brands as $brand)
+        <button class="sechover" style=""><a href="{{ route('get.products.by.brand.id',$brand->id) }}" style="font-size:20px;">{{ $brand->name_en }}</a></button>
+        {{-- <button style="margin:5px; width:50px; "><a href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button> --}}
+        @endforeach
+</section>
 <!-- Banner End -->
 <!-- New Products Start -->
 {{-- <div class="product-area gray-bg pt-10 pb-15">
@@ -353,14 +337,15 @@
 
     </div>
 </div> --}}
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
 <div class="product-area gray-bg pt-10 pb-15">
     <div class="container">
         <div class="product-top-bar section-border mb-55">
             <div class="section-title-wrap text-center">
-                <h3 class="section-title">New Products</h3>
+                <h1  style="padding:20px;">New Products</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-bottom:60px ">
             @foreach ($newest_products as $newest_product)
             <div class="col-3 d-flex">
                 <div class="product-wrapper-single">
@@ -371,7 +356,7 @@
                                         </a>
                                         @foreach ($newest_product->offers as $offer)
                                             @if($offer->discount)
-                                                <span>{{ $offer->discount }}%</span>
+                                                <span style="background-color:#CCA43B; ">{{ $offer->discount }}%</span>
                                             @endif
                                         @endforeach
                                         <div class="product-action">
@@ -418,7 +403,18 @@
         </div>
     </div>
 </div>
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
 <!-- New Products End -->
+<section style="width:100%;height:400px;background-color:#363636; text-align:center;">
+<h1 style="color:white; padding:30px;">Contact Us</h1>
+<p style="color:#CCA43B; padding:30px;">You Can contact us or to send us any requests or complaints
+<br>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore
+    Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore</p>
+    <button style="padding: 10px"><a style="margin: 0 auto; color:#cca43b; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Contact Us') }}</a>
+    </button>
+
+</section>
+<div style="width:100%; height:20px; background-color:#CCA43B"> </div>
 <!-- Testimonial Area Start -->
 <div class="testimonials-area bg-img pt-100 pb-100">
     <div class="container">
@@ -428,7 +424,10 @@
                     <div class="single-testimonial text-center">
                         <div class="testimonial-img">
                             <img alt="" src="{{ asset('assets/img/icon-img/testi.png') }}">
-                        </div>
+                            {{-- <p> <i style="color:#CCA43B;" class="fas fa-shopping-bag"></i></p> --}}
+
+                            </div>
+                        <h3>We All Adore A Shopping</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore</p>
                         <h4>Gregory Perkins</h4>
                         <h5>Customer</h5>
@@ -454,9 +453,11 @@
         </div>
     </div>
 </div>
+
+
 <!-- Testimonial Area End -->
 <!-- News Area Start -->
-<div class="blog-area bg-image-1 pt-90 pb-70">
+{{-- <div class="blog-area bg-image-1 pt-90 pb-70">
     <div class="container">
         <div class="product-top-bar section-border mb-55">
             <div class="section-title-wrap text-center">
@@ -507,8 +508,23 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- News Area End -->
+<section style="width: 100%; height:500px; background-color:#CCA43B; text-align:center;padding:30px">
+    <h1 style="color: black;">Shop By Category</h1>
+    <div class="d-flex justify-content-around" style="padding:50px">
+    @foreach ($categories as $category)
+            <div>
+                <h3>{{ $category->name_en }}</h3>
+                <br>
+                <img style="width:200px; height:150px" src="{{ asset('images/photo/'.$category->photo ) }}" alt="{{ $category->name_en }}">
+
+            </div>
+
+    @endforeach
+</div>
+
+</section>
 <!-- Newsletter Araea Start -->
 <div class="newsletter-area bg-image-2 pt-90 pb-100">
     <div class="container">

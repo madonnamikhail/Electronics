@@ -67,7 +67,7 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">{{ __('message.Contact') }}</a>
       </li>
-      @guest
+      {{-- @guest
       <li class="top-hover">
           <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
               Account
@@ -89,25 +89,25 @@
   <li class="top-hover">
       <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
           {{ Auth::user()->name }}
-          {{-- {{ Auth::guard('admin')->user }} --}}
+          {{-- {{ Auth::guard('admin')->user }}
       </a>
 
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
           <ul class="submenu">
               <li class="top-hover">
-                  <a class="dropdown-item" href="{{ route('logout') }}"
+                  <a class="dropdown-item" href="{{ route('admin.logout') }}"
                   onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                    {{ __('Logout') }}
                </a>
               </li>
           </ul>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
               @csrf
           </form>
       </div>
   </li>
-  @endguest
+  @endguest --}}
 
 
     </ul>
@@ -170,6 +170,49 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
+      @guest
+      <li class="top-hover">
+          <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+              Account
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <ul class="submenu">
+                  <li class="top-hover">
+                      <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                  </li>
+                  @if (Route::has('register'))
+                      <li class="top-hover">
+                          <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                      </li>
+                  @endif
+              </ul>
+        </div>
+  </li>
+@else
+  <li class="top-hover">
+      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+          {{ Auth::user()->name }}
+          {{-- {{ Auth::guard('admin')->user }} --}}
+      </a>
+
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <ul class="submenu">
+              <li class="top-hover">
+                  <a class="dropdown-item" href="{{ route('admin.logout') }}"
+                  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                   {{ __('Logout') }}
+               </a>
+              </li>
+          </ul>
+          <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+              @csrf
+          </form>
+      </div>
+  </li>
+  @endguest
+
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -205,6 +248,37 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+    {{-- Roles --}}
+    <li class="nav-item ">
+        <a href="#" class="nav-link active">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+            {{ __('message.Roles') }}
+            <i class="right fas fa-angle-left"></i>
+            <span class="badge badge badge-danger badge=pill float-right mr-2"> {{Spatie\Permission\Models\Role::count() }}</span>
+
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('all.roles') }}" class="nav-link active">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.All Roles') }}</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('create.role') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ __('message.Add Role') }}</p>
+            </a>
+        </li>
+        </ul>
+    </li>
+
+
+
+    {{-- Permissions --}}
             <li class="nav-item ">
                 <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -586,6 +660,8 @@
           </li>
         </ul>
     </li>
+
+
 
         </ul>
       </nav>

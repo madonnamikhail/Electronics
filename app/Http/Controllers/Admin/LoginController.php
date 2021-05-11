@@ -7,11 +7,29 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     //
     public function dashboard(){
+
+        // 1-make your role
+        // $role = Role::create(['name' => 'Secondwriter']);
+        // 2-make your permission
+        // $permission = Permission::create(['name' => 'secondedit articles']);
+        // 3-find role and permission according to their id;
+        // $role=Role::find(2);
+        // $permission=Permission::find(2);
+        // 4-assign permission to a role will find it in role_has permission table
+        // $role->givePermissionTo($permission);
+        // 5-assgin the model with the permssiion and thr role will find it in 2 tables (model_has role & model_has_permission)
+        // auth()->user()->assignRole('Secondwriter');
+        // auth()->user()->givePermissionTo('secondedit articles');
+
+
+
 
         // $role = Role::create(['name' => 'writer']);
         // $permission = Permission::create(['name' => 'edit articles']);
@@ -51,44 +69,6 @@ class LoginController extends Controller
         // $permission = Permission::create(['name' => 'create Messages']);
         // $permission = Permission::create(['name' => 'Show Messages']);
 
-        // $role = Role::find(1);
-        // for($i=1; $i<=20; $i++){
-        //     // echo($i);
-        //     $permission = Permission::find($i);
-        //     $role->givePermissionTo($permission);
-        // }
-        
-        // return "m"; 
-
-        // auth()->user()->assignRole('SuperAdmin');
-
-
-        // $role = Role::create(['guard_name' => 'admin', 'name' => 'manager']);
-        // $role = Role::find(8);
-        // $permission = Permission::find(5);
-        // $role->givePermissionTo($permission);
-        // auth()->user()->assignRole('DbAdmin');
-        // return Admin::permission('Update Database')->get();
-
-        // auth()->user()->givePermissionTo('Update Database');
-        // if(auth()->user()->hasRole('SuperAdmin')){
-        //     return "ahaaa";
-        // }else{
-        //     return "aaaaaaaaaaaaaaaaaaaaaaaaa";
-        // }
-        // return auth()->user()->permissions;
-
-        ///// work around
-        $flag =0;
-        $roles_of_currrent_admin = auth()->user()->roles;
-        foreach ($roles_of_currrent_admin as $role_of_currrent_admin) {
-            if($role_of_currrent_admin->name == "SuperAdmin"){
-                $flag = 1;
-            }
-        }
-        
-
-
 
         return view('admin.adminindex');
     }
@@ -113,5 +93,31 @@ class LoginController extends Controller
 
     }
 
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect('/admin/admin');
+    }
+
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
+    protected function loggedOut(Request $request)
+    {
+        //
+    }
 
 }

@@ -2,17 +2,17 @@
 @section('title','Order Rating')
 @section('content')
     <div class="col-12">
-        <div class="breadcrumb-area bg-image-3 ptb-150">
+        {{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
             <div class="container">
                 <div class="breadcrumb-content text-center">
 					<h3>ORDER RATING</h3>
                     <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
-                        <li class="active">ORDER RATING </li>
+                        <li><a style="color: black;" href="{{ route('index.page') }}">Home</a></li>
+                        <li style="color: black;" class="active">ORDER RATING </li>
                     </ul>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
 		<!-- Breadcrumb Area End -->
          <!-- shopping-cart-area start -->
         {{-- <div class="cart-main-area ptb-100">

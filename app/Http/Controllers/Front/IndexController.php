@@ -67,7 +67,6 @@ class IndexController extends Controller
         // return $products;
         return view('front.shop.shop-page',compact('products', 'categories','brands','subCategories','cats','subs','brand_ids','idd','brand_idd','subcategory_idd','min','max','id'));
     }
-
     public function index(){
         $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
                      ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
@@ -82,8 +81,10 @@ class IndexController extends Controller
 
         //Hot Deals(50% & 70% only from offers)
         $offers = Offer::get();
-        $brands=Brand::get();
-    return view('front.userindex', compact('products','brands','offers','newest_products'));
+        $brands=Brand::orderBy('id','ASC')->get();
+        $categories=Category::get();
+        // return $categories;
+    return view('front.userindex', compact('products','brands','offers','newest_products','categories'));
     }
     public function addCart(Request $request) {
         $rules =[

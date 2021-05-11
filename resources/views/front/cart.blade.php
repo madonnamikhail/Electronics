@@ -3,17 +3,17 @@
 
 @section('content')
 
-<div class="breadcrumb-area bg-image-3 ptb-150">
+{{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
     <div class="container">
         <div class="breadcrumb-content text-center">
             <h3>CART PAGE</h3>
             <ul>
-                <li><a href="{{ route('index.page') }}">Home</a></li>
-                <li class="active">Cart page</li>
+                <li><a style="color: black;" href="{{ route('index.page') }}">Home</a></li>
+                <li style="color: black;" class="active">Cart page</li>
             </ul>
         </div>
     </div>
-</div>
+{{-- </div> --}}
 <!-- Breadcrumb Area End -->
  <!-- shopping-cart-area start -->
 <div class="cart-main-area ptb-100">

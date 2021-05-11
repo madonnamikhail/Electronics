@@ -49,17 +49,17 @@
     <div class="col-lg-12">
 
         <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-image-3 ptb-150">
+        {{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
             <div class="container">
                 <div class="breadcrumb-content text-center">
 					<h3>SINGLE PRODUCT</h3>
                     <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
-                        <li class="active">Single Product</li>
+                        <li><a style="color: black;" href="{{ route('index.page') }}">Home</a></li>
+                        <li style="color: black;" class="active">Single Product</li>
                     </ul>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
 		<!-- Breadcrumb Area End -->
 		<!-- Product Deatils Area Start -->
         @if(Session()->has('Success'))

@@ -26,6 +26,9 @@
         <link rel="stylesheet" href="{{ asset('assets/css/meanmenu.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
         {{-- @yield('link') --}}
         <link rel="stylesheet" href="css/baseTheme/style.css" type="text/css" media="all" />
         <!-- Latest compiled and minified CSS -->
@@ -53,16 +56,17 @@
                 overflow-x: hidden;
             }
             #l_header {
-                width: 100%; 
+                width: 100%;
                 height:500px;
-                background: url('{{ asset('images/backgrounds/bg_wall.jpg') }}') no-repeat;
-                background-size: cover; 
+                /* background: url('{{ asset('images/backgrounds/bg_wall.jpg') }}') no-repeat; */
+                background-size: cover;
             }
             #l_div {
                 width: 100%;
                 height: 500px;
-                background: url('{{ asset('images/backgrounds/devices_used.png') }}') no-repeat;
-                /* background-size: cover;  */
+                background: url('{{ asset('images/backgrounds/try.png') }}') no-repeat;
+                background-size: contain,cover;
+                background-position:center center;
             }
             nav ul li a {
                 color: #cca43b !important;
@@ -72,8 +76,8 @@
     </head>
     <body>
         <!-- header start -->
-        <section style="width:100% ; height:90px; background-color: #242f40; {{--background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);--}}">
-            <div class="col-5" style="margin-left:auto; margin-right:auto; padding-top:10px">
+        <section style="width:100% ; height:50px; background-color: #242f40; {{--background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);--}}">
+            <div class="col-6" style="margin-left:auto; margin-right:auto; padding-top:10px">
                 <form action="{{ route('search.box.button') }}" method="post" class="p-3">
                     @csrf
                   <div class="input-group">
@@ -94,7 +98,7 @@
         </section>
         <section style="width:100% ; height:90px; background-color: #242f40; {{--background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%);--}}">
             <div>
-                <h3 style="padding:30px 100px; color:white; float:left;">Website Name</h3>
+                <h1 style="padding:30px 100px; color:white; float:left;">E-Sho<span style="color:#CCA43B;">pp</span>ing</h1>
                 {{-- <nav style="padding:30px 100px; color:white; float:right;">hgjhgj</nav> --}}
             </div>
             <div class="col-lg-9 col-md-8 col-6">
@@ -237,7 +241,7 @@
         </section>
         <section id="l_header">
             <div id="l_div">
-                
+
             </div>
         </section>
       {{-- <div class="container">

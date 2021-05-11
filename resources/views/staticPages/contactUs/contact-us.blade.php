@@ -3,17 +3,17 @@
 
 @section('content')
     <div class="col-lg-12">
-        <div class="breadcrumb-area bg-image-3 ptb-150">
+        {{-- <div class="breadcrumb-area bg-image-3 ptb-150"> --}}
             <div class="container">
                 <div class="breadcrumb-content text-center">
 					<h3>CONTACT US</h3>
                     <ul>
-                        <li><a href="{{ route('index.page') }}">Home</a></li>
-                        <li class="active">Contact us </li>
+                        <li><a style="color: black;" href="{{ route('index.page') }}">Home</a></li>
+                        <li style="color: black;" class="active">Contact us </li>
                     </ul>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
 		<!-- Breadcrumb Area End -->
 		<!-- Contact Area Start -->
         <div class="contact-us ptb-95">
@@ -21,7 +21,7 @@
                 <div class="row">
 					<!-- Contact Form Area Start -->
 
-                    
+
 					<div class="col-lg-6">
 						<div class="small-title mb-30">
 							<h2>Contact Form</h2>
@@ -67,7 +67,7 @@
 						</form>
 						<p class="form-messege"></p>
 					</div>
-                    
+
 
 					<!-- Contact Form Area End -->
 					<!-- Contact Address Strat -->

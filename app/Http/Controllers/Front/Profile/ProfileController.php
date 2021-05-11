@@ -246,11 +246,16 @@ class ProfileController extends Controller
         // Route
         // return $request;
         // return URL::previous();
-        return app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName();
+
+
+        // return app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName();
         // if(app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == 'public.contact'){
         //     return "ay klam ";
         // }
-
+        // return $previous;
+        // if($previous==1){
+        //     return "true";
+        // }
         $rules=[
             'flat' =>'required|numeric',
             'building' => 'required|numeric',
@@ -263,8 +268,12 @@ class ProfileController extends Controller
         // return $request;
         $data = $request->except('_token');
         Address::insert($data);
-
+        // if($request->previous=1){
+        //     // return 'true';
         return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
+        // }else{
+        //  return redirect('/cart');
+        // }
 
     }
     public function chooseAddress()
