@@ -250,6 +250,7 @@
                with font-awesome or any other icon font library -->
 
     {{-- Roles --}}
+    @role('Super Admin', 'admin')
     <li class="nav-item ">
         <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -275,10 +276,65 @@
         </li>
         </ul>
     </li>
-
-
-
+   
     {{-- Permissions --}}
+
+    <li class="nav-item ">
+      <a href="#" class="nav-link active">
+      <i class="nav-icon fas fa-tachometer-alt"></i>
+      <p>
+          {{ __('message.Permissions') }}
+          <i class="right fas fa-angle-left"></i>
+          <span class="badge badge badge-danger badge=pill float-right mr-2"> {{Spatie\Permission\Models\Permission::count() }}</span>
+
+      </p>
+      </a>
+      <ul class="nav nav-treeview">
+      <li class="nav-item">
+          <a href="{{ route('all.permissions') }}" class="nav-link active">
+          <i class="far fa-circle nav-icon"></i>
+          <p>{{ __('message.All Permissions') }}</p>
+          </a>
+      </li>
+      <li class="nav-item">
+          <a href="{{ route('create.permission') }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>{{ __('message.Add Permission') }}</p>
+          </a>
+      </li>
+      </ul>
+  </li>
+
+  {{-- Admins --}}
+
+  <li class="nav-item ">
+    <a href="#" class="nav-link active">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+        {{ __('message.Admins') }}
+        <i class="right fas fa-angle-left"></i>
+        <span class="badge badge badge-danger badge=pill float-right mr-2"> {{App\Models\Admin::count() }}</span>
+
+    </p>
+    </a>
+    <ul class="nav nav-treeview">
+    <li class="nav-item">
+        <a href="{{ route('all.admins') }}" class="nav-link active">
+        <i class="far fa-circle nav-icon"></i>
+        <p>{{ __('message.All Admins') }}</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('create.admin') }}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>{{ __('message.Add Admin') }}</p>
+        </a>
+    </li>
+    </ul>
+</li>
+  @endrole
+
+  @role('Super Admin|Sales Admin')
             <li class="nav-item ">
                 <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -488,7 +544,8 @@
                 </ul>
             </li>
 
-
+@endrole
+@role('Super Admin|User-Data Admin')
             {{-- City --}}
             <li class="nav-item ">
               <a href="#" class="nav-link active">
@@ -570,8 +627,8 @@
             </li>
           </ul>
       </li>
-
-
+@endrole
+@role('Super Admin|Static-Page Admin')
       {{-- Static Pages --}}
       <li class="nav-item ">
         <a href="#" class="nav-link active">
@@ -599,7 +656,8 @@
         </ul>
     </li>
 
-
+@endrole
+@role('Super Admin|User-Data Admin')
       {{-- Users --}}
     <li class="nav-item ">
         <a href="#" class="nav-link active">
@@ -626,7 +684,8 @@
           </li>
         </ul>
     </li>
-
+@endrole
+@role('Super Admin|Sales Admin')
 
       {{-- specs --}}
     <li class="nav-item ">
@@ -660,6 +719,7 @@
           </li>
         </ul>
     </li>
+    @endrole
 
 
 

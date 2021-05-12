@@ -42,6 +42,23 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             Route::post('store-role','RoleController@store')->name('store.role');
             Route::get('edit-role/{role_id}','RoleController@edit')->name('edit.role.permissions');
             Route::post('update-role/{role_id}','RoleController@update')->name('update.role.permissions');
+            Route::delete('delete-role','RoleController@delete')->name('delete.role.permission');
+        });
+        Route::group(['prefix'=>'admin/permission','namespace'=>'Admin\Permission'],function(){
+            Route::get('show','PermissionController@show')->name('all.permissions');
+            Route::get('create-permission','PermissionController@create')->name('create.permission');
+            Route::post('store-permission','PermissionController@store')->name('store.permission');
+            Route::get('edit-permission/{permission_id}','PermissionController@edit')->name('edit.permissions.role');
+            Route::post('update-permission/{permission_id}','PermissionController@update')->name('update.permissions.role');
+            Route::delete('delete-permission','PermissionController@delete')->name('delete.permissions.role');
+        });
+        Route::group(['prefix'=>'admin/admin','namespace'=>'Admin\crudAdmin'],function(){
+            Route::get('show','AdminController@show')->name('all.admins');
+            Route::get('create-admin','AdminController@create')->name('create.admin');
+            Route::post('store-admin','AdminController@store')->name('store.admin');
+            Route::get('edit-admin/{admin_id}','AdminController@edit')->name('edit.admin');
+            Route::post('update-admin/{admin_id}','AdminController@update')->name('update.admin');
+            Route::delete('delete-admin','AdminController@delete')->name('delete.admin');
         });
      #########categories################
         Route::group(['prefix'=>'admin', 'namespace'=>'Admin'], function(){

@@ -9,7 +9,6 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    //
     public function show()
     {
         $roles=Role::all();
@@ -32,20 +31,31 @@ class RoleController extends Controller
         $request->validate($rules);
         $role = Role::create($request->except('_token','permission_id'));
         $role->syncPermissions($request->permission_id);
-        return redirect('all.roles')->with('Success','Role has been added successfully');
+        return redirect('admin/role/show')->with('Success','Role has been added successfully');
     }
     public function edit($id)
     {
         $role=Role::find($id);
         $guards=array_keys(config('auth.guards'));
-        // $permissions=Permission::all();
-        $permissions = auth()->user()->permissions;
-        // return $permissions;
-        return view('admin.roles.edit-role',compact('role','guards','permissions'));
+        $all_permissions=Permission::all();
+        return view('admin.roles.edit-role',compact('role','guards','all_permissions'));
     }
     public function update(Request $request , $id)
     {
-        return $request;
+        $rules=[
+            'name'=>['required','string'],
+            'guard_name'=>['required']
+            // 'permissions'
+        ];
+        $request->validate($rules);
+        $role = Role::find($id);
+        $permissions = $request->permission_id;
+        $role->syncPermissions($permissions);
+        return redirect('admin/role/show')->with('Success','Role has been updated successfully');
     }
-
+    public function delete(Request $request)
+    {
+        Role::destroy($request->id);
+        return redirect('admin/role/show')->with('Success','Role has been deleted successfully');
+    }
 }

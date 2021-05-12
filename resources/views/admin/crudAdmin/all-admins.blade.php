@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','All Roles')
+@section('title','All Admins')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -30,30 +30,28 @@
             <tr>
               <th>{{ __('message.ID') }}</th>
               <th>{{ __('message.NAME') }}</th>
-              <th>{{ __('message.Gaurd') }}</th>
+              <th>{{ __('message.Email') }}</th>
+              <th>{{ __('message.Roles') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($roles as $role)
+                @foreach ($admins as $admin)
                 <tr>
-                    <td>{{ $role->id }}</td>
-                    <td>{{ $role->name }}</td>
-
-                    <td>{{ $role->guard_name}}</td>
+                    <td>{{ $admin->id }}</td>
+                    <td>{{ $admin->name }}</td>
+                    <td>{{ $admin->email }}</td>
+                    <td>{{ $admin->getRoleNames() }}</td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                                <a href="{{ route('edit.role.permissions',$role->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
-                            <br>
-                                <form method="post" action="{{route('delete.role.permission')}}">
-                                    @csrf
-                                    @method('delete')
-                                    <input type="hidden" name="id" value="{{ $role->id }}">
-                                    <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
-                                </form>
-                            <br>
+                          <a href="{{ route('edit.admin',$admin->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                          <form method="post" action="{{route('delete.admin')}}">
+                              @csrf
+                              @method('delete')
+                              <input type="hidden" name="id" value="{{ $admin->id }}">
+                              <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
+                          </form>
                         </div>
-
                     </td>
                   </tr>
                 @endforeach

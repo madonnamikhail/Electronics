@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title','All Roles')
+@section('title','All Permission')
 @section('link')
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -35,20 +35,20 @@
             </tr>
             </thead>
             <tbody>
-                @foreach ($roles as $role)
+                @foreach ($permissions as $permission)
                 <tr>
-                    <td>{{ $role->id }}</td>
-                    <td>{{ $role->name }}</td>
+                    <td>{{ $permission->id }}</td>
+                    <td>{{ $permission->name }}</td>
 
-                    <td>{{ $role->guard_name}}</td>
+                    <td>{{ $permission->guard_name}}</td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                                <a href="{{ route('edit.role.permissions',$role->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                                <a href="{{ route('edit.permissions.role',$permission->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
                             <br>
-                                <form method="post" action="{{route('delete.role.permission')}}">
+                                <form method="post" action="{{route('delete.permissions.role')}}">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $role->id }}">
+                                    <input type="hidden" name="id" value="{{ $permission->id }}">
                                     <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
                                 </form>
                             <br>

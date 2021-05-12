@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
-@section('title','Edit Role')
+@section('title','Edit Permission')
 @section('content')
 
 <div class="col-12">
     <!-- general form elements -->
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">{{ __('message.Edit Role') }}</h3>
+        <h3 class="card-title">{{ __('message.Edit Permission') }}</h3>
       </div>
       <!-- /.card-header -->
       <!-- form start -->
@@ -22,12 +22,12 @@
             Session()->forget('Error');
             @endphp
     @endif
-      <form method="post" action="{{ route('update.role.permissions',$role->id) }}">
+      <form method="post" action="{{ route('update.permissions.role',$role->id) }}">
         @csrf
         <div class="card-body">
           <div class="form-group">
             <label for="exampleInputEmail1">{{ __('message.Role Name') }}</label>
-            <input type="text" name="name" value="{{$role->name}}" class="form-control" id="exampleInputEmail1" placeholder="Edit Role Name">
+            <input type="text" name="name" value="{{$permission->name}}" class="form-control" id="exampleInputEmail1" placeholder="Edit Permission Name">
           </div>
           @error('name')
                 <span class="text-danger">{{ $message }}</span>
@@ -36,14 +36,14 @@
                 <label for="exampleInputEmail1">Gaurd</label>
                 <select name="guard_name" class="form-control">
                     @foreach ($guards as $guard )
-                    <option {{ $role->guard_name==$guard ? 'selected' : '' }} value="{{ $guard }}">{{ $guard }}</option>
+                    <option {{ $permission->guard_name==$guard ? 'selected' : '' }} value="{{ $guard }}">{{ $guard }}</option>
                     @endforeach
                 </select>
                 </div>
             @error('guard_name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="exampleInputEmail1">Permissions</label>
                     <br>
                       @foreach ($all_permissions as $all_permission)
@@ -52,7 +52,7 @@
                     </div>
                 @error('permission_id[]')
                         <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
           </div>
         </div>
         <!-- /.card-body -->

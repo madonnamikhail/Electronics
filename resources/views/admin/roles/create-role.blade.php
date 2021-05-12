@@ -31,13 +31,15 @@
         @error('guard_name')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
-            <div class="form-group">
-                <label for="exampleInputEmail1">Permissions</label>
-                <br>
-                    @foreach ($permissions as $permission )
-                    <input type='checkbox' name='permission_id[]' value='{{ $permission->id }}'>{{ $permission->name }}<br>
-                    @endforeach
-                </div>
+            <div class="form-group d-flex">
+              <label for="exampleInputEmail1">Permissions
+              <br>
+                  @foreach ($permissions as $permission)
+                    <input id="perm_id_{{$permission->id}}" type='checkbox' name='permission_id[]' value='{{ $permission->id }}'> 
+                    <label for="perm_id_{{$permission->id}}" style="font-weight: 400">{{ $permission->name }}</label>
+                  @endforeach
+                </label>
+            </div>
             @error('permission_id[]')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

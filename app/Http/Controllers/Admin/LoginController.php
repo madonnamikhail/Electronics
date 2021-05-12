@@ -18,14 +18,14 @@ class LoginController extends Controller
         // 1-make your role
         // $role = Role::create(['name' => 'Secondwriter']);
         // 2-make your permission
-        // $permission = Permission::create(['name' => 'secondedit articles']);
+        // $permission = Permission::create(['name' => 'third edit articles']);
         // 3-find role and permission according to their id;
         // $role=Role::find(2);
         // $permission=Permission::find(2);
         // 4-assign permission to a role will find it in role_has permission table
         // $role->givePermissionTo($permission);
         // 5-assgin the model with the permssiion and thr role will find it in 2 tables (model_has role & model_has_permission)
-        // auth()->user()->assignRole('Secondwriter');
+        // auth()->user()->assignRole('Super Admin');
         // auth()->user()->givePermissionTo('secondedit articles');
 
 
