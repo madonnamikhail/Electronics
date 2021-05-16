@@ -22,11 +22,11 @@
             Session()->forget('Error');
             @endphp
     @endif
-      <form method="post" action="{{ route('update.permissions.role',$role->id) }}">
+      <form method="post" action="{{ route('update.permissions.role',$permission->id) }}">
         @csrf
         <div class="card-body">
           <div class="form-group">
-            <label for="exampleInputEmail1">{{ __('message.Role Name') }}</label>
+            <label for="exampleInputEmail1">{{ __('message.Permission Name') }}</label>
             <input type="text" name="name" value="{{$permission->name}}" class="form-control" id="exampleInputEmail1" placeholder="Edit Permission Name">
           </div>
           @error('name')
@@ -40,7 +40,7 @@
                     @endforeach
                 </select>
                 </div>
-            @error('guard_name')
+                @error('guard_name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
                 {{-- <div class="form-group">

@@ -175,17 +175,19 @@ return [
     'Select Category'=>'اختر الفئة',
     'Select Subcategory'=>'حدد فئة فرعية',
     'Select Product'=>'حدد المنتج',
-    ''=>'',
-    ''=>'',
-
-
-
-
-
-
-
-
-
-
-
+    'Shop Now'=>'تسوق الآن',
+    'SLOGAN'=>'حياتك رقمية',
+    'Popular Products'=>'المنتجات المشهورة',
+    'Hot Deals'=>'الصفقات',
+    'Sale'=>'تخفيضات',
+    'Shop By Brand'=>'تسوق باختيار العلامة التجارية',
+    'Admin Name'=>'اسم الادمن',
+    'Role Name'=>'اسم الرول',
+    'Edit Permission'=>'تعديل البرميشن',
+    'Permission Name'=>'تعديل بيرميشن',
+    'Admins'=>'ادمينز',
+    'Roles'=>'رولز',
+    'Permissions'=>'بيرميشنز',
+    'Show Specs'=>'اظهار سبيكس',
+    ''
 ];

@@ -191,12 +191,12 @@
                         </div>
                     </div>
                     <div class="header-cart" style="line-height: 115px">
-                        <a href="#">
+                        <a href="{{ route('get.cart') }}">
                             <div class="cart-icon">
                                 <i style="color: #cca43b" class="ti-shopping-cart"></i>
                             </div>
                         </a>
-                        <div class="shopping-cart-content">
+                        {{-- <div class="shopping-cart-content">
                             <ul>
                                 <li class="single-shopping-cart">
                                     <div class="shopping-cart-img">
@@ -233,7 +233,7 @@
                                 <a href="cart-page.html">view cart</a>
                                 <a href="checkout.html">checkout</a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

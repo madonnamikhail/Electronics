@@ -4,7 +4,6 @@
 <style>
 
 .btn-grad {
-    /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%) */
     background-color: #CCA43B;
     }
          .btn-grad {
@@ -29,7 +28,6 @@
             background:#E5E5E5;
             text-align:center;
             width:160px;
-            /* height:50px; */
             margin:20px;
             line-height:50px;
             border-radius: 10px;
@@ -43,24 +41,18 @@
 
     .salebtn{
         border-radius:10px;
-        width:70px;
-        height:70px;
+        width:150px;
+        height:100px;
         border:#CCA43B 5px solid;
-        /* CCA43B */
         margin: 30px;
         background-color:white;
-        /* background-color:rgba(204,164,59,1); */
-
-        /* font-size:40px; */
-        /* background-image: linear-gradient(to right, #3CA55C 0%, #B5AC49  51%, #3CA55C  100%); */
     }
     .salebtn:hover {
         border-radius:50px;
-        width:70px;
-        height:70px;
+        width:150px;
+        height:100px;
         border:#242F40 5px solid;
         background-color:rgba(204,164,59,1);
-
     }
 
 </style>
@@ -96,12 +88,10 @@
 <div class="container">
     <div class="row">
        <div class="col-12">
-            <section style="width: 100%; height: 300px; text-align: center; margin: 10px 30px; padding: 58px 0 0 0;">
-                {{-- <h1>{{ __('message.SLOGAN') }}</h1> --}}
-                <h1>Shopping Shines Through</h1>
-
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias optio consequuntur est vero doloribus exercitationem ducimus eveniet fugiat eos in, voluptas quam unde animi quisquam? Labore, odio. Dolores minima id quidem minus nam voluptatum dignissimos rem dolor amet recusandae! In!</p>
-                <button style="background-color:#cca43b;border-radius:20px;padding:10px;"><a style="margin: 0 auto; color:#242F40; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Shop') }}</a>
+            <section style="width: 100%; height: 300px; text-align: center; margin: 10px auto; padding: 58px 0 0 0;">
+                <h1 style="margin-bottom: 30px">{{ __('message.SLOGAN') }}</h1>
+                <p style="margin-bottom: 20px">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias optio consequuntur est vero doloribus exercitationem ducimus eveniet fugiat eos in, voluptas quam unde animi quisquam? Labore, odio. Dolores minima id quidem minus nam voluptatum dignissimos rem dolor amet recusandae! In!</p>
+                <button style="background-color:#cca43b; border-radius:20px; padding:10px; width:200px;"><a style="margin: 0 auto; color:#242F40; font-size: 25px" href="{{ route("get.shop") }}">{{ __('message.Shop Now') }}</a>
 </button>
             </section>
         </div>
@@ -114,13 +104,13 @@
     <div class="container">
         <div class="product-top-bar section-border mb-30">
             <div class="section-title-wrap text-center">
-                <h3 class="section-title">Hot Deals</h3>
+                <h2 class="section-title">{{__('message.Hot Deals')}}</h2>
             </div>
         </div>
         <div class="banner-wrap">
             <div class="row " >
                 <div class="col-lg-12 ">
-                     <div class="single-banner img-zoom mb-30 d-flex justify-content-around">
+                     <div class="single-banner img-zoom mb-30 d-flex justify-content-center flex-nowrap">
                 @foreach ($offers as $offer)
                     @if ($offer->discount == 50 || $offer->discount > 50)
                                 {{-- <a href="{{ route('hot.deals',$offer->id) }}"> --}}
@@ -142,7 +132,7 @@
     <div class="container">
         <div class="product-top-bar section-border mb-30">
             <div class="section-title-wrap text-center">
-                <h3 class="section-title" style="color: #CCA43B ;">Sale</h3>
+                <h1 class="section-title" style="color: #CCA43B ;">{{__('message.Sale')}}</h1>
             </div>
         </div>
         <div class="banner-wrap">
@@ -176,7 +166,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title-wrap text-center">
-                    <h3 class="section-title" style=" margin-bottom:100px;">sdfghjkl</h3>
+                    <h3 class="section-title" style=" margin-bottom:100px;">{{__('message.Popular Products')}}</h3>
                 </div>
                 @if(Session()->has('Success'))
                             <div class="alert alert-success">{{ Session()->get('Success') }}</div>
@@ -254,7 +244,7 @@
         </div>
 
     </div>
-    <button style="margin-left:auto;margin-right:auto;"class="btn-grad"><a style="color: white;" href="{{ route('get.shop') }}">Load More</a></button>
+    <button style="margin-left:auto;margin-right:auto;"class="btn-grad"><a style="color: white;" href="{{ route('get.shop') }}">{{ __('message.Shop Now') }}</a></button>
 
 
 </div>
@@ -262,9 +252,9 @@
 <div style="width:100%; height:20px; background-color:#CCA43B"> </div>
 
 <section style="width:100%;height:500px; background-color:rgba(36,47,64,1); text-align:center; padding:50px;">
-    <h1 style="color:white; margin-bottom:60px;">Shop By Brand<h1>
+    <h1 style="color:white; margin-bottom:60px;">{{__('message.Shop By Brand')}}<h1>
         @foreach ($brands as $brand)
-        <button class="sechover" style=""><a href="{{ route('get.products.by.brand.id',$brand->id) }}" style="font-size:20px;">{{ $brand->name_en }}</a></button>
+        <button class="sechover" style="padding: 0 0 10px;"><a href="{{ route('get.products.by.brand.id',$brand->id) }}" style="font-size:20px;">{{ $brand->name_en }}</a></button>
         {{-- <button style="margin:5px; width:50px; "><a href="{{ route('get.products.by.brand.id',$brand->id) }}">{{ $brand->name_en }}</a></button> --}}
         @endforeach
 </section>

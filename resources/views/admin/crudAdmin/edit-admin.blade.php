@@ -38,7 +38,7 @@
             <label for="exampleInputEmail1">Gaurd</label>
             <select name="guard_name" class="form-control">
                 @foreach ($guards as $guard )
-                <option {{ $admin->model_type=='App\Models\\'.$guard ? 'selected' : '' }} value="{{ $guard }}">{{ $guard }}</option>
+                <option {{ $rroles->guard_name == $guard ? 'selected' : '' }} value="{{ $guard }}">{{ $guard }}</option>
                 @endforeach
             </select>
             </div>
@@ -49,11 +49,11 @@
           <div class="form-group d-flex">
             <label for="exampleInputEmail1">Roles
             <br>
-                @foreach ($roles as $role)
-                  <input {{$admin->getRoleNames() == $role ? 'checked':''}} id="perm_id_{{$role->id}}" type='checkbox' name='role_id[]' value='{{ $role->id }}'> 
-                  <label for="perm_id_{{$role->id}}" style="font-weight: 400">{{ $role->name }}</label>
-                @endforeach
-              </label>
+            @foreach ($roles as $role)
+              <input {{ ($admin->hasRole($role)) ? 'checked':''}} id="perm_id_{{$role->id}}" type='checkbox' name='role_id[]' value='{{ $role->id }}'>
+              <label for="perm_id_{{$role->id}}" style="font-weight: 400">{{ $role->name }}</label>
+            @endforeach
+            </label>
           </div>
           @error('role_id[]')
               <span class="text-danger">{{ $message }}</span>

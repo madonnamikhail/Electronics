@@ -51,12 +51,10 @@
                         @endphp
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                             <a href="{{ route('all.city.regions', $city->id) }}" class="btn btn-success">{{ __('message.Show Regions') }}</a>
+                            <a href="{{ route('add.region') }}" class="btn btn-success">{{ __('message.Add Region') }}</a>
                             <a href="{{ route('edit.city', $city->id) }}" class="btn btn-warning">{{ __('message.Edit') }}</a>
-                            {{-- <a href="{{ route('update.Message',['id'=>$message->id,'action'=>$x]) }}" class="btn btn-success">In Progress</a> --}}
                             <br>
-                            {{-- <a  href="{{ route('update.Message',['id'=>$message->id,'action'=>$y]) }}" class="btn btn-success">Done</a> --}}
                             <br>
-                            {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
                                 <form method="post" action="{{route('delete.city')}}">
                                     @csrf
                                     @method('delete')

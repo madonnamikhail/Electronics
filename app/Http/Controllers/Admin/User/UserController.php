@@ -101,6 +101,10 @@ class UserController extends Controller
     public function userOrder($id)
     {
         $user_orders=Order::where('user_id','=',$id)->get();
+        // return $user_orders;
+        // foreach ($user_orders as $o) {
+        //     return Address::find($o->address_id);
+        // }
         $user=User::get();
         $addresses=Address::get();
         $regions=Region::get();

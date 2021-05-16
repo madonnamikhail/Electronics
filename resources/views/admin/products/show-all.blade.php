@@ -33,9 +33,9 @@
               <th>{{ __('message.Arabic Name') }}</th>
               <th>{{ __('message.price') }}</th>
               <th>{{ __('message.code') }}</th>
-              <th>{{ __('message.English Details') }}</th>
+              {{-- <th>{{ __('message.English Details') }}</th>
               <th>{{ __('message.Arabic Details') }}</th>
-              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.IMAGE') }}</th> --}}
               <th>{{ __('message.Brand') }}</th>
               <th>{{ __('message.Sub Category') }}</th>
               <th>{{ __('message.Supplier') }}</th>
@@ -55,15 +55,15 @@
                             $i++;
                         @endphp
                     </td>
-                    <td>{{ $products->name_en }}</td>
+                    <td><a href="{{ route('get-product-single-page', $products->id) }}">{{ $products->name_en }}</a></td>
                     <td>{{ $products->name_ar }}</td>
                     <td>{{ $products->price }}</td>
                     <td>{{ $products->code }}</td>
-                    <td>{{ $products->details_en }}</td>
+                    {{-- <td>{{ $products->details_en }}</td>
                     <td>{{ $products->details_ar }}</td>
                     <td>
                         <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
-                    </td>
+                    </td> --}}
                     <td>
                         @foreach ($brand as $brands)
                         @if ($products->brand_id == $brands->id)

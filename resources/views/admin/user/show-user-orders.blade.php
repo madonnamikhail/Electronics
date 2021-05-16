@@ -61,23 +61,32 @@
                     @endforeach
                     </td>
                     <td>
-                        @foreach ($user as $users)
+                        @php
+                            $address = App\Models\Address::find($order->address_id);
+                        @endphp 
+                        <span style="font-weight: 600"> {{ __('message.flat:') }} </span>{{ $address['flat']}}<br>
+                        <span style="font-weight: 600"> {{ __('message.Building: ') }}</span>{{ $address['building']}}<br>
+                        <span style="font-weight: 600"> {{ __('message.Floor:') }} </span>{{ $address['floor']}}<br>
+                        <span style="font-weight: 600"> {{ __('message.Street English Name:') }} </span>{{ $address['street_en']}}<br>
+                        <span style="font-weight: 600"> {{ __('message.Street Arabic Name:') }} </span>{{ $address['street_ar']}}<br>
+                        <span style="font-weight: 600"> {{ __('message.Region:') }} </span>
+                        {{-- @foreach ($user as $users)
                             @foreach ($addresses as $address)
-                            @if ($address->user_id == $users->id)
+                            {{-- @if ($address->user_id == $users->id)
                                     <span style="font-weight: 600"> {{ __('message.flat:') }} </span>{{ $address->flat}}<br>
                                     <span style="font-weight: 600"> {{ __('message.Building: ') }}</span>{{ $address->building}}<br>
                                     <span style="font-weight: 600"> {{ __('message.Floor:') }} </span>{{ $address->floor}}<br>
                                     <span style="font-weight: 600"> {{ __('message.Street English Name:') }} </span>{{ $address->street_en}}<br>
                                     <span style="font-weight: 600"> {{ __('message.Street Arabic Name:') }} </span>{{ $address->street_ar}}<br>
                                     <span style="font-weight: 600"> {{ __('message.Region:') }} </span>
-                                    @foreach ($regions as $region)
+                                    {{-- @foreach ($regions as $region)
                                         @if ($address->region_id == $region->id)
                                                 {{ $region->name_en}}
                                         @endif
-                                @endforeach<br>
-                            @endif
+                                @endforeach<br> 
+                            @endif 
                         @endforeach
-                    @endforeach
+                    @endforeach --}}
                     </td>
                     <td>
                         @if ($order->promoCodes_id == 0)

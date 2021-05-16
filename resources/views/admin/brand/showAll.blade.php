@@ -43,7 +43,7 @@
                     <td>{{ $brand->name_ar }}</td>
 
                     <td>
-                        <img src="{{ asset('images/brands/'.$brand->photo) }}" style="width:30%;">
+                        <img src="{{ asset('images/brands/'.$brand->photo) }}" style="width:50px;">
                     </td>
                     <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >

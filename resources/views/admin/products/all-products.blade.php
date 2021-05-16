@@ -33,12 +33,9 @@
               <th>{{ __('message.Arabic Name') }}</th>
               <th>{{ __('message.price') }}</th>
               <th>{{ __('message.code') }}</th>
-              <th>{{ __('message.English details') }}</th>
-              <th>{{ __('message.Arabic details') }}</th>
               <th>{{ __('message.Brand') }}</th>
               <th>{{ __('message.Sub Category') }}</th>
               <th>{{ __('message.Supplier') }}</th>
-              <th>{{ __('message.IMAGE') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
@@ -52,12 +49,10 @@
                         $i++;
                     @endphp
                 </td>
-                    <td>{{ $products->name_en }}</td>
+                    <td><a href="{{ route('get-product-single-page', $products->id) }}">{{ $products->name_en }}</a></td>
                     <td>{{ $products->name_ar }}</td>
                     <td>{{ $products->price }}</td>
                     <td>{{ $products->code }}</td>
-                    <td>{{ $products->details_en }}</td>
-                    <td>{{ $products->details_ar }}</td>
                     <td>
                         @foreach ($brand as $brands)
                             @if ($products->brand_id == $brands->id)
@@ -83,35 +78,16 @@
 
                     </td>
                     <td>
-                        <img src="{{ asset('images/product/'.$products->photo) }}" style="width:30%;">
-                    </td>
-                    <td>
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                          {{-- @role('SuperAdmin')
-                          <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
-                            <br>
-                            @endrole --}}
-
-                            {{-- @can('Update Database')   --}}
-                            {{-- @php
-                                echo('user authenticated');
-                                echo('ioioo');
-                                return auth()->user();
-                            @endphp --}}
-
-                            {{-- @if(auth()->user()->can('Update Database')) --}}
-                          <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
-                            {{-- <br>
-                            @endif --}}
-                            {{-- @endcan --}}
-                            {{-- <a href="{{ asset('admin/delete/'.$category->id) }}" class="btn btn-warning">Delete</a> --}}
-                                <form method="post" action="{{route('delete.product')}}">
-                                    @csrf
-                                    @method('delete')
-                                    <input type="hidden" name="id" value="{{ $products->id }}">
-                                    <input type="hidden" name="photo" value="{{ $products->photo }}">
-                                    <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
-                                </form>
+                            <a href="{{ route('show.product.specs',$products->id) }}" class="btn btn-success">{{ __('message.Show Specs') }}</a>
+                            <a href="{{ route('edit.product',$products->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                            <form method="post" action="{{route('delete.product')}}">
+                                @csrf
+                                @method('delete')
+                                <input type="hidden" name="id" value="{{ $products->id }}">
+                                <input type="hidden" name="photo" value="{{ $products->photo }}">
+                                <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
+                            </form>
                             <br>
                         </div>
 

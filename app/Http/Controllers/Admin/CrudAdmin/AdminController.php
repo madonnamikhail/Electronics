@@ -45,48 +45,33 @@ class AdminController extends Controller
     public function edit($id){
         $admin=Admin::find($id);
         $roles = Role::get();
+        $rroles = new Role;
         $guards=array_keys(config('auth.guards'));
-        return view('admin.crudAdmin.edit-admin' ,compact('admin','roles','guards'));
+        return view('admin.crudAdmin.edit-admin' ,compact('rroles','admin','roles','guards'));
     }
 
-    // public function update(Request $request , $id){
-    //     $rules=[
-    //         "name_en"=>'string|max:100',
-    //         "name_ar"=>'string|max:100',
-    //         "photo"=>'image|mimes:png,jpg,jepg|max:1024',
+    public function update(Request $request , $id){
+        $rules=[
+            "name"=>'required|string',
+            "guard_name"=>'required|string',
+            "role_id"=>'exists:roles,id|required',
+        ];
+        $request->validate($rules);
+        $rule=[
+            "id"=>'required|exists:admins,id|integer'
+        ];
+        $request->validate($rule);
+        $model_id = Admin::find($id);
+        $model_id->syncRoles($request->role_id);
+        return redirect('admin/admin/show')->with('Success','The Admin has been Updated Successfully with selected roles');
+    }
 
-    //     ];
-    //     $request->validate($rules);
-    //     $data=$request->except('_token','_method');
-    //     if($request->has('photo')){
-    //         $imageName= $this->UploadPhoto($request->photo , 'photo');
-    //         $data=$request->except('photo','_token','_method');
-    //         $data['photo']=$imageName;
-    //     }
-    //     $update=Category::where('id','=', $id)->update($data);
-    //     if($update){
-    //         // return redirect()->back()->with('Success','the category has been updated ');
-    //         return redirect('admin/show');
-    //     }
-    //     return redirect()->back()->with('Error','failed ');
-
-    // }
-
-    // public function delete(Request $request){
-
-    //         $rule=[
-    //             "id"=>'required|exists:categories,id|integer'
-    //         ];
-    //         $request->validate($rule);
-    //         $photoPath=public_path("images\photo\\" . $request->photo);
-    //         // return $photoPath;
-    //         if(file_exists($photoPath)){
-    //            unlink($photoPath);
-    //         }
-    //         Category::destroy($request->id);
-    //         return redirect()->back()->with('Success','the category has been deleted successfully');
-
-
-
-    //     }
+    public function delete(Request $request){
+        $rule=[
+            "id"=>'required|exists:admins,id|integer'
+        ];
+        $request->validate($rule);
+        Admin::destroy($request->id);
+        return redirect('admin/admin/show')->with('Success','The Admin has been Deleted Successfully with selected roles');
+    }
 }
