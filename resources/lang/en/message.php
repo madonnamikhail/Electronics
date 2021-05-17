@@ -58,7 +58,7 @@ return [
     'Discount Value'=>'Discount Value',
     'Min Order value'=>'Min Order value',
     'Max Order Value'=>'Max Order value',
-    'ACTION'=>'ACTION',
+    'Actions'=>'Actions',
     'New Promo Code'=>'New Promo Code',
     'Submit'=>'Submit',
     'Edit Promo Code'=>'Edit Promo Code',
@@ -188,5 +188,12 @@ return [
     'Permissions'=>'Permissions',
     'Show Specs'=>'Show Specs',
     'Spec Name'=>'Spec Name',
+    'Guard'=>'Guard',
+    'Edit Role'=>'Edit Role',
+    'New Role'=>'New Role',
+    'Add Role'=>'Add Role',
+    'All Roles'=>'All Roles',
+    'Add Permission'=>'Add Permission',
+    'All Permissions'=>'Add Permission',
     ''
 ];

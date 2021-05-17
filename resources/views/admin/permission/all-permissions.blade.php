@@ -29,9 +29,9 @@
 
             <tr>
               <th>{{ __('message.ID') }}</th>
-              <th>{{ __('message.NAME') }}</th>
-              <th>{{ __('message.Gaurd') }}</th>
-              <th>{{ __('message.ACTION') }}</th>
+              <th>{{ __('message.Name') }}</th>
+              <th>{{ __('message.Guard') }}</th>
+              <th>{{ __('message.Actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -42,14 +42,14 @@
 
                     <td>{{ $permission->guard_name}}</td>
                     <td>
-                        <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                                <a href="{{ route('edit.permissions.role',$permission->id) }}" class="btn btn-success">{{ __('message.Edit') }}</a>
+                        <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: start;" >
+                                <a href="{{ route('edit.permissions.role',$permission->id) }}" class="btn btn-warning" title="{{ __('message.Edit') }}" style="height: 38px; width: 40px;margin-right: 5px;"> <i class="fas fa-pen-alt" style="color:white"></i></a>
                             <br>
                                 <form method="post" action="{{route('delete.permissions.role')}}">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="id" value="{{ $permission->id }}">
-                                    <button class="btn btn-danger form-group  ">{{ __('message.Delete') }}</button>
+                                    <button class="btn btn-danger form-group" style="margin-right: 5px;" title="{{ __('message.Delete') }}"><i class="far fa-trash-alt"></i></button>
                                 </form>
                             <br>
                         </div>
