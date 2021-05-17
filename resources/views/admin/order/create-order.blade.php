@@ -119,33 +119,6 @@
             <input type="number" name="quantity" placeholder="Enter Quantity">
           </div>
 
-        {{-- <div class="form-group">
-          <label>{{ __('message.Select Promocode') }}</label>
-          <select class="promocode" id="promocode" name="promocode_id">
-            <option value="0" selected disabled>
-              Select Promocode
-            </option>
-            @foreach ($promocodes as $promocode)
-                <option value="{{ $promocode->id }}">{{ $promocode->name }}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>{{ __('message.Payment Method') }}</label>
-          <ul>
-            <li>
-              <input type="radio" id="master" name="method_payment" value="0.9">
-              <label for="master">{{ __('message.Master Card') }} <span>&nbsp; &nbsp;( 10% Discount ) </span></label><br>
-              <input type="number" name="master_number">
-            </li>
-
-            <li>
-                <input type="radio" id="cash" name="method_payment" value="5">
-                <label for="cash">{{ __('message.Cash on Delivery') }}<span>&nbsp; &nbsp; ( +5 EGP ) </span></label>
-            </li>
-          </ul>
-        </div> --}}
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Add</button>
         </div>

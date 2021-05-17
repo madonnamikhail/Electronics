@@ -32,7 +32,11 @@
               <th>{{ __('message.English Name') }}</th>
               <th>{{ __('message.Arabic Name') }}</th>
               <th>{{ __('message.price') }}</th>
-              <th>{{ __('message.code') }}</th>
+              <th>{{ __('message.Qty') }}</th>
+              <th>{{ __('message.offer') }}</th>
+              <th>{{ __('message.Price After Offer') }}</th>
+
+              <th>{{ __('message.Status') }}</th>
               <th>{{ __('message.English Details') }}</th>
               <th>{{ __('message.Arabic Details') }}</th>
               <th>{{ __('message.IMAGE') }}</th>
@@ -58,7 +62,17 @@
                         <td>{{ $product->name_en }}</td>
                         <td>{{ $product->name_ar }}</td>
                         <td>{{ $product->price }}</td>
-                        <td>{{ $product->code }}</td>
+                        <td>{{ $product->pivot->quantity }}</td>
+                        <td>
+                            @foreach ($offers as $offer)
+                                @if ($product->pivot->offer_id == $offer->id)
+                                        {{ $offer->title_en }}
+                                @endif
+
+                        @endforeach
+                        </td>
+                        <td>{{ $product->pivot->price_after_offer_discount }}</td>
+                        <td>{{ $product->pivot->status }}</td>  
                         <td>{{ $product->details_en }}</td>
                         <td>{{ $product->details_ar }}</td>
                         <td>

@@ -231,15 +231,16 @@ class ProfileController extends Controller
         return redirect('profile')->with('Success', 'Your Address Has Been Updated Successfully');
     }
 
-    public function profileCreateAddress()
+    public function profileCreateAddress($cart)
     {
+        return $cart;
         $regions = Region::get();
         $user_id = Auth::user()->id;
 
         return view('front.create-address-profile', compact('regions','user_id'));
     }
 
-    public function profileStoreAddress(Request $request)
+    public function profileStoreAddress(Request $request )
     {
         // return request()->previous()->segment(count(request()->segments()));
         // return Route::previous()->getName();
@@ -256,6 +257,8 @@ class ProfileController extends Controller
         // if($previous==1){
         //     return "true";
         // }
+        // return $request;
+
         $rules=[
             'flat' =>'required|numeric',
             'building' => 'required|numeric',
@@ -266,11 +269,15 @@ class ProfileController extends Controller
         ];
         $request->validate($rules);
         // return $request;
-        $data = $request->except('_token');
+        $data = $request->except('_token','from');
         Address::insert($data);
         // if($request->previous=1){
         //     // return 'true';
-        return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
+        if($request->from=="cart"){
+            return redirect('cart')->with('Success', 'Your Address Has Been Added Successfully');
+        }else{
+            return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
+        }
         // }else{
         //  return redirect('/cart');
         // }

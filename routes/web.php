@@ -113,7 +113,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['ver
             Route::post('/profile/changing-address/{id}', 'ProfileController@profileChangeAddress')->name('profile.change.address');
             Route::delete('/profile/deleting-address','ProfileController@profileDeleteAddress')->name('profile.delete.address');
             //if previous=1 comes from profile if previous=0 comes from cart
-            Route::get('/profile/creating-address','ProfileController@profileCreateAddress')->name('profile.create.address');
+            Route::get('/profile/creating-address/{cart}','ProfileController@profileCreateAddress')->name('profile.create.address');
             Route::post('/profile/storing-address','ProfileController@profileStoreAddress')->name('profile.store.address');
             Route::get('choose_address','ProfileController@chooseAddress')->name('choose.address');
         });

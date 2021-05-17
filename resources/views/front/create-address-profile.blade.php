@@ -12,6 +12,8 @@
       <form method="post" action="{{ route('profile.store.address') }}">
         @csrf
         <div class="card-body">
+            <input type="hidden"  name="from" value="cart">
+
           <div class="form-group">
             <label for="exampleInputEmail1">{{ __('message.Flat Number') }}</label>
             <input type="number" name="flat" class="form-control" value="{{ old('flat') }}" id="exampleInputEmail1" placeholder="Enter flat number">

@@ -31,8 +31,9 @@
               <th>{{ __('message.Status') }}</th>
               <th>{{ __('message.Amount') }}</th>
               <th>{{ __('message.Total Price') }}</th>
-              <th>{{ __('message.User Name') }}</th>
               <th>{{ __('message.Promocode') }}</th>
+              <th>{{ __('message.Total Price After Promocode') }}</th>
+              <th>{{ __('message.User Name') }}</th>
               <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
@@ -52,19 +53,21 @@
 
                     <td>{{ $order->amount }}</td>
                     <td>{{ $order->total_price }}</td>
-                    <td>
-                        @foreach ($user as $users)
-                        @if ($order->user_id == $users->id)
-                                {{ $users->name}}
-                        @endif
-                    @endforeach
-                    </td>
+
                     <td>
                         @if ($order->promoCodes_id == 0)
                         {{ "There is no promocode"}}
                         @else
                             {{ $order->promoCodes_id  }}
                         @endif
+                    </td>
+                    <td>{{ $order->total_price_after_promocode }}</td>
+                    <td>
+                        @foreach ($users as $user)
+                        @if ($order->user_id == $user->id)
+                                {{ $user->name}}
+                        @endif
+                    @endforeach
                     </td>
                     <td>
                         @php

@@ -15,7 +15,7 @@ use LaravelLocalization;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class CrudController extends Controller
 {
@@ -30,6 +30,8 @@ class CrudController extends Controller
         // if($superAdmin_name == $current_admin){
         //     $flag=1;
         // }
+        $tables=DB::select('SHOW TABLES');
+        return $tables;
         $categorys=Category::Select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','photo')->get();
         return view('admin.category.all-category' , compact('categorys'/*,'flag'*/));
     }
