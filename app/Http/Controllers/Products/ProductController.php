@@ -12,6 +12,7 @@ use App\Models\Subcategory;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\traits\generalTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Environment\Runtime;
 use LaravelLocalization;
@@ -99,7 +100,19 @@ class ProductController extends Controller
         $brand=Brand::get();
         $subcategory=Subcategory::get();
         $offer=Offer::get();
-        return view ('admin.products.edit',compact('product','brand','subcategory','offer','category','supplier'));
+        $specss=DB::select(
+            "SELECT
+            `spec_product`.`spec_id`,`spec_product`.`product_id`,`spec_product`.`value`,`specs`.*
+
+        FROM
+            `spec_product`
+        JOIN
+            `specs`
+        ON
+            `spec_product`.`spec_id` = `specs`.`id`
+        WHERE
+            `spec_product`.`product_id` = $id ");
+        return view ('admin.products.edit',compact('product','brand','subcategory','offer','category','supplier','specss'));
 
     }
     public function update(Request $request , $id)
@@ -183,9 +196,26 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return abort(404);
         }
-        $specs=Spec::with('products')->find($spec_id);
+
+        $specss=DB::select(
+        "SELECT
+        `spec_product`.`spec_id`,`spec_product`.`product_id`,`spec_product`.`value`,`specs`.*
+
+    FROM
+        `spec_product`
+    JOIN
+        `specs`
+    ON
+        `spec_product`.`spec_id` = `specs`.`id`
+    WHERE
+        `spec_product`.`product_id` = $product_id AND `spec_product`.`spec_id` = $spec_id");
         // return $specs;
-        return view('admin.products.specc-edit',compact('specs'));
+        // $specs=Spec::with('products')->find($spec_id);
+        // foreach($specs->products as $specProduct){
+        //     return $specProduct->id;
+        // }
+        // return "ok";
+        return view('admin.products.specc-edit',compact('specss'));
     }
     public function updateProductSpec(Request $request)
     {

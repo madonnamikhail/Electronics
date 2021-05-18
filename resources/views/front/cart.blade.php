@@ -127,7 +127,7 @@
                                 @endphp
                         @empty
                             <p>No Address Entered !</p>
-                            <button><a href="{{ route('profile.create.address',['cart'=>'1']) }}">Add Address</a></button>
+                            <button><a href="{{ route('profile.create.address') }}">Add Address</a></button>
                         @endforelse
                     </div>
 

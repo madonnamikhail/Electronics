@@ -96,7 +96,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             ########################products#######################
         Route::group(['prefix' => 'admin/product' , 'namespace'=>'products' ], function () {
             //show without id
-            Route::get('show-all','ProductController@showall');
+            Route::get('show-all','ProductController@showall')->name('show.all.product');
             Route::get('show/{id}','ProductController@show')->name('show.product');
             //add
             Route::get('create','ProductController@create');

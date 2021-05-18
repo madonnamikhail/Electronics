@@ -68,6 +68,21 @@ class OrderCrudController extends Controller
     public function show(){
         $orders=Order::get();
         $users=User::get();
+        // $order_product_status=Order::with('products')->get();
+        // $i=0;
+        // $arr=[];
+        // foreach($order_product_status as $order_product){
+        //     return $order_product->products;
+        //     // $arr['product_id']=$order_product->products[$i]->pivot->status;
+        //     // for($i=0;$i<count($order_product->products[$i]->pivot->status);$i++){
+
+        //     // }
+        //     $arr['status']=$order_product->products[$i]->pivot->status;
+        //     $i++;
+        // }
+        // print_r($arr);die;
+        // return $order_product_status;
+
         return view('admin.order.show-all',compact('orders','users'));
     }
     public function delete(Request $request){

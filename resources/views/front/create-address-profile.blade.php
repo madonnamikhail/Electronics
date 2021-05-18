@@ -9,11 +9,15 @@
       </div>
       <!-- /.card-header -->
       <!-- form start -->
+
+      {{-- <h1>{{ url()->previous() }}</h1> --}}
       <form method="post" action="{{ route('profile.store.address') }}">
         @csrf
         <div class="card-body">
-            <input type="hidden"  name="from" value="cart">
 
+            @if( url()->previous() == "http://127.0.0.1:8000/en/cart")
+                <input type="hidden"  name="from" value="cart">
+            @endif
           <div class="form-group">
             <label for="exampleInputEmail1">{{ __('message.Flat Number') }}</label>
             <input type="number" name="flat" class="form-control" value="{{ old('flat') }}" id="exampleInputEmail1" placeholder="Enter flat number">

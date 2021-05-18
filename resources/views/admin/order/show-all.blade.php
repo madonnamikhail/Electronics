@@ -74,6 +74,50 @@
                             $x=1;
                             $y=2;
                         @endphp
+                        @php
+                            $one=DB::select("SELECT
+                                        count(`order_product`.`status`)
+                                        FROM
+                                            `order_product`
+                                        JOIN
+                                            `orders`
+                                        ON
+                                            `orders`.`id` = `order_product`.`order_id`
+                                        WHERE
+                                            `order_product`.`status` = 1 AND `orders`.`id` = $order->id");
+                            $zero=DB::select("SELECT
+                                        count(`order_product`.`status`)
+                                        FROM
+                                            `order_product`
+                                        JOIN
+                                            `orders`
+                                        ON
+                                            `orders`.`id` = `order_product`.`order_id`
+                                        WHERE
+                                            `order_product`.`status` = 0 AND `orders`.`id` = $order->id");
+                            $isnull=DB::select("SELECT
+                                        count(`order_product`.`status`)
+                                        FROM
+                                            `order_product`
+                                        JOIN
+                                            `orders`
+                                        ON
+                                            `orders`.`id` = `order_product`.`order_id`
+                                        WHERE
+                                            `order_product`.`status` IS NULL AND `orders`.`id` = $order->id");
+                            // $order_product_status=App\Models\Order::with('products')->find($order->id);
+                            //         echo count($order_product_status->products) . "<br>";
+                                // foreach($order_product_status->products as $productStatus){
+                                    // echo mb_strlen($productStatus->pivot->status) ;
+                                    // if(is_null($productStatus->pivot->status)){
+                                    //     echo "supllier has no response on the product status fro this order";
+                                    // }elseif($productStatus->pivot->status == 1){
+                                    // }
+                                    // echo $productStatus;
+                                        // echo count((array)$productStatus->id);
+                                    // var_dump($productStatus->pivot->status);
+                                // }
+                        @endphp
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
                             <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a>
 

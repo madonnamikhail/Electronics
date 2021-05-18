@@ -27,5 +27,6 @@ class Order extends Model
     {
         return $this->belongsToMany('App\Models\Product', 'order_product')->withPivot('product_id', 'order_id', 'quantity','payment_method','promocode','status','price','offer_id','price_after_offer_discount');
     }
+ 
 
 }

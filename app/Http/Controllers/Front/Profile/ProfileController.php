@@ -231,9 +231,9 @@ class ProfileController extends Controller
         return redirect('profile')->with('Success', 'Your Address Has Been Updated Successfully');
     }
 
-    public function profileCreateAddress($cart)
+    public function profileCreateAddress()
     {
-        return $cart;
+        // return $cart;
         $regions = Region::get();
         $user_id = Auth::user()->id;
 
@@ -271,16 +271,11 @@ class ProfileController extends Controller
         // return $request;
         $data = $request->except('_token','from');
         Address::insert($data);
-        // if($request->previous=1){
-        //     // return 'true';
         if($request->from=="cart"){
             return redirect('cart')->with('Success', 'Your Address Has Been Added Successfully');
         }else{
             return redirect('profile')->with('Success', 'Your Address Has Been Added Successfully');
         }
-        // }else{
-        //  return redirect('/cart');
-        // }
 
     }
     public function chooseAddress()
