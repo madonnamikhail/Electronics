@@ -37,14 +37,13 @@
               <th>{{ __('message.Price After Offer') }}</th>
 
               <th>{{ __('message.Status') }}</th>
-              <th>{{ __('message.English Details') }}</th>
+              {{-- <th>{{ __('message.English Details') }}</th>
               <th>{{ __('message.Arabic Details') }}</th>
-              <th>{{ __('message.IMAGE') }}</th>
+              <th>{{ __('message.IMAGE') }}</th> --}}
               <th>{{ __('message.Brand') }}</th>
-              <th>{{ __('message.Sub Category') }}</th>
+              {{-- <th>{{ __('message.Sub Category') }}</th> --}}
               <th>{{ __('message.Supplier') }}</th>
-
-              {{-- <th>{{ __('message.ACTION') }}</th> --}}
+              <th>{{ __('message.ACTION') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -73,11 +72,11 @@
                         </td>
                         <td>{{ $product->pivot->price_after_offer_discount }}</td>
                         <td>{{ $product->pivot->status }}</td>  
-                        <td>{{ $product->details_en }}</td>
+                        {{-- <td>{{ $product->details_en }}</td>
                         <td>{{ $product->details_ar }}</td>
                         <td>
                             <img src="{{ asset('images/product/'.$product->photo) }}" style="width:30%;">
-                        </td>
+                        </td> --}}
                         <td>
                             @foreach ($brand as $brands)
                             @if ($product->brand_id == $brands->id)
@@ -85,13 +84,13 @@
                             @endif
                         @endforeach
                         </td>
-                        <td>
+                        {{-- <td>
                             @foreach ($subcategorys as $subcategory)
                             @if ($product->subCategory_id == $subcategory->id)
                                     {{ $subcategory->name_en }}
                             @endif
                         @endforeach
-                        </td>
+                        </td> --}}
                         <td>
 
                             @foreach ($suppliers as $supplier)
@@ -100,6 +99,11 @@
                             @endif
                         @endforeach
 
+                        </td>
+                        <td>
+                          @if ($product->pivot->status == 0)
+                              <a href="{{ route('appologize',['product_id'=>$product->id,'user_id'=>$user_id, 'order_id'=>$product->pivot->order_id]) }}" class="btn btn-danger">Appologize to User</a>
+                          @endif
                         </td>
                     </tr>
                 @endforeach

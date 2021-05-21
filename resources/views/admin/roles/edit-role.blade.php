@@ -53,7 +53,7 @@
 
               @foreach ($all_permissions as $all_permission)
                 <div>
-                  <input type='checkbox' class="m-2" {{ $role->hasPermissionTo($all_permission->name) ? 'checked' : '' }} name='permission_id[]' value='{{ $all_permission->id }}'>&nbsp<label style="font-weight: 400;">{{ $all_permission->name }}</label>
+                  <input id="permission_{{$all_permission->id}}" type='checkbox' class="m-2" {{ $role->hasPermissionTo($all_permission->name) ? 'checked' : '' }} name='permission_id[]' value='{{ $all_permission->id }}'>&nbsp<label for="permission_{{$all_permission->id}}" style="font-weight: 400;">{{ $all_permission->name }}</label>
                 </div>
                   @if ($count == 4)
                     <br> 

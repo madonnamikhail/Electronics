@@ -194,7 +194,7 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
             });
             Route::group(['prefix'=>'admin/order','namespace'=>'Admin\Order'],function(){
                 Route::get('show-order','OrderCrudController@show')->name('show.order');
-                Route::get('order-products/{id}','OrderCrudController@orderProducts')->name('order.product');
+                Route::get('order-products/{id}/{user_id}','OrderCrudController@orderProducts')->name('order.product');
                 // add order (Ajax):
                 // 1)
                 Route::get('add-order','OrderCrudController@add')->name('add.order');
@@ -222,6 +222,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 // //delete
                 Route::delete('delete-order','OrderCrudController@delete')->name('delete.order');
                 // Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
+
+                Route::get('appologize/{product_id}/{user_id}/{order_id}','OrderCrudController@appologize')->name('appologize');
             });
 
             Route::group(['prefix' => 'admin/cart','namespace'=>'Admin\Cart'],function(){

@@ -70,41 +70,32 @@
                     @endforeach
                     </td>
                     <td>
+                        {{-- @php
+                        id,date,stus,prodcuts
+                        $status = array_column($order->porducts,'status');
+                        
+                        @endphp --}}
+                        {{-- @endphp --}}
                         @php
                             $x=1;
                             $y=2;
                         @endphp
                         @php
-                            $one=DB::select("SELECT
-                                        count(`order_product`.`status`)
-                                        FROM
-                                            `order_product`
-                                        JOIN
-                                            `orders`
-                                        ON
-                                            `orders`.`id` = `order_product`.`order_id`
-                                        WHERE
-                                            `order_product`.`status` = 1 AND `orders`.`id` = $order->id");
-                            $zero=DB::select("SELECT
-                                        count(`order_product`.`status`)
-                                        FROM
-                                            `order_product`
-                                        JOIN
-                                            `orders`
-                                        ON
-                                            `orders`.`id` = `order_product`.`order_id`
-                                        WHERE
-                                            `order_product`.`status` = 0 AND `orders`.`id` = $order->id");
-                            $isnull=DB::select("SELECT
-                                        count(`order_product`.`status`)
-                                        FROM
-                                            `order_product`
-                                        JOIN
-                                            `orders`
-                                        ON
-                                            `orders`.`id` = `order_product`.`order_id`
-                                        WHERE
-                                            `order_product`.`status` IS NULL AND `orders`.`id` = $order->id");
+                            $product_status = DB::select("SELECT
+                                sum(case when `order_product`.`status` = 1 then 1 else 0 end) AS `onee`,
+                                sum(case when `order_product`.`status` = 2 then 1 else 0 end) AS `twoo`,
+                                sum(case when `order_product`.`status` = 0 then 1 else 0 end) AS `zeroo`,
+                                sum(case when `order_product`.`status` is null then 1 else 0 end) AS `nulll`
+                            FROM
+                                `order_product`
+                            JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
+                            WHERE
+                                `orders`.`id` = $order->id");
+                            echo $total_num_product = $product_status[0]->onee + $product_status[0]->zeroo + $product_status[0]->nulll . "<br>";
+                            echo $product_status[0]->twoo . "<br>";
+                            echo $product_status[0]->onee . "<br>";
+                            echo $product_status[0]->zeroo . "<br>";
+                            echo $product_status[0]->nulll;
                             // $order_product_status=App\Models\Order::with('products')->find($order->id);
                             //         echo count($order_product_status->products) . "<br>";
                                 // foreach($order_product_status->products as $productStatus){
@@ -119,11 +110,27 @@
                                 // }
                         @endphp
                         <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a>
+                            @if ($product_status[0]->onee == $total_num_product)
+                                <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
+                            @elseif ($product_status[0]->twoo && $product_status[0]->zeroo == 0 && $product_status[0]->nulll == 0)
+                                <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>  
+                            @elseif ($product_status[0]->twoo == $total_num_product)
+                                <div class="bg-warning">
+                                    <p>
+                                        <i class="fas fa-heart-broken"></i> &nbsp
+                                        Nothing has been delievered
+                                    </p>
+                                </div>  
+                            @elseif($product_status[0]->zeroo)
+                                <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: red"></i> &nbsp {{ __('message.show products') }}</a>
+                            @elseif($product_status[0]->nulll)
+                                <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: yellow"></i> &nbsp {{ __('message.show products') }}</a>
+                            @endif
+                            {{-- <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a> --}}
 
-                            <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
+                            
                             <br>
-                            <a  href="{{ route('update.order',['id'=>$order->id,'action'=>$y]) }}" class="btn btn-success">{{ __('message.Done') }}</a>
+                            {{-- <a  href="{{ route('update.order',['id'=>$order->id,'action'=>$y]) }}" class="btn btn-success">{{ __('message.Done') }}</a> --}}
                             <br>
                                 <form method="post" action="{{route('delete.order')}}">
                                     @csrf

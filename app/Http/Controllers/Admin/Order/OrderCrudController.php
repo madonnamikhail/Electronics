@@ -410,14 +410,69 @@ class OrderCrudController extends Controller
 
 
     }
-    public function orderProducts($id)
+    public function orderProducts($id, $user_id)
     {
         $offers=Offer::get();
         $brand=Brand::get();
         $subcategorys=Subcategory::get();
         $suppliers=Supplier::get();
         $order_Products=Order::with('products')->find($id);
+
+//         SELECT
+// 	`orders`.*,
+//     SUM(
+//         CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0
+//     END
+// ) AS `onee`,
+// SUM(
+//     CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0
+// END
+// ) AS `twoo`,
+// SUM(
+//     CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0
+// END
+// ) AS `zeroo`,
+// SUM(
+//     CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0
+// END
+// ) AS `nulll`
+// FROM
+//     `order_product`
+// JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
+
+// GROUP BY `orders`.`id`
+
         // return $order_Products->products;
-        return view('admin.order.show-order-products',compact('order_Products','brand','subcategorys','suppliers','offers'));
+        // return $user_id;
+        return view('admin.order.show-order-products',compact('user_id','order_Products','brand','subcategorys','suppliers','offers'));
+    }
+
+    public function appologize($product_id, $user_id, $order_id)
+    {
+        $user = User::find($user_id);
+        $product = Product::find($product_id);
+        $details = [
+            'title' => 'Appologizing Mail',
+            'body' => 'We are sorry, the below product will not be delivered with your order',
+        ];
+        // Mail::to($user->email)->send(new \App\Mail\AppologizeMail($details, $user, $product));
+
+        // change l status of l product in order-product table
+
+        $order = Order::with('products')->find($order_id);
+        foreach($order->products as $order_products){
+            if($order_products->id == $product_id){
+                Order::find($order_id)->products()->updateExistingPivot($product_id, ['status' => 2]);
+            }
+        }
+
+        $offers=Offer::get();
+        $brand=Brand::get();
+        $subcategorys=Subcategory::get();
+        $suppliers=Supplier::get();
+        $order_Products=Order::with('products')->find($order_id);
+        // return $order_Products->products;
+        // return $user_id;
+        return view('admin.order.show-order-products',compact('user_id','order_Products','brand','subcategorys','suppliers','offers'));
     }
 }
