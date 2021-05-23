@@ -224,6 +224,8 @@ Route::group(['prefix'=>LaravelLocalization::setLocale() , 'middleware' => ['loc
                 // Route::get('update/{id}/{action}','MessageController@update')->name('update.Message');
 
                 Route::get('appologize/{product_id}/{user_id}/{order_id}','OrderCrudController@appologize')->name('appologize');
+                Route::get('new-oredr','OrderCrudController@getneworder')->name('get.new.order');
+
             });
 
             Route::group(['prefix' => 'admin/cart','namespace'=>'Admin\Cart'],function(){

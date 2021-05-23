@@ -17,6 +17,8 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">{{ __('message.Select') }}</button>
+                <button type="submit" class="btn btn-primary">{{ __('message.Try') }}</button>
+
               </div>
         </form>
     </div>

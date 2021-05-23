@@ -273,7 +273,7 @@
         </li>
         </ul>
     </li>
-   
+
     {{-- Permissions --}}
 
     <li class="nav-item ">
@@ -533,7 +533,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('get.user') }}" class="nav-link active">
+                  <a href="{{ route('get.new.order') }}" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('message.Add Order') }}</p>
                   </a>

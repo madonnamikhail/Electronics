@@ -191,7 +191,6 @@ class OrderCrudController extends Controller
 
     public function adminPlaceOrder(Request $request)
     {
-        // return $request;
         $orders=Order::get();
         $users=User::get();
         $user_id=$request->user_id;
@@ -205,33 +204,63 @@ class OrderCrudController extends Controller
         $promocode_max_usage=Promocode::where('name','=',$request->promoCodes_id)->first()->max_usage;
         $promocodeId_max_usage_per_user=Promocode::where('name','=',$request->promoCodes_id)->first()->max_usage_per_user;
 
+        foreach($request->product_id as $key => $product_id){
+            $index=$request->quantity[$key];
+
+            $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+            ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+            ->select('products.id as product_id',
+                    'products.*',
+                    'offers.*',
+                    "offers.id as offer_id",
+            DB::raw('IF(
+                offers.discount IS NULL,
+                1,
+                ((100 - offers.discount) / 100)
+            ) AS `discount`') ,
+            DB::raw('products.price * IF(
+                offers.discount IS NULL,
+                1,
+                ((100 - offers.discount) / 100)
+                ) AS `price_after_discount`'),
+            DB::raw("products.price * IF(
+                offers.discount IS NULL,
+                1,
+                ((100 - offers.discount) / 100)
+            ) * '$index' AS `total_price_after_discount`"))
+        ->orderBy('products.id', 'asc')
+        ->whereIn('products.id','=',$product_id)->get();
+        }
+        return $request->product_id;
+        return $products;
         $orderInsert['status']=0;//order placed
         $orderInsert['address_id']=$request->address_id;
         $orderInsert['amount']=array_sum($request->quantity);
-        $orderInsert['total_price']=array_sum($request->productPrice);
+        $orderInsert['total_price']=0;
+        foreach( $products as $price){
+            $orderInsert['total_price']+=$price->total_price_after_discount;
+        }
         $orderInsert['user_id']=$request->user_id;
         if($request->promoCodes_id){
             $orderInsert['promoCodes_id']=$request->promoCodes_id;
             $dbInsertInOrder['promoCodes_id']=$request->promoCodes_id;
             }
         // Order::insert($orderInsert);
-        // return "m";
+        // return"m";
         // $dbInsertInOrder[]=$orderInsert;
-        $dbInsertInOrder['total_price']=array_sum($request->productPrice);
+        $dbInsertInOrder['total_price']=$orderInsert['total_price'];
         $dbInsertInOrder['status']=0;//order placed
         $dbInsertInOrder['address_id']=$request->address_id;
         $dbInsertInOrder['amount']=array_sum($request->quantity);
-        $dbInsertInOrder['total_price']=array_sum($request->productPrice);
         $dbInsertInOrder['user_id']=$request->user_id;
         $orderInsert['address']=$address;
         $orderInsert['regions']=$regions;
         $orderInsert['cities']=$cities;
 
         $now=Carbon::now();
-        $order_id=Order::where('user_id','=',$request->user_id)->latest('id')->first();
+
         // return $order_id;
-        // $orderInsert['order_id_mail']=$order_id;
-        $orderInsert['order_id']=$order_id->id;
+
         // return $order_id->id ;
         $orderInsert['title'] = 'Thank you for your order';
         $orderInsert['body'] = 'body is';
@@ -240,31 +269,31 @@ class OrderCrudController extends Controller
         $orderInsert['userName'] = $user->name;
 
         // $products = $user->product;
-        $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
-        ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
-                    ->join('carts','carts.product_id','=','products.id')
-                    ->select('carts.user_id as user_id','carts.quantity as quantity',
-                        'products.id as product_id',
-                        'products.photo as product_photo',
-                        'products.*',
-                        'offers.*',
-                        "offers.id as offer_id",
-                        DB::raw('IF(
-                            offers.discount IS NULL,
-                            1,
-                            ((100 - offers.discount) / 100)
-                        ) AS `discount`') ,
-                        DB::raw('products.price * IF(
-            offers.discount IS NULL,
-            1,
-            ((100 - offers.discount) / 100)
-        ) AS `price_after_discount`'),
-                        DB::raw('products.price * IF(
-                            offers.discount IS NULL,
-                            1,
-                            ((100 - offers.discount) / 100)
-                        ) * carts.quantity AS `total_price_after_discount`'))
-                    ->orderBy('products.id', 'asc')->get();
+        // $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+        // ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+        //             ->join('carts','carts.product_id','=','products.id')
+        //             ->select('carts.user_id as user_id','carts.quantity as quantity',
+        //                 'products.id as product_id',
+        //                 'products.photo as product_photo',
+        //                 'products.*',
+        //                 'offers.*',
+        //                 "offers.id as offer_id",
+        //                 DB::raw('IF(
+        //                     offers.discount IS NULL,
+        //                     1,
+        //                     ((100 - offers.discount) / 100)
+        //                 ) AS `discount`') ,
+        //                 DB::raw('products.price * IF(
+        //     offers.discount IS NULL,
+        //     1,
+        //     ((100 - offers.discount) / 100)
+        // ) AS `price_after_discount`'),
+        //                 DB::raw('products.price * IF(
+        //                     offers.discount IS NULL,
+        //                     1,
+        //                     ((100 - offers.discount) / 100)
+        //                 ) * carts.quantity AS `total_price_after_discount`'))
+        //             ->orderBy('products.id', 'asc')->get();
                     // return $products;
         $promoCode=$request->promoCodes_id;
         if($request->method_payment == 0.9){
@@ -276,7 +305,7 @@ class OrderCrudController extends Controller
         $promoCode=Promocode::where('name','=',$request->promoCodes_id)->first();
         $ldate = date('Y-m-d');
         // $totalOrderValue=array_sum($request->productPrice); //mn4er offers..3shan tgili fl mail
-        $totalOrderValue=array_sum($request->productPrice);
+        $totalOrderValue=$orderInsert['total_price'];
         $orderInsert['subtotal'] = $totalOrderValue;
         $orderInsert['payment_method'] = $paymentMethod;
         $discountOfPromocode = 1;
@@ -348,10 +377,9 @@ class OrderCrudController extends Controller
                             $data=[];
                             $data['user_id']=$request->user_id;
                             $data['promocode_id']=$promocodeId;
-                            $data['order_id']=$order_id->id;
-                            $user->promocodes()->attach($promocodeId, $data);
-                            $dbInsertInOrder['total_price_after_promocode']=$dbInsertInOrder['total_price']*$discountOfPromocode;
-
+                            // $data['order_id']=$order_id->id;
+                            // $user->promocodes()->attach($promocodeId, $data);
+                            $dbInsertInOrder['total_price_after_promocode']=$orderInsert['total_price']*$discountOfPromocode;
                         }
                         else{
                             $usage= "promocode is not valid";
@@ -363,8 +391,12 @@ class OrderCrudController extends Controller
             }
         }
 
-        // return $dbInsertInOrder;
-        Order::insert($dbInsertInOrder);
+        $x = Order::insert($dbInsertInOrder);
+        $order_id=Order::where('user_id','=',$request->user_id)->latest('id')->first();
+        $orderInsert['order_id_mail']=$order_id;
+        $orderInsert['order_id']=$order_id->id;
+
+
 
         $orderInsert['discountOfPromocode'] = $discountOfPromocode;
         $orderInsert['flag'] = $flag2;
@@ -373,14 +405,15 @@ class OrderCrudController extends Controller
         $orderInsert['usage']=$usage;
         // detach l cart
         // $user_id = Auth::user()->id;
-        $user = User::find($request->user_id)->product()->detach();
+        // $user = User::find($request->user_id)->product()->detach();
         $Order_Product=[];
         $pivot_forgien=[];
-        foreach ($products as $product){
+        foreach ($products as $key => $product){
             $pivot_forgien['product_id']= $product->product_id;
-            $pivot_forgien['order_id']=$orderInsert['order_id'];
+            $pivot_forgien['order_id']=$order_id->id;
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
-            $Order_Product['quantity']=$product->quantity;
+            $Order_Product['order_id']=$order_id->id;
+            $Order_Product['quantity']=$request->quantity[$key];
             $Order_Product['payment_method']=$orderInsert['payment_method'];
             $Order_Product['promocode']=$request->promoCodes_id;
             $Order_Product['price']=$product->price;
@@ -393,7 +426,6 @@ class OrderCrudController extends Controller
         }
         // return $Order_Product;
         $orderInsert['user_id'] = $request->user_id;
-        $orderInsert['user_id'] =
         // return $Order_Product;
 
         $sendmail = new sendMail($orderInsert, $products);
@@ -474,5 +506,16 @@ class OrderCrudController extends Controller
         // return $order_Products->products;
         // return $user_id;
         return view('admin.order.show-order-products',compact('user_id','order_Products','brand','subcategorys','suppliers','offers'));
+    }
+
+
+    public function getneworder()
+    {
+        $users=User::get();
+        $categories=Category::get();
+        $addresses = Address::get();
+        $regions=Region::get();
+        $cities=City::get();
+        return view('admin.order.order-try',compact('users','categories','addresses','regions','cities'));
     }
 }

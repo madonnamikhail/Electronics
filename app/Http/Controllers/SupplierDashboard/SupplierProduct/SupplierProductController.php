@@ -29,11 +29,10 @@ class SupplierProductController extends Controller
     // supplier updates products' status (delayed)
     public function updateProductStatus(Request $request)
     {
-        // al ajax msh hywreny al return ella lma 23mel append f 7aga f al ajax nfso 
+        // al ajax msh hywreny al return ella lma 23mel append f 7aga f al ajax nfso
         $product=Product::find($request->product_id);
         $product->status=$request->status;
         $product->save();
-
         // return $product;
         // return $request->product_id;
     }
