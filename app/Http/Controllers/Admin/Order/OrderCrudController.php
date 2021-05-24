@@ -204,10 +204,12 @@ class OrderCrudController extends Controller
         $promocode_max_usage=Promocode::where('name','=',$request->promoCodes_id)->first()->max_usage;
         $promocodeId_max_usage_per_user=Promocode::where('name','=',$request->promoCodes_id)->first()->max_usage_per_user;
 
+        // $products=[];
+        $orderInsert['total_price']=0;
         foreach($request->product_id as $key => $product_id){
             $index=$request->quantity[$key];
 
-            $products=Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+            $products = Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
             ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
             ->select('products.id as product_id',
                     'products.*',
@@ -229,17 +231,18 @@ class OrderCrudController extends Controller
                 ((100 - offers.discount) / 100)
             ) * '$index' AS `total_price_after_discount`"))
         ->orderBy('products.id', 'asc')
-        ->whereIn('products.id','=',$product_id)->get();
+        ->where('products.id','=',$product_id)->first();
+        $orderInsert['total_price']+=$products->total_price_after_discount;
         }
-        return $request->product_id;
-        return $products;
+        // return $request->product_id;
+        // return $products;
         $orderInsert['status']=0;//order placed
         $orderInsert['address_id']=$request->address_id;
         $orderInsert['amount']=array_sum($request->quantity);
-        $orderInsert['total_price']=0;
-        foreach( $products as $price){
-            $orderInsert['total_price']+=$price->total_price_after_discount;
-        }
+        // $orderInsert['total_price']=0;
+        // foreach( $products as $price){
+        //     $orderInsert['total_price']+=$price->total_price_after_discount;
+        // }
         $orderInsert['user_id']=$request->user_id;
         if($request->promoCodes_id){
             $orderInsert['promoCodes_id']=$request->promoCodes_id;
@@ -408,31 +411,63 @@ class OrderCrudController extends Controller
         // $user = User::find($request->user_id)->product()->detach();
         $Order_Product=[];
         $pivot_forgien=[];
-        foreach ($products as $key => $product){
-            $pivot_forgien['product_id']= $product->product_id;
+        // foreach ($products as $key => $product){
+            foreach($request->product_id as $key => $product_id){
+                $index=$request->quantity[$key];
+    
+                $products = Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
+                ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
+                ->select('products.id as product_id',
+                        'products.*',
+                        'offers.*',
+                        "offers.id as offer_id",
+                DB::raw('IF(
+                    offers.discount IS NULL,
+                    1,
+                    ((100 - offers.discount) / 100)
+                ) AS `discount`') ,
+                DB::raw('products.price * IF(
+                    offers.discount IS NULL,
+                    1,
+                    ((100 - offers.discount) / 100)
+                    ) AS `price_after_discount`'),
+                DB::raw("products.price * IF(
+                    offers.discount IS NULL,
+                    1,
+                    ((100 - offers.discount) / 100)
+                ) * '$index' AS `total_price_after_discount`"))
+            ->orderBy('products.id', 'asc')
+            ->where('products.id','=',$product_id)->first();
+            //////////////
+            // return $products;
+            $pivot_forgien['product_id']= $products->product_id;
             $pivot_forgien['order_id']=$order_id->id;
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
-            $Order_Product['order_id']=$order_id->id;
+            // $Order_Product['order_id']=$order_id->id;
             $Order_Product['quantity']=$request->quantity[$key];
             $Order_Product['payment_method']=$orderInsert['payment_method'];
             $Order_Product['promocode']=$request->promoCodes_id;
-            $Order_Product['price']=$product->price;
-            $Order_Product['offer_id']=$product->offer_id;
-            $Order_Product['price_after_offer_discount']=$product->total_price_after_discount;
+            $Order_Product['price']=$products->price;
+            $Order_Product['offer_id']=$products->offer_id;
+            $Order_Product['price_after_offer_discount']=$products->total_price_after_discount;
             // return "ed";
-            $order_id->products()->attach($product->product_id,$Order_Product);
+            $order_id->products()->attach($products->product_id,$Order_Product);
+            }
+            // return "mmmm";
             //attach(array want to change with forgirn key , attributes that will be changed)
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
-        }
+        // }
         // return $Order_Product;
         $orderInsert['user_id'] = $request->user_id;
-        // return $Order_Product;
+        $products['user_id'] = $request->user_id;
+        return $products;
 
         $sendmail = new sendMail($orderInsert, $products);
         $user_details=User::find($request->user_id);
         Mail::to($user_details->email)->send($sendmail);
         // end of send mail
         // return redirect('place-order')->with('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date');
+        return "mmmm";
         return view('admin.order.show-all',compact('products','user_id','promocode_type','users','orders'/*,'productPrice','priceWithOffer'*/,'promoCode','paymentMethod','discountOfPromocode', 'rangValue','usage', 'out_of_date','address','regions','cities'))->with('Success','Your Order Has Been Placed');
 
 
