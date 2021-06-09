@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-                @foreach ($orders as $order)
+                @foreach ($order_status as $order)
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>
@@ -67,71 +67,36 @@
                         @if ($order->user_id == $user->id)
                                 {{ $user->name}}
                         @endif
-                    @endforeach
+                        @endforeach
+                
+
                     </td>
                     <td>
-                        {{-- @php
-                        id,date,stus,prodcuts
-                        $status = array_column($order->porducts,'status');
-                        
-                        @endphp --}}
-                        {{-- @endphp --}}
-                        @php
+                          @php
                             $x=1;
                             $y=2;
                         @endphp
-                        @php
-                            $product_status = DB::select("SELECT
-                                sum(case when `order_product`.`status` = 1 then 1 else 0 end) AS `onee`,
-                                sum(case when `order_product`.`status` = 2 then 1 else 0 end) AS `twoo`,
-                                sum(case when `order_product`.`status` = 0 then 1 else 0 end) AS `zeroo`,
-                                sum(case when `order_product`.`status` is null then 1 else 0 end) AS `nulll`
-                            FROM
-                                `order_product`
-                            JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
-                            WHERE
-                                `orders`.`id` = $order->id");
-                            echo $total_num_product = $product_status[0]->onee + $product_status[0]->zeroo + $product_status[0]->nulll . "<br>";
-                            echo $product_status[0]->twoo . "<br>";
-                            echo $product_status[0]->onee . "<br>";
-                            echo $product_status[0]->zeroo . "<br>";
-                            echo $product_status[0]->nulll;
-                            // $order_product_status=App\Models\Order::with('products')->find($order->id);
-                            //         echo count($order_product_status->products) . "<br>";
-                                // foreach($order_product_status->products as $productStatus){
-                                    // echo mb_strlen($productStatus->pivot->status) ;
-                                    // if(is_null($productStatus->pivot->status)){
-                                    //     echo "supllier has no response on the product status fro this order";
-                                    // }elseif($productStatus->pivot->status == 1){
-                                    // }
-                                    // echo $productStatus;
-                                        // echo count((array)$productStatus->id);
-                                    // var_dump($productStatus->pivot->status);
-                                // }
-                        @endphp
-                        <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
-                            @if ($product_status[0]->onee == $total_num_product)
-                                <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
-                            @elseif ($product_status[0]->twoo && $product_status[0]->zeroo == 0 && $product_status[0]->nulll == 0)
-                                <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>  
-                            @elseif ($product_status[0]->twoo == $total_num_product)
-                                <div class="bg-warning">
-                                    <p>
-                                        <i class="fas fa-heart-broken"></i> &nbsp
-                                        Nothing has been delievered
-                                    </p>
-                                </div>  
-                            @elseif($product_status[0]->zeroo)
-                                <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: red"></i> &nbsp {{ __('message.show products') }}</a>
-                            @elseif($product_status[0]->nulll)
-                                <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: yellow"></i> &nbsp {{ __('message.show products') }}</a>
-                            @endif
-                            {{-- <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a> --}}
+                           <div style="display: flex;  flex-direction: row; flex-wrap: nowrap; justify-content: space-around;" >
+                                @if ($order->onee == $order->total)
+                                    <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
+                                @elseif (!$order->twoo && $order->zeroo == 0 && $order->nulll == 0)
+                                    <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>  
+                                @elseif ($order->twoo == $order->total)
+                                    <div class="bg-warning" >
+                                        <p>
+                                            <i class="fas fa-heart-broken"></i> &nbsp
+                                            Nothing has been delievered
+                                        </p>
+                                    </div>  
+                                @elseif($order->zeroo)
+                                    <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: red"></i> &nbsp {{ __('message.show products') }}</a>
+                                @elseif($order->nulll)
+                                    <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: yellow"></i> &nbsp {{ __('message.show products') }}</a>
+                                @endif
+                                {{-- <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a> 
+    
+                                 --}}
 
-                            
-                            <br>
-                            {{-- <a  href="{{ route('update.order',['id'=>$order->id,'action'=>$y]) }}" class="btn btn-success">{{ __('message.Done') }}</a> --}}
-                            <br>
                                 <form method="post" action="{{route('delete.order')}}">
                                     @csrf
                                     @method('delete')
@@ -185,4 +150,4 @@
   </script>
 @endsection
 
-
+  

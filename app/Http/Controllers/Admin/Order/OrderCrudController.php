@@ -68,6 +68,38 @@ class OrderCrudController extends Controller
     public function show(){
         $orders=Order::get();
         $users=User::get();
+        $order_status=DB::select(DB::raw("SELECT
+        `orders`.*,
+        SUM(
+            CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0
+        END
+    ) AS `onee`,
+    SUM(
+        CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0
+    END
+    ) AS `twoo`,
+    SUM(
+        CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0
+    END
+    ) AS `zeroo`,
+    SUM(
+        CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0
+    END
+    ) AS `nulll`,
+    
+    ( SUM(CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0 END) +
+        SUM(CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0 END) +	
+         SUM(CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0 END) +
+         SUM(CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0 END) 
+    )as `total`
+     
+    FROM
+        `order_product`
+    JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
+    GROUP BY
+        `orders`.`id`"));
+        
+    // return $order_status;
         // $order_product_status=Order::with('products')->get();
         // $i=0;
         // $arr=[];
@@ -82,8 +114,7 @@ class OrderCrudController extends Controller
         // }
         // print_r($arr);die;
         // return $order_product_status;
-
-        return view('admin.order.show-all',compact('orders','users'));
+        return view('admin.order.show-all',compact('order_status','orders','users'));
     }
     public function delete(Request $request){
        $rule=[
@@ -229,10 +260,12 @@ class OrderCrudController extends Controller
                 ((100 - offers.discount) / 100)
             ) * '$index' AS `total_price_after_discount`"))
         ->orderBy('products.id', 'asc')
-        ->whereIn('products.id','=',$product_id)->get();
+        ->where('products.id','=',$product_id)->get();
+        // print_r($products);
+
         }
-        return $request->product_id;
-        return $products;
+        // return $request->product_id;
+        // print_r($products);
         $orderInsert['status']=0;//order placed
         $orderInsert['address_id']=$request->address_id;
         $orderInsert['amount']=array_sum($request->quantity);
@@ -412,7 +445,7 @@ class OrderCrudController extends Controller
             $pivot_forgien['product_id']= $product->product_id;
             $pivot_forgien['order_id']=$order_id->id;
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
-            $Order_Product['order_id']=$order_id->id;
+            // $Order_Product['order_id']=$order_id->id;
             $Order_Product['quantity']=$request->quantity[$key];
             $Order_Product['payment_method']=$orderInsert['payment_method'];
             $Order_Product['promocode']=$request->promoCodes_id;
@@ -487,7 +520,7 @@ class OrderCrudController extends Controller
             'title' => 'Appologizing Mail',
             'body' => 'We are sorry, the below product will not be delivered with your order',
         ];
-        // Mail::to($user->email)->send(new \App\Mail\AppologizeMail($details, $user, $product));
+        Mail::to($user->email)->send(new \App\Mail\AppologizeMail($details, $user, $product));
 
         // change l status of l product in order-product table
 
