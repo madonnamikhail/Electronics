@@ -68,7 +68,7 @@
                                 {{ $user->name}}
                         @endif
                         @endforeach
-                
+
 
                     </td>
                     <td>
@@ -80,21 +80,21 @@
                                 @if ($order->onee == $order->total)
                                     <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
                                 @elseif (!$order->twoo && $order->zeroo == 0 && $order->nulll == 0)
-                                    <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>  
+                                    <a href="{{ route('update.order',['id'=>$order->id,'action'=>$x]) }}" class="btn btn-success">{{ __('message.In Progress') }}</a>
                                 @elseif ($order->twoo == $order->total)
                                     <div class="bg-warning" >
                                         <p>
                                             <i class="fas fa-heart-broken"></i> &nbsp
                                             Nothing has been delievered
                                         </p>
-                                    </div>  
+                                    </div>
                                 @elseif($order->zeroo)
                                     <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: red"></i> &nbsp {{ __('message.show products') }}</a>
                                 @elseif($order->nulll)
                                     <a href="{{ route('order.product',['id'=>$order->id, 'user_id'=>$order->user_id]) }}" class="btn btn-success"><i class="fas fa-exclamation" style="color: yellow"></i> &nbsp {{ __('message.show products') }}</a>
                                 @endif
-                                {{-- <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a> 
-    
+                                {{-- <a href="{{ route('order.product',$order->id) }}" class="btn btn-success">{{ __('message.show products') }}</a>
+
                                  --}}
 
                                 <form method="post" action="{{route('delete.order')}}">
@@ -150,4 +150,4 @@
   </script>
 @endsection
 
-  
+

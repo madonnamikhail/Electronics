@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Order;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminMakeOrder;
 use App\Mail\sendMail;
 use App\Models\Address;
 use App\Models\Brand;
@@ -86,34 +87,18 @@ class OrderCrudController extends Controller
         CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0
     END
     ) AS `nulll`,
-    
+
     ( SUM(CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0 END) +
-        SUM(CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0 END) +	
+        SUM(CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0 END) +
          SUM(CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0 END) +
-         SUM(CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0 END) 
+         SUM(CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0 END)
     )as `total`
-     
+
     FROM
         `order_product`
     JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
     GROUP BY
         `orders`.`id`"));
-        
-    // return $order_status;
-        // $order_product_status=Order::with('products')->get();
-        // $i=0;
-        // $arr=[];
-        // foreach($order_product_status as $order_product){
-        //     return $order_product->products;
-        //     // $arr['product_id']=$order_product->products[$i]->pivot->status;
-        //     // for($i=0;$i<count($order_product->products[$i]->pivot->status);$i++){
-
-        //     // }
-        //     $arr['status']=$order_product->products[$i]->pivot->status;
-        //     $i++;
-        // }
-        // print_r($arr);die;
-        // return $order_product_status;
         return view('admin.order.show-all',compact('order_status','orders','users'));
     }
     public function delete(Request $request){
@@ -133,15 +118,6 @@ class OrderCrudController extends Controller
        return redirect()->back()->with('Success','The Order\'s Status Has Been updated');
     }
 
-    // add order using Ajax
-    // public function add()
-    // {
-    //     $categories = Category::get();
-    //     $users = User::get();
-    //     $promocodes = Promocode::get();
-    //     return view('admin.order.create-order', compact('categories','users','promocodes'));
-    // }
-
     public function getSubcategoriesByCategoryId(Request $request)
     {
         $data = Subcategory::where('category_id','=', $request->category_id)->get();
@@ -153,72 +129,70 @@ class OrderCrudController extends Controller
         return response()->json($data);
     }
 
-    public function adminAddToCart(Request $request)
-    {
-        $rules=[
-                "product_id"=>'required|exists:products,id',
-               "quantity"=>'required|integer',
-                "user_id" => 'required|exists:users,id',
-                // "master_number" => '',
-        ];
-        $request->validate($rules);
-        // 1) add to cart
-        $user = User::find($request->user_id);
-        $user->product()->syncWithoutDetaching($request->product_id, ['quantity' => $request->quantity]);
-        Product::find($request->product_id)->user()->updateExistingPivot($request->user_id, ['quantity' => $request->quantity]);
-        return redirect()->back()->with('Success', 'Added Successfully to Cart');
-    }
-    public function AdminCartProductDelete(Request $request)
-    {
-        $rules=[
-            'product_id' => 'required|exists:products,id|integer',
-            'user_id' => 'required|exists:users,id|integer',
-        ];
-        $request->validate($rules);
-        // return $request;
-        $user = User::find($request->user_id)->product()->detach($request->product_id);
-        return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
-    }
+    // public function adminAddToCart(Request $request)
+    // {
+    //     $rules=[
+    //             "product_id"=>'required|exists:products,id',
+    //            "quantity"=>'required|integer',
+    //             "user_id" => 'required|exists:users,id',
+    //             // "master_number" => '',
+    //     ];
+    //     $request->validate($rules);
+    //     // 1) add to cart
+    //     $user = User::find($request->user_id);
+    //     $user->product()->syncWithoutDetaching($request->product_id, ['quantity' => $request->quantity]);
+    //     Product::find($request->product_id)->user()->updateExistingPivot($request->user_id, ['quantity' => $request->quantity]);
+    //     return redirect()->back()->with('Success', 'Added Successfully to Cart');
+    // }
+    // public function AdminCartProductDelete(Request $request)
+    // {
+    //     $rules=[
+    //         'product_id' => 'required|exists:products,id|integer',
+    //         'user_id' => 'required|exists:users,id|integer',
+    //     ];
+    //     $request->validate($rules);
+    //     // return $request;
+    //     $user = User::find($request->user_id)->product()->detach($request->product_id);
+    //     return redirect()->back()->with('Success', 'Your Cart Has Been Updated');
+    // }
 
-    public function adminProceedToCheckout($user_id)
-    {
-        // $users=User::get();
+    // public function adminProceedToCheckout($user_id)
+    // {
+    //     $addresses = Address::where('user_id', '=', $user_id)->get();
+    //     $regions=Region::get();
+    //     $cities=City::get();
+    //     $categories=Category::get();
+    //     $user_id=$user_id;
+    //     $user = User::find($user_id);
+    //     $products = $user->product;
+    //     $price=[];
+    //     $productPrice=[];
+    //     $priceWithOffer=[];
+    //     $i=0;
 
-        $addresses = Address::where('user_id', '=', $user_id)->get();
-        $regions=Region::get();
-        $cities=City::get();
-        $categories=Category::get();
-        $user_id=$user_id;
-        $user = User::find($user_id);
-        $products = $user->product;
-        $price=[];
-        $productPrice=[];
-        $priceWithOffer=[];
-        $i=0;
+    //     foreach ($products as $product){
+    //         // $productPrice[$i]= ($product->pivot->quantity)*($product->price);
+    //          $product_offers=$product->offers;
+    //         if( $product_offers && count($product_offers)>0)
+    //         {
+    //             foreach ($product_offers as $product_offer)
+    //                 {
+    //                     // return $product_offer;
+    //                         $offer=(100-trim($product_offer->discount,"% , -"))/(100);
+    //                         $priceWithOffer[$i]=($product->price)*($offer);
+    //                         $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
+    //                         // return $pro->discount;
+    //                 }
+    //         }
+    //         else{
+    //                 $priceWithOffer[$i]=($product->price)*1;
+    //                 $productPrice[$i]= ($product->pivot->quantity)*($product->price)*1;
+    //             }
+    //         $i++;
+    //     }
 
-        foreach ($products as $product){
-            // $productPrice[$i]= ($product->pivot->quantity)*($product->price);
-             $product_offers=$product->offers;
-            if( $product_offers && count($product_offers)>0)
-            {
-                foreach ($product_offers as $product_offer)
-                    {
-                        // return $product_offer;
-                            $offer=(100-trim($product_offer->discount,"% , -"))/(100);
-                            $priceWithOffer[$i]=($product->price)*($offer);
-                            $productPrice[$i]= ($product->pivot->quantity)*($product->price)*($offer);
-                            // return $pro->discount;
-                    }
-            }
-            else{
-                    $priceWithOffer[$i]=($product->price)*1;
-                    $productPrice[$i]= ($product->pivot->quantity)*($product->price)*1;
-                }
-            $i++;
-        }
-
-        return view('admin.order.proceed-to-checkout',compact('categories','products','user_id','priceWithOffer','productPrice','cities','regions','addresses'));
-    }
+    //     return view('admin.order.proceed-to-checkout',compact('categories','products','user_id','priceWithOffer','productPrice','cities','regions','addresses'));
+    // }
 
     public function adminPlaceOrder(Request $request)
     {
@@ -237,6 +211,7 @@ class OrderCrudController extends Controller
 
         // $products=[];
         $orderInsert['total_price']=0;
+        // return $request;
         foreach($request->product_id as $key => $product_id){
             $index=$request->quantity[$key];
 
@@ -261,15 +236,14 @@ class OrderCrudController extends Controller
                 1,
                 ((100 - offers.discount) / 100)
             ) * '$index' AS `total_price_after_discount`"))
-        ->orderBy('products.id', 'asc')
-        ->where('products.id','=',$product_id)->get();
-        // ->where('products.id','=',$product_id)->first();
-        // $orderInsert['total_price']+=$products->total_price_after_discount;
-        // print_r($products);
-
+            ->orderBy('products.id', 'asc')
+            ->where('products.id','=',$product_id)->first();
+            $orderInsert['total_price']+=$products->total_price_after_discount;
+            // return $products;
+            // return $orderInsert['total_price'];
         }
-        // return $request->product_id;
-        // print_r($products);
+        // return $products;
+        // return $orderInsert['total_price'];
         $orderInsert['status']=0;//order placed
         $orderInsert['address_id']=$request->address_id;
         $orderInsert['amount']=array_sum($request->quantity);
@@ -430,12 +404,14 @@ class OrderCrudController extends Controller
 
         $x = Order::insert($dbInsertInOrder);
         $order_id=Order::where('user_id','=',$request->user_id)->latest('id')->first();
-        $orderInsert['order_id_mail']=$order_id;
+        // $orderInsert['order_id_mail']=$order_id;
+        // $orderInsert['order_id_mail']=$order_id->products()->get();
+        // return $orderInsert['order_id_mail'];
         $orderInsert['order_id']=$order_id->id;
 
 
 
-        $orderInsert['discountOfPromocode'] = $discountOfPromocode;
+        $orderInsert['discountOfPromocode'] = $dbInsertInOrder['total_price_after_promocode'];
         $orderInsert['flag'] = $flag2;
         $orderInsert['out_of_date'] = $out_of_date;
         $orderInsert['rangValue'] = $rangValue;
@@ -448,7 +424,7 @@ class OrderCrudController extends Controller
         // foreach ($products as $key => $product){
             foreach($request->product_id as $key => $product_id){
                 $index=$request->quantity[$key];
-    
+
                 $products = Product::leftJoin('offer_product', 'offer_product.product_id', '=', 'products.id')
                 ->leftJoin('offers', 'offer_product.offer_id', '=', 'offers.id'/*, 'left outer'*/)
                 ->select('products.id as product_id',
@@ -492,17 +468,58 @@ class OrderCrudController extends Controller
             // $order_id->products()->syncWithoutDetaching($pivot_forgien, $Order_Product);
         // }
         // return $Order_Product;
+        $orderInsert['order_id_mail']=$order_id->products()->get();
+        $products = $orderInsert['order_id_mail'];
+        // return $orderInsert['order_id_mail'];
         $orderInsert['user_id'] = $request->user_id;
-        $products['user_id'] = $request->user_id;
-        return $products;
+        // $products['user_id'] = $request->user_id;
+        // return $products;
 
-        $sendmail = new sendMail($orderInsert, $products);
+        // return $products;
+        foreach($products as $product){
+            // return $product->pivot->quantity;
+        }
+
+
+        $sendmail = new AdminMakeOrder($orderInsert, $products);
         $user_details=User::find($request->user_id);
         Mail::to($user_details->email)->send($sendmail);
+        $order_status=DB::select(DB::raw("SELECT
+        `orders`.*,
+        SUM(
+            CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0
+        END
+    ) AS `onee`,
+    SUM(
+        CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0
+    END
+    ) AS `twoo`,
+    SUM(
+        CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0
+    END
+    ) AS `zeroo`,
+    SUM(
+        CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0
+    END
+    ) AS `nulll`,
+
+    ( SUM(CASE WHEN `order_product`.`status` = 1 THEN 1 ELSE 0 END) +
+        SUM(CASE WHEN `order_product`.`status` = 2 THEN 1 ELSE 0 END) +
+         SUM(CASE WHEN `order_product`.`status` = 0 THEN 1 ELSE 0 END) +
+         SUM(CASE WHEN `order_product`.`status` IS NULL THEN 1 ELSE 0 END)
+    )as `total`
+
+    FROM
+        `order_product`
+    JOIN `orders` ON `orders`.`id` = `order_product`.`order_id`
+    GROUP BY
+        `orders`.`id`"));
+
+        return $products;
         // end of send mail
         // return redirect('place-order')->with('products','productPrice','promoCode','paymentMethod','discount', 'rangValue', 'out_of_date');
-        return "mmmm";
-        return view('admin.order.show-all',compact('products','user_id','promocode_type','users','orders'/*,'productPrice','priceWithOffer'*/,'promoCode','paymentMethod','discountOfPromocode', 'rangValue','usage', 'out_of_date','address','regions','cities'))->with('Success','Your Order Has Been Placed');
+        // return "mmmm";
+        return view('admin.order.show-all',compact('order_status','products','user_id','users','promocode_type','orders'/*,'productPrice','priceWithOffer'*/,'promoCode','paymentMethod','discountOfPromocode', 'rangValue','usage', 'out_of_date','address','regions','cities'))->with('Success','Your Order Has Been Placed');
 
 
 
