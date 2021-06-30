@@ -118,6 +118,7 @@ class OrderController extends Controller
             $paymentMethod="Cash On Delivery ( +5 EGP )";
         }
         $promoCode=Promocode::where('name','=',$request->promoCodes_id)->first();
+        // return $promoCode->type;
         $ldate = date('Y-m-d');
         // $totalOrderValue=array_sum($request->productPrice); //mn4er offers..3shan tgili fl mail
         $totalOrderValue=array_sum($request->productPrice);
@@ -164,6 +165,7 @@ class OrderController extends Controller
                             ->where('promocodes.id','=',$promocodeId)
                             ->first()->maxUsagePerUser;
         //  return $maxUsagePerUser;
+        $promocode_type=2;
         if($promoCode){
             $flag2 = 1;
             if($promoCode->start_date <= $ldate && $promoCode->expire_date >= $ldate){
@@ -179,6 +181,7 @@ class OrderController extends Controller
                         $discountOfPromocode=$promoCode->discountValue;
                         // return $discount;
                         $promocode_type= $promoCode->type;
+
                         if($promocode_type){
                             $discountOfPromocode=(100-trim($discountOfPromocode=$promoCode->discountValue,"%"))/(100);
                         }else
@@ -237,7 +240,6 @@ class OrderController extends Controller
         }
         // return $Order_Product;
         $orderInsert['user_id'] = $user_id;
-        $orderInsert['user_id'] =
         // return $Order_Product;
         $sendmail = new sendMail($orderInsert, $products);
         Mail::to(Auth::user()->email)->send($sendmail);
